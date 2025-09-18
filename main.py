@@ -4,7 +4,11 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from database import init_db, test_db
 
-from commands import *
+module = {}
+for file in os.listdir("packages"):
+    if not(file.startswith("_")):
+        filename = file[:-3]
+        module[filename] = __import__(f"packages.{filename}", fromlist=[filename])
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -14,7 +18,7 @@ TOKEN = os.getenv("TOKEN")
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-cogs = [roll_group]
+cogs = [module["roll"].roll_group]
 
 async def load_commands():
     for i in cogs:
@@ -25,9 +29,9 @@ async def load_commands():
 @bot.event
 async def on_ready():
     # await test_db()
+    await module["roll"].calculate_rarities()
     print(f"{bot.user} connected")
     await init_db()
-    print("Updated table: users")
     await load_commands()
 
 bot.run(TOKEN)
