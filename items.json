@@ -1,0 +1,16 @@
+{
+    "Basic Ball": {
+        "name": "Basic Ball",
+        "rarity": 0.5,
+        "prev_evo": null,
+        "next_evo": "Advanced Ball",
+        "required": 5
+    },
+    "Stickman": {
+        "name": "Stickman",
+        "rarity": 0.4,
+        "prev_evo": null,
+        "next_evo": "Wooden Stickman",
+        "required": 5
+    }
+}
