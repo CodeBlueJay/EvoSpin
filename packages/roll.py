@@ -32,11 +32,12 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
         color=discord.Color.blue()
     )
     embed.set_author(name=user.name, icon_url=user.display_avatar.url)
+    embed.add_field(name="Coins", value=f"***{await get_coins(user.id)}***", inline=False)
     for key, value in user_inven.items():
         string += f"**{key}** - x{value}\n"
     if string == "":
         string = "Your inventory is empty!"
-    embed.add_field(name="Items", value=string)
+    embed.add_field(name="Items", value=string, inline=False)
     await interaction.response.send_message(embed=embed)
 
 @roll_group.command(name="evolve", description="Evolve an item")

@@ -137,3 +137,12 @@ async def add_coins(amount, user_id):
         WHERE UserID = {user_id};
         """)
         await db.commit()
+
+async def get_coins(user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"""
+        SELECT Coins FROM Users WHERE UserID = {user_id};
+        """)
+        coins = await cursor.fetchone()
+        return coins[0] if coins[0] != None else 0
