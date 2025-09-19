@@ -21,21 +21,28 @@ async def rand_roll(interaction: discord.Interaction):
     await interaction.response.send_message(f"You got a **{spun}** (*{things[spun]['chance']}%*)!")
 
 @roll_group.command(name="inventory", description="Show your inventory")
-async def inventory(interaction: discord.Interaction):
+async def inventory(interaction: discord.Interaction, user: discord.User=None):
     string = ""
-    user_inven = await decrypt_inventory(await get_inventory(interaction.user.id))
+    if user is None:
+        user = interaction.user
+    user_inven = await decrypt_inventory(await get_inventory(user.id))
     embed = discord.Embed(
-        title=f"{interaction.user.name}'s Inventory",
+        title=f"{user.name}'s Inventory",
         description="Completion: " + f"`{len(user_inven)}/{len(things)-1}`",
         color=discord.Color.blue()
     )
-    embed.set_author(name=interaction.user.name, icon_url=interaction.user.display_avatar.url)
+    embed.set_author(name=user.name, icon_url=user.display_avatar.url)
     for key, value in user_inven.items():
         string += f"**{key}** - x{value}\n"
     if string == "":
         string = "Your inventory is empty!"
     embed.add_field(name="Items", value=string)
     await interaction.response.send_message(embed=embed)
+
+@roll_group.command(name="evolve", description="Evolve an item")
+async def evolve(interaction: discord.Interaction, item: str):
+    user_inven = await decrypt_inventory(await get_inventory(interaction.user.id))
+    
 
 async def spin():
     spin = round(random.uniform(0, 1), roundTo)

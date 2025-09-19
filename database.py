@@ -8,7 +8,8 @@ DB_URL = "data.db"
 translations = {
     "bb": "Basic Ball",
     "s": "Stickman",
-    "d": "Dog"
+    "d": "Dog",
+    "cl": "Cosmic Leviathan"
 }
 
 async def test_db():
@@ -93,6 +94,23 @@ async def add_to_inventory(item, user_id):
         inventory[item] += 1
     except:
         inventory[item] = 1
+    encrypted = await encrypt_inventory(inventory)
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        UPDATE Users
+        SET Inventory = '{encrypted}'
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()
+
+async def remove_from_inventory(item, user_id):
+    await check_user_exist(user_id)
+    inventory = await decrypt_inventory(await get_inventory(user_id))
+    try:
+        inventory[item] = int(inventory[item])
+        inventory[item] -= 1
+    except:
+        pass
     encrypted = await encrypt_inventory(inventory)
     async with aiosqlite.connect(DB_URL) as db:
         await db.execute(f"""

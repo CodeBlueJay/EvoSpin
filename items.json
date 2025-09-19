@@ -23,9 +23,25 @@
         "required": 6,
         "chance": "30"
     },
+    "Advanced Ball": {
+        "name": "Advanced Ball",
+        "rarity": 0.0,
+        "prev_evo": "Basic Ball",
+        "next_evo": "Master Ball",
+        "required": 5,
+        "chance": "0"
+    },
+    "Cosmic Leviathan": {
+        "name": "Cosmic Leviathan",
+        "rarity": 0.001,
+        "prev_evo": null,
+        "next_evo": "Leviathan of the Eclipse",
+        "required": 3,
+        "chance": "0.001"
+    },
     "Fallback for no rarity yet": {
         "name": "Fallback",
-        "rarity": 0.01,
+        "rarity": 0.0,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
