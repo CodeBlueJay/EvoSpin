@@ -9,7 +9,8 @@ translations = {
     "bb": "Basic Ball",
     "s": "Stickman",
     "d": "Dog",
-    "cl": "Cosmic Leviathan"
+    "cl": "Cosmic Leviathan",
+    "ab": "Advanced Ball"
 }
 
 async def test_db():
@@ -25,7 +26,8 @@ async def init_db():
         CREATE TABLE IF NOT EXISTS Users (
             UserID int,
             XP int,
-            Inventory varchar(255)
+            Inventory varchar(255),
+            Coins int
         );
         """)
         await db.commit()
@@ -81,8 +83,8 @@ async def check_user_exist(user_id):
 async def add_user(user_id):
     async with aiosqlite.connect(DB_URL) as db:
         await db.execute(f"""
-        INSERT INTO Users (UserID, XP, Inventory)
-        VALUES ({user_id}, 0, '');
+        INSERT INTO Users (UserID, XP, Inventory, Coins)
+        VALUES ({user_id}, 0, '', 0);
         """)
         await db.commit()
 
@@ -116,6 +118,22 @@ async def remove_from_inventory(item, user_id):
         await db.execute(f"""
         UPDATE Users
         SET Inventory = '{encrypted}'
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()
+
+async def add_coins(amount, user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"""
+        SELECT Coins FROM Users WHERE UserID = {user_id};
+        """)
+        coins = await cursor.fetchone()
+        coins = coins[0] if coins[0] != None else 0
+        coins += amount
+        await db.execute(f"""
+        UPDATE Users
+        SET Coins = {coins}
         WHERE UserID = {user_id};
         """)
         await db.commit()

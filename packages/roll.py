@@ -42,7 +42,22 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
 @roll_group.command(name="evolve", description="Evolve an item")
 async def evolve(interaction: discord.Interaction, item: str):
     user_inven = await decrypt_inventory(await get_inventory(interaction.user.id))
-    
+    if things[item.title()]["next_evo"] == None:
+        await interaction.response.send_message(f"**{item.title()}** cannot be evolved!")
+        return
+    else:
+        if item.title() in user_inven:
+            if int(user_inven[item.title()]) >= things[item.title()]["required"]:
+                user_inven[item.title()] = str(int(user_inven[item.title()]) - things[item.title()]["required"])
+                if user_inven[item.title()] == "0":
+                    user_inven.pop(item.title())
+                await add_to_inventory(things[item.title()]["next_evo"], interaction.user.id)
+                await interaction.response.send_message(f"You evolved **{item.title()}** into **{things[item.title()]['next_evo']}**!")
+                for i in range(things[item.title()]["required"]):
+                    await remove_from_inventory(item.title(), interaction.user.id)
+            else:
+                await interaction.response.send_message(f"You need at least **{things[item.title()]['required']}** **{item.title()}** to evolve it!")
+                return
 
 async def spin():
     spin = round(random.uniform(0, 1), roundTo)
