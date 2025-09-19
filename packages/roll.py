@@ -16,12 +16,17 @@ roll_group = discord.app_commands.Group(name="roll", description="Roll commands"
 @roll_group.command(name="random", description="Roll a random item")
 async def rand_roll(interaction: discord.Interaction):
     global sum
-    spin = round(random.uniform(0, sum + small_value), roundTo)
+    spun = await spin()
+    await add_to_inventory(spun, interaction.user.id)
+    await interaction.response.send_message(f"You got a **{spun}** (*{things[spun]['chance']}%*)!")
+
+async def spin():
+    spin = round(random.uniform(0, 1), roundTo)
     spun = ""
     for i in things:
-        if spin >= things[i]["rarity"]:
+        if spin < things[i]["rarity"]:
             spun = things[i]["name"]
-    await interaction.response.send_message(f"You got a **{spun}**!")
+    return spun
 
 async def calculate_rarities():
     global sum, roundTo

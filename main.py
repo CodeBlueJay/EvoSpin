@@ -2,7 +2,7 @@ import discord, os, asyncio
 from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv
-from database import init_db, test_db
+from database import *
 
 module = {}
 for file in os.listdir("packages"):
@@ -29,6 +29,7 @@ async def load_commands():
 @bot.event
 async def on_ready():
     # await test_db()
+    await init_db()
     await module["roll"].calculate_rarities()
     print(f"{bot.user} connected")
     await init_db()

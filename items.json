@@ -1,16 +1,34 @@
 {
     "Basic Ball": {
         "name": "Basic Ball",
-        "rarity": 0.5,
+        "rarity": 1.0,
         "prev_evo": null,
         "next_evo": "Advanced Ball",
-        "required": 5
+        "required": 4,
+        "chance": "40"
     },
     "Stickman": {
         "name": "Stickman",
-        "rarity": 0.4,
+        "rarity": 0.60,
         "prev_evo": null,
         "next_evo": "Wooden Stickman",
-        "required": 5
+        "required": 5,
+        "chance": "30"
+    },
+    "Dog": {
+        "name": "Dog",
+        "rarity": 0.30,
+        "prev_evo": null,
+        "next_evo": "Wolf",
+        "required": 6,
+        "chance": "30"
+    },
+    "Fallback for no rarity yet": {
+        "name": "Fallback",
+        "rarity": 0.01,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "chance": "fallback"
     }
 }

@@ -5,11 +5,10 @@ load_dotenv()
 
 DB_URL = "data.db"
 
-inventory = {}
-
 translations = {
     "bb": "Basic Ball",
-    "s": "Stickman"
+    "s": "Stickman",
+    "d": "Dog"
 }
 
 async def test_db():
@@ -17,7 +16,7 @@ async def test_db():
         table = await db.execute("""
         SELECT * FROM Users;
         """)
-        print(await table.fetchall())
+    print(await table.fetchall())
 
 async def init_db():
     async with aiosqlite.connect(DB_URL) as db:
@@ -44,18 +43,58 @@ async def decrypt_inventory(string):
     strlist = string.split("|")
     strdict = {}
     for i in strlist:
-        key = i[:i.index("[")]
-        value = int(i[i.index("[")+1:])
-        for k, v in translations.items():
-            if k == key:
-                key = v
-        strdict[key] = value
+        try:
+            key = i[:i.index("[")]
+            value = i[i.index("[")+1:]
+            for k, v in translations.items():
+                if k == key:
+                    key = v
+            strdict[key] = value if key != "" else ""
+            key, value = strdict.popitem()
+            if not((key, value) == ('', '')):
+                strdict[key] = value
+        except:
+            strdict = {}
     return strdict
 
-
-async def add_to_inventory():
+async def get_inventory(user_id):
     async with aiosqlite.connect(DB_URL) as db:
-        await db.execute("""
-        STATEMENT;
+        cursor = await db.execute(f"""
+        SELECT Inventory FROM Users WHERE UserID = {user_id};
+        """)
+        inven = await cursor.fetchone()
+        return inven[0]
+
+async def check_user_exist(user_id):
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"""
+        SELECT UserID FROM Users;
+        """)
+        users_list = await cursor.fetchall()
+    if not((user_id,) in users_list):
+        await add_user(user_id)
+
+async def add_user(user_id):
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        INSERT INTO Users (UserID, XP, Inventory)
+        VALUES ({user_id}, 0, '');
+        """)
+        await db.commit()
+
+async def add_to_inventory(item, user_id):
+    await check_user_exist(user_id)
+    inventory = await decrypt_inventory(await get_inventory(user_id))
+    try:
+        inventory[item] = int(inventory[item])
+        inventory[item] += 1
+    except:
+        inventory[item] = 1
+    encrypted = await encrypt_inventory(inventory)
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        UPDATE Users
+        SET Inventory = '{encrypted}'
+        WHERE UserID = {user_id};
         """)
         await db.commit()
