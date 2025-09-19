@@ -2,7 +2,7 @@ import discord, json, random
 from discord import app_commands
 from discord.ext import commands
 
-from database import add_to_inventory
+from database import *
 
 with open("items.json", "r") as items:
     things = json.load(items)
@@ -19,6 +19,23 @@ async def rand_roll(interaction: discord.Interaction):
     spun = await spin()
     await add_to_inventory(spun, interaction.user.id)
     await interaction.response.send_message(f"You got a **{spun}** (*{things[spun]['chance']}%*)!")
+
+@roll_group.command(name="inventory", description="Show your inventory")
+async def inventory(interaction: discord.Interaction):
+    string = ""
+    user_inven = await decrypt_inventory(await get_inventory(interaction.user.id))
+    embed = discord.Embed(
+        title=f"{interaction.user.name}'s Inventory",
+        description="Completion: " + f"`{len(user_inven)}/{len(things)-1}`",
+        color=discord.Color.blue()
+    )
+    embed.set_author(name=interaction.user.name, icon_url=interaction.user.display_avatar.url)
+    for key, value in user_inven.items():
+        string += f"**{key}** - x{value}\n"
+    if string == "":
+        string = "Your inventory is empty!"
+    embed.add_field(name="Items", value=string)
+    await interaction.response.send_message(embed=embed)
 
 async def spin():
     spin = round(random.uniform(0, 1), roundTo)

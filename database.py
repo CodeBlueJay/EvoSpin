@@ -58,11 +58,14 @@ async def decrypt_inventory(string):
     return strdict
 
 async def get_inventory(user_id):
+    await check_user_exist(user_id)
     async with aiosqlite.connect(DB_URL) as db:
         cursor = await db.execute(f"""
         SELECT Inventory FROM Users WHERE UserID = {user_id};
         """)
         inven = await cursor.fetchone()
+        if inven[0] == None:
+            return ""
         return inven[0]
 
 async def check_user_exist(user_id):
