@@ -19,13 +19,13 @@ async def roll_amount(interaction: discord.Interaction, amount: int):
     for i in range(amount):
         spun = await spin()
         await add_to_inventory(spun, interaction.user.id)
-        temp += f"You got a **{spun}**!\n"
+        temp += f"You got a **{spun}**! (*{things[spun]['chance']}%*)\n"
     try:
         await interaction.response.send_message(temp)
     except:
         await interaction.response.send_message("Complete")
 
-@admin_group.command(name="give", description="Give an item to a user")
+@admin_group.command(name="give_item", description="Give an item to a user")
 async def give(interaction: discord.Interaction, user: discord.User, item: str):
     if interaction.user.id != 908954867962380298:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
@@ -41,13 +41,14 @@ async def give_coins(interaction: discord.Interaction, user: discord.User, amoun
     await add_coins(amount, user.id)
     await interaction.response.send_message(f"Added **{amount}** coins to {user.name}!")
 
-@admin_group.command(name="empty_db", description="Empty the database")
+@admin_group.command(name="reset_db", description="Empty the database")
 async def empty_db_cmd(interaction: discord.Interaction):
     if interaction.user.id != 908954867962380298:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
     await empty_db()
-    await interaction.response.send_message("Emptied the database!")
+    await init_db()
+    await interaction.response.send_message("Reset the database!")
 
 @admin_group.command(name="clear_inventory", description="Clear a user's inventory")
 async def clear_inventory_cmd(interaction: discord.Interaction, user: discord.User):
@@ -56,3 +57,19 @@ async def clear_inventory_cmd(interaction: discord.Interaction, user: discord.Us
         return
     await clear_inventory(user.id)
     await interaction.response.send_message(f"Cleared {user.name}'s inventory!")
+
+@admin_group.command(name="give_potion", description="Give a potion to a user")
+async def give_potion(interaction: discord.Interaction, user: discord.User, potion: str):
+    if interaction.user.id != 908954867962380298:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    await add_potion(potion.title(), user.id)
+    await interaction.response.send_message(f"Gave **{potion.title()}** to {user.name}!")
+
+@admin_group.command(name="clear_potions", description="Clear a user's potions")
+async def clear_potions(interaction: discord.Interaction, user: discord.User):
+    if interaction.user.id != 908954867962380298:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    await clear_potions(user.id)
+    await interaction.response.send_message(f"Cleared {user.name}'s potions!")

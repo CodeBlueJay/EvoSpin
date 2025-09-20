@@ -12,7 +12,9 @@ translations = {
     "cl": "Cosmic Leviathan",
     "ab": "Advanced Ball",
     "w": "Wolf",
-    "le": "Leviathan Of The Eclipse", 
+    "le": "Leviathan Of The Eclipse",
+    "ta": "The Admin",
+    "msi": "Multi-Spin Potion I"
 }
 
 async def test_db():
@@ -86,8 +88,8 @@ async def check_user_exist(user_id):
 async def add_user(user_id):
     async with aiosqlite.connect(DB_URL) as db:
         await db.execute(f"""
-        INSERT INTO Users (UserID, XP, Inventory, Coins)
-        VALUES ({user_id}, 0, '', 0);
+        INSERT INTO Users (UserID, XP, Inventory, Coins, Potions)
+        VALUES ({user_id}, 0, '', 0, '');
         """)
         await db.commit()
 
@@ -134,6 +136,8 @@ async def add_coins(amount, user_id):
         coins = await cursor.fetchone()
         coins = coins[0] if coins[0] != None else 0
         coins += amount
+        if coins < 0:
+            coins = 0
         await db.execute(f"""
         UPDATE Users
         SET Coins = {coins}
@@ -150,6 +154,24 @@ async def get_coins(user_id):
         coins = await cursor.fetchone()
         return coins[0] if coins[0] != None else 0
 
+async def remove_coins(amount, user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"""
+        SELECT Coins FROM Users WHERE UserID = {user_id};
+        """)
+        coins = await cursor.fetchone()
+        coins = coins[0] if coins[0] != None else 0
+        coins -= amount
+        if coins < 0:
+            coins = 0
+        await db.execute(f"""
+        UPDATE Users
+        SET Coins = {coins}
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()
+
 async def empty_db():
     async with aiosqlite.connect(DB_URL) as db:
         await db.execute(f"""
@@ -163,6 +185,44 @@ async def clear_inventory(user_id):
         await db.execute(f"""
         UPDATE Users
         SET Inventory = ''
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()
+
+async def get_potions(user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"""
+        SELECT Potions FROM Users WHERE UserID = {user_id};
+        """)
+        potions = await cursor.fetchone()
+        if potions[0] == None:
+            return ""
+        return potions[0]
+
+async def add_potion(potion, user_id):
+    await check_user_exist(user_id)
+    potions = await decrypt_inventory(await get_potions(user_id))
+    try:
+        potions[potion] = int(potions[potion])
+        potions[potion] += 1
+    except:
+        potions[potion] = 1
+    encrypted = await encrypt_inventory(potions)
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        UPDATE Users
+        SET Potions = '{encrypted}'
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()
+
+async def clear_potions(user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        UPDATE Users
+        SET Potions = ''
         WHERE UserID = {user_id};
         """)
         await db.commit()

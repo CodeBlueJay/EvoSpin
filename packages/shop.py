@@ -21,3 +21,18 @@ async def view_items(interaction: discord.Interaction):
     for key, value in shop_items.items():
         embed.add_field(name=f"**{key}** - *{value['price']}* coins", value=value["description"], inline=False)
     await interaction.response.send_message(embed=embed)
+
+@shop_group.command(name="buy", description="Buy an item from the shop")
+async def buy_item(interaction: discord.Interaction, item: str):
+    item = item.title()
+    if not item in shop_items:
+        await interaction.response.send_message(f"Item is not in the shop")
+        return
+    user_coins = await get_coins(interaction.user.id)
+    item_price = shop_items[item]["price"]
+    if user_coins < item_price:
+        await interaction.response.send_message(f"You do not have enough coins to buy **{item}**!")
+        return
+    await remove_coins(item_price, interaction.user.id)
+    await add_to_inventory(item, interaction.user.id)
+    await interaction.response.send_message(f"You bought **{item}** for *{item_price}* coins!")

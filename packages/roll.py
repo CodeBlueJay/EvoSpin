@@ -22,12 +22,14 @@ async def rand_roll(interaction: discord.Interaction):
 
 @roll_group.command(name="inventory", description="Show your inventory")
 async def inventory(interaction: discord.Interaction, user: discord.User=None):
-    string = ""
+    inven_string = ""
+    potion_string = ""
     if user is None:
         user = interaction.user
     user_inven = await decrypt_inventory(await get_inventory(user.id))
+    potion_inven = await decrypt_inventory(await get_potions(user.id))
     number_of_comp = 0
-    for key in user_inven:
+    for key in things:
         if things[key]["comp"]:
             number_of_comp += 1
     embed = discord.Embed(
@@ -38,10 +40,15 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
     embed.set_author(name=user.name, icon_url=user.display_avatar.url)
     embed.add_field(name="Coins", value=f"***{await get_coins(user.id)}***", inline=False)
     for key, value in user_inven.items():
-        string += f"**{key}** - x{value}\n"
-    if string == "":
-        string = "Your inventory is empty!"
-    embed.add_field(name="Items", value=string, inline=False)
+        inven_string += f"**{key}** - x{value}\n"
+    if inven_string == "":
+        inven_string = "Your inventory is empty!"
+    embed.add_field(name="Items", value=inven_string, inline=False)
+    for key, value in potion_inven.items():
+        potion_string += f"**{key}** - x{value}\n"
+    if potion_string == "":
+        potion_string = "You have no potions!"
+    embed.add_field(name="Potions", value=potion_string, inline=False)
     await interaction.response.send_message(embed=embed)
 
 @roll_group.command(name="evolve", description="Evolve an item")
