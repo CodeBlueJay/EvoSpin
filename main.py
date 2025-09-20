@@ -18,7 +18,7 @@ TOKEN = os.getenv("TOKEN")
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-cogs = [module["roll"].roll_group, module["admin"].admin_group]
+cogs = [module["roll"].roll_group, module["admin"].admin_group, module["shop"].shop_group]
 
 async def load_commands():
     for i in cogs:

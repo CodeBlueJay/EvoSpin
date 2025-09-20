@@ -10,7 +10,9 @@ translations = {
     "s": "Stickman",
     "d": "Dog",
     "cl": "Cosmic Leviathan",
-    "ab": "Advanced Ball"
+    "ab": "Advanced Ball",
+    "w": "Wolf",
+    "le": "Leviathan Of The Eclipse", 
 }
 
 async def test_db():
@@ -27,7 +29,8 @@ async def init_db():
             UserID int,
             XP int,
             Inventory varchar(255),
-            Coins int
+            Coins int,
+            Potions varchar(255)
         );
         """)
         await db.commit()
@@ -146,3 +149,20 @@ async def get_coins(user_id):
         """)
         coins = await cursor.fetchone()
         return coins[0] if coins[0] != None else 0
+
+async def empty_db():
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        DROP TABLE IF EXISTS Users;
+        """)
+        await db.commit()
+
+async def clear_inventory(user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        UPDATE Users
+        SET Inventory = ''
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()

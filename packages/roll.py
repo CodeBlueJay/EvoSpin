@@ -4,7 +4,7 @@ from discord.ext import commands
 
 from database import *
 
-with open("items.json", "r") as items:
+with open("configuration/items.json", "r") as items:
     things = json.load(items)
 
 sum = 0
@@ -26,9 +26,13 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
     if user is None:
         user = interaction.user
     user_inven = await decrypt_inventory(await get_inventory(user.id))
+    number_of_comp = 0
+    for key in user_inven:
+        if things[key]["comp"]:
+            number_of_comp += 1
     embed = discord.Embed(
         title=f"{user.name}'s Inventory",
-        description="Completion: " + f"`{len(user_inven)}/{len(things)-1}`",
+        description="Completion: " + f"`{len(user_inven)}/{number_of_comp}`",
         color=discord.Color.blue()
     )
     embed.set_author(name=user.name, icon_url=user.display_avatar.url)
@@ -41,23 +45,23 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
     await interaction.response.send_message(embed=embed)
 
 @roll_group.command(name="evolve", description="Evolve an item")
-async def evolve(interaction: discord.Interaction, item: str):
+async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
     user_inven = await decrypt_inventory(await get_inventory(interaction.user.id))
     if things[item.title()]["next_evo"] == None:
         await interaction.response.send_message(f"**{item.title()}** cannot be evolved!")
         return
     else:
         if item.title() in user_inven:
-            if int(user_inven[item.title()]) >= things[item.title()]["required"]:
-                user_inven[item.title()] = str(int(user_inven[item.title()]) - things[item.title()]["required"])
+            if int(user_inven[item.title()]) >= things[item.title()]["required"] * amount:
+                user_inven[item.title()] = str(int(user_inven[item.title()]) - things[item.title()]["required"] * amount)
                 if user_inven[item.title()] == "0":
                     user_inven.pop(item.title())
                 await add_to_inventory(things[item.title()]["next_evo"], interaction.user.id)
                 await interaction.response.send_message(f"You evolved **{item.title()}** into **{things[item.title()]['next_evo']}**!")
-                for i in range(things[item.title()]["required"]):
+                for i in range(things[item.title()]["required"] * amount - 1):
                     await remove_from_inventory(item.title(), interaction.user.id)
             else:
-                await interaction.response.send_message(f"You need at least **{things[item.title()]['required']}** **{item.title()}** to evolve it!")
+                await interaction.response.send_message(f"You need at least **{things[item.title()]['required'] * amount}** **{item.title()}** to evolve it!")
                 return
 
 async def spin():

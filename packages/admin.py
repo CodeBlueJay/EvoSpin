@@ -5,7 +5,7 @@ from discord.ext import commands
 from database import *
 from packages.roll import spin
 
-with open("items.json", "r") as items:
+with open("configuration/items.json", "r") as items:
     things = json.load(items)
 
 admin_group = discord.app_commands.Group(name="admin", description="Admin commands")
@@ -40,3 +40,19 @@ async def give_coins(interaction: discord.Interaction, user: discord.User, amoun
         return
     await add_coins(amount, user.id)
     await interaction.response.send_message(f"Added **{amount}** coins to {user.name}!")
+
+@admin_group.command(name="empty_db", description="Empty the database")
+async def empty_db_cmd(interaction: discord.Interaction):
+    if interaction.user.id != 908954867962380298:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    await empty_db()
+    await interaction.response.send_message("Emptied the database!")
+
+@admin_group.command(name="clear_inventory", description="Clear a user's inventory")
+async def clear_inventory_cmd(interaction: discord.Interaction, user: discord.User):
+    if interaction.user.id != 908954867962380298:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    await clear_inventory(user.id)
+    await interaction.response.send_message(f"Cleared {user.name}'s inventory!")
