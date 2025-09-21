@@ -3,5 +3,10 @@
         "price": 100,
         "description": "Rolls 3 items at once for 1 roll.",
         "abbev": "msi"
+    },
+    "Transmutate": {
+        "price": 200,
+        "description": "Evolves the item you roll into its next evolution.",
+        "abbev": "t"
     }
 }

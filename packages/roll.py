@@ -82,7 +82,7 @@ async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
                 await interaction.response.send_message(f"You need at least **{things[item.title()]['required'] * amount}** **{item.title()}** to evolve it!")
                 return
 
-async def spin(user_id, item: str=None):
+async def spin(user_id, item: str=None, transmutate: bool=False):
     global sum, roundTo
     spin = random.uniform(0, sum)
     spun = ""
@@ -93,6 +93,10 @@ async def spin(user_id, item: str=None):
             if spin <= cumulative:
                 spun = value["name"]
                 break
+    if transmutate:
+        spun = things[spun]["next_evo"]
+        if spun == None:
+            spun = things[spun]["name"]
     if item != None:
         spun = item.title()
     await add_to_inventory(spun, user_id)
@@ -104,7 +108,8 @@ async def spin(user_id, item: str=None):
 @roll_group.command(name="use_potion", description="Use a potion to increase your chances")
 async def use_potion(interaction: discord.Interaction, potion: str, amount: int=1):
     potion_functions = {
-        "Multi-Spin I": lambda user_id: potioneffects.msi(spin, user_id)
+        "Multi-Spin I": lambda user_id: potioneffects.msi(spin, user_id),
+        "Transmutate": lambda user_id: potioneffects.transmutate(spin, user_id)
     }
     potion = potion.title()
     potion_inven = await decrypt_inventory(await get_potions(interaction.user.id))

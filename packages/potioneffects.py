@@ -4,3 +4,7 @@ from discord.ext import commands
 
 async def msi(spinfn, user_id: int):
     return [await spinfn(user_id) for i in range(3)]
+
+async def transmutate(spinfn, user_id: int):
+    result = await spinfn(user_id, transmutate=True)
+    return [result]
