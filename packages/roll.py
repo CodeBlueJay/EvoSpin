@@ -10,7 +10,7 @@ with open("configuration/items.json", "r") as items:
 with open("configuration/settings.json", "r") as settings:
     settings = json.load(settings)
 
-sum = 0
+totalsum = 0
 roundTo = 1
 small_value = 0.000000000000000000001 # Because .uniform method is exclusive of the last character
 
@@ -19,7 +19,6 @@ roll_group = discord.app_commands.Group(name="roll", description="Roll commands"
 @roll_group.command(name="random", description="Roll a random item")
 @app_commands.checks.cooldown(1, settings["cooldown"], key=lambda i: i.user.id)
 async def rand_roll(interaction: discord.Interaction):
-    global sum
     await interaction.response.send_message(await spin(interaction.user.id))
 
 @rand_roll.error
@@ -83,25 +82,22 @@ async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
                 return
 
 async def spin(user_id, item: str=None, transmutate: bool=False):
-    global sum, roundTo
-    spin = random.uniform(0, sum)
     spun = ""
-    cumulative = round(0, roundTo)
-    for key, value in things.items():
-        if not value["rarity"] == 0:
-            cumulative += value["rarity"]
-            if spin <= cumulative:
-                spun = value["name"]
-                break
+    temp = ""
+    population = [things[i]["name"] for i in things if things[i]["rarity"] > 0]
+    weights = [things[i]["rarity"] for i in things if things[i]["rarity"] > 0]
+    spun = random.choices(population, weights=weights, k=1)[0]
+    total = sum(weights)
     if transmutate:
+        temp = things[spun]["name"]
         spun = things[spun]["next_evo"]
         if spun == None:
-            spun = things[spun]["name"]
+            spun = temp
     if item != None:
         spun = item.title()
     await add_to_inventory(spun, user_id)
     try:
-        return f"You got a **{spun}** (*1 in {round(round(100 / (things[spun]['rarity'] / sum)) / 100)}*)!"
+        return f"You got a **{spun}** (*1 in {round((total / things[spun]['rarity']))}*)!"
     except:
         return f"You got a **{spun}** (*1 in 0*)!"
 
@@ -145,14 +141,16 @@ async def completion(interaction: discord.Interaction, user: discord.User=None):
             number_of_comp += 1
     embed = discord.Embed(
         title=f"{user.name}'s Completion Info",
-        description="Completion: " + f"`{len(user_inven)}/{number_of_comp}` " + f"(`{round(len(user_inven)/number_of_comp, 2) * 100}%`)",
+        description="Completion: " + f"`{len(user_inven)}/{number_of_comp}` " + f"(`{round(len(user_inven)/number_of_comp * 100, 2)}%`)",
         color=discord.Color.purple()
     )
     embed.set_author(name=user.name, icon_url=user.display_avatar.url)
-    if len(user_inven) == 0:
+    temp = ""
+    if False:
         embed.add_field(name="Info", value="You have no items in your inventory!" if self == True else f"{user.name} has no items in their inventory!", inline=False)
+        await interaction.response.send_message(embed=embed)
+        return
     else:
-        temp = ""
         temp_things = things.copy()
         evolution_chains = []
         keys = list(temp_things.keys())
@@ -182,9 +180,9 @@ async def completion(interaction: discord.Interaction, user: discord.User=None):
     await interaction.response.send_message(embed=embed)
 
 async def calculate_rarities():
-    global sum, roundTo
+    global totalsum, roundTo
     for i in things:
-        sum += things[i]["rarity"]
+        totalsum += things[i]["rarity"]
         if len(str(things[i]["rarity"]))-2 > roundTo:
             roundTo = len(str(things[i]["rarity"]))-2
-    sum = round(sum, roundTo)
+    totalsum = round(totalsum, roundTo)

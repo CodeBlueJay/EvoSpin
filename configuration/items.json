@@ -331,6 +331,68 @@
         "worth": 250,
         "comp": true
     },
+
+    "Fokker Dr.1": {
+        "name": "Fokker Dr.1",
+        "rarity": 20,
+        "prev_evo": null,
+        "next_evo": "Bf.109",
+        "required": 10,
+        "abbev": "fd",
+        "worth": 20,
+        "comp": true
+    },
+    "Bf.109": {
+        "name": "Bf.109",
+        "rarity": 0,
+        "prev_evo": "Fokker Dr.1",
+        "next_evo": "Ju87 Stuka",
+        "required": 10,
+        "abbev": "bf",
+        "worth": 50,
+        "comp": true
+    },
+    "Ju87 Stuka": {
+        "name": "Ju87 Stuka",
+        "rarity": 0,
+        "prev_evo": "Bf.109",
+        "next_evo": "Me262",
+        "required": 10,
+        "abbev": "ju",
+        "worth": 100,
+        "comp": true
+    },
+    "Me262": {
+        "name": "Me262",
+        "rarity": 0,
+        "prev_evo": "Ju87 Stuka",
+        "next_evo": "Panavia Tornado",
+        "required": 10,
+        "abbev": "me",
+        "worth": 250,
+        "comp": true
+    },
+    "Panavia Tornado": {
+        "name": "Panavia Tornado",
+        "rarity": 0,
+        "prev_evo": "Me262",
+        "next_evo": "Eurofighter Typhoon",
+        "required": 10,
+        "abbev": "pt",
+        "worth": 500,
+        "comp": true
+    },
+    "Eurofighter Typhoon": {
+        "name": "Eurofighter Typhoon",
+        "rarity": 0,
+        "prev_evo": "Panavia Tornado",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "et",
+        "worth": 1000,
+        "comp": true
+    },
+
     "The Admin": {
         "name": "The Admin",
         "rarity": 0,
