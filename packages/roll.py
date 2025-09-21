@@ -131,6 +131,37 @@ async def use_potion(interaction: discord.Interaction, potion: str, amount: int=
         else:
             await interaction.response.send_message("You do not have that potion!")
 
+@roll_group.command(name="completion", description="Show your completion info")
+async def completion(interaction: discord.Interaction, user: discord.User=None):
+    self = True
+    if user == None:
+        user = interaction.user
+    else:
+        self = False
+    user_inven = await decrypt_inventory(await get_inventory(user.id))
+    number_of_comp = 0
+    for key in things:
+        if things[key]["comp"]:
+            number_of_comp += 1
+    embed = discord.Embed(
+        title=f"{user.name}'s Completion Info",
+        description="Completion: " + f"`{round(len(user_inven)/number_of_comp, 2) * 100}%`",
+        color=discord.Color.purple()
+    )
+    embed.set_author(name=user.name, icon_url=user.display_avatar.url)
+    if len(user_inven) == 0:
+        embed.add_field(name="Info", value="You have no items in your inventory!" if self == True else f"{user.name} has no items in their inventory!", inline=False)
+    else:
+        temp = ""
+        for key in things:
+            if things[key]["comp"]:
+                if key in user_inven:
+                    temp += f"**{key}**: **`Owned`**\n"
+                else:
+                    temp += f"**{key}**: `Not Owned`\n"
+    embed.add_field(name="Info", value=temp, inline=True)
+    await interaction.response.send_message(embed=embed)
+
 async def calculate_rarities():
     global sum, roundTo
     for i in things:
