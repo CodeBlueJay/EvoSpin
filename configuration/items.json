@@ -393,6 +393,57 @@
         "comp": true
     },
 
+    "P51 Mustang": {
+        "name": "P51 Mustang",
+        "rarity": 15,
+        "prev_evo": null,
+        "next_evo": "F86 Sabre",
+        "required": 10,
+        "abbev": "p51",
+        "worth": 40,
+        "comp": true
+    },
+    "F86 Sabre": {
+        "name": "F86 Sabre",
+        "rarity": 0,
+        "prev_evo": "P51 Mustang",
+        "next_evo": "F4 Phantom",
+        "required": 10,
+        "abbev": "f86",
+        "worth": 100,
+        "comp": true
+    },
+    "F4 Phantom": {
+        "name": "F4 Phantom",
+        "rarity": 0,
+        "prev_evo": "F86 Sabre",
+        "next_evo": "F15 Eagle",
+        "required": 10,
+        "abbev": "f4",
+        "worth": 250,
+        "comp": true
+    },
+    "F15 Eagle": {
+        "name": "F15 Eagle",
+        "rarity": 0,
+        "prev_evo": "F4 Phantom",
+        "next_evo": "F22 Raptor",
+        "required": 10,
+        "abbev": "f15",
+        "worth": 700,
+        "comp": true
+    },
+    "F22 Raptor": {
+        "name": "F22 Raptor",
+        "rarity": 0,
+        "prev_evo": "F15 Eagle",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "f22",
+        "worth": 1500,
+        "comp": true
+    },
+
     "The Admin": {
         "name": "The Admin",
         "rarity": 0,
