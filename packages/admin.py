@@ -16,13 +16,14 @@ async def roll_amount(interaction: discord.Interaction, amount: int):
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
     temp = ""
+    await interaction.response.send_message(f"Admin: Rolling `{amount}` times")
     for i in range(amount):
         spun = await spin(interaction.user.id)
         temp += spun + "\n"
     try:
-        await interaction.response.send_message(temp)
+        await interaction.followup.send(temp)
     except:
-        await interaction.response.send_message("Complete")
+        await interaction.followup.send("Complete (result too large to show in message)")
 
 @admin_group.command(name="give_item", description="Give an item to a user")
 async def give(interaction: discord.Interaction, user: discord.User, item: str, amount: int=1):
