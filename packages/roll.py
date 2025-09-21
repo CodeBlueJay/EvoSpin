@@ -145,7 +145,7 @@ async def completion(interaction: discord.Interaction, user: discord.User=None):
             number_of_comp += 1
     embed = discord.Embed(
         title=f"{user.name}'s Completion Info",
-        description="Completion: " + f"`{round(len(user_inven)/number_of_comp, 2) * 100}%`",
+        description="Completion: " + f"`{len(user_inven)}/{number_of_comp}` " + f"(`{round(len(user_inven)/number_of_comp, 2) * 100}%`)",
         color=discord.Color.purple()
     )
     embed.set_author(name=user.name, icon_url=user.display_avatar.url)
@@ -153,13 +153,32 @@ async def completion(interaction: discord.Interaction, user: discord.User=None):
         embed.add_field(name="Info", value="You have no items in your inventory!" if self == True else f"{user.name} has no items in their inventory!", inline=False)
     else:
         temp = ""
-        for key in things:
-            if things[key]["comp"]:
-                if key in user_inven:
-                    temp += f"**{key}**: **`Owned`**\n"
+        temp_things = things.copy()
+        evolution_chains = []
+        keys = list(temp_things.keys())
+        for key in keys:
+            data = temp_things[key]
+            if data["comp"]:
+                if data["next_evo"] != None and data["prev_evo"] == None:
+                    temp_list = []
+                    while data["next_evo"] != None:
+                        temp_list.append(data["name"])
+                        data = temp_things[data["next_evo"]]
+                    temp_list.append(data["name"])
+                    evolution_chains.append(temp_list)
                 else:
-                    temp += f"**{key}**: `Not Owned`\n"
-    embed.add_field(name="Info", value=temp, inline=True)
+                    if data["prev_evo"] == None:
+                        evolution_chains.append([temp_things[key]["name"]])
+        for i in evolution_chains:
+            for j in i:
+                if j in user_inven:
+                    temp += f"**{j}**"
+                else:
+                    temp += j
+                if not j == i[-1]:
+                    temp += " > "
+            temp += "\n"
+    embed.add_field(name="Info", value="**Owned**/Not Owned\n\n" + temp, inline=True)
     await interaction.response.send_message(embed=embed)
 
 async def calculate_rarities():

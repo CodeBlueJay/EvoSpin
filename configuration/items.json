@@ -9,6 +9,17 @@
         "worth": 1,
         "comp": true
     },
+    "Advanced Ball": {
+        "name": "Advanced Ball",
+        "rarity": 0,
+        "prev_evo": "Basic Ball",
+        "next_evo": null,
+        "required": 5,
+        "abbev": "ab",
+        "worth": 4,
+        "comp": true
+    },
+
     "Stickman": {
         "name": "Stickman",
         "rarity": 30,
@@ -19,6 +30,17 @@
         "worth": 2,
         "comp": true
     },
+    "Wooden Stickman": {
+        "name": "Wooden Stickman",
+        "rarity": 0,
+        "prev_evo": "Stickman",
+        "next_evo": null,
+        "required": 6,
+        "abbev": "ws",
+        "worth": 7,
+        "comp": true
+    },
+
     "Dog": {
         "name": "Dog",
         "rarity": 30,
@@ -27,36 +49,6 @@
         "required": 6,
         "abbev": "d",
         "worth": 2,
-        "comp": true
-    },
-    "Bug": {
-        "name": "Bug",
-        "rarity": 20,
-        "prev_evo": null,
-        "next_evo": "Infested Wall",
-        "required": 20,
-        "abbev": "bg",
-        "worth": 3,
-        "comp": true
-    },
-    "Infested Wall": {
-        "name": "Infested Wall",
-        "rarity": 0,
-        "prev_evo": "Bug",
-        "next_evo": null,
-        "required": 0,
-        "abbev": "iw",
-        "worth": 70,
-        "comp": true
-    },
-    "Advanced Ball": {
-        "name": "Advanced Ball",
-        "rarity": 0,
-        "prev_evo": "Basic Ball",
-        "next_evo": "Master Ball",
-        "required": 5,
-        "abbev": "ab",
-        "worth": 4,
         "comp": true
     },
     "Wolf": {
@@ -79,16 +71,28 @@
         "worth": 20,
         "comp": true
     },
-    "Wooden Stickman": {
-        "name": "Wooden Stickman",
-        "rarity": 0,
-        "prev_evo": "Stickman",
-        "next_evo": "Armored Stickman",
-        "required": 6,
-        "abbev": "ws",
-        "worth": 7,
+
+    "Bug": {
+        "name": "Bug",
+        "rarity": 20,
+        "prev_evo": null,
+        "next_evo": "Infested Wall",
+        "required": 20,
+        "abbev": "bg",
+        "worth": 3,
         "comp": true
     },
+    "Infested Wall": {
+        "name": "Infested Wall",
+        "rarity": 0,
+        "prev_evo": "Bug",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "iw",
+        "worth": 70,
+        "comp": true
+    },
+    
     "Honda Civic": {
         "name": "Honda Civic",
         "rarity": 10,
@@ -99,11 +103,12 @@
         "worth": 10,
         "comp": true
     },
+
     "Laptop": {
         "name": "Laptop",
         "rarity": 15,
         "prev_evo": null,
-        "next_evo": "PC",
+        "next_evo": "Pc",
         "required": 5,
         "abbev": "l",
         "worth": 15,
@@ -139,6 +144,7 @@
         "worth": 100,
         "comp": true
     },
+
     "Wool": {
         "name": "Wool",
         "rarity": 40,
@@ -147,36 +153,6 @@
         "required": 8,
         "abbev": "wo",
         "worth": 1,
-        "comp": true
-    },
-    "Pickaxe": {
-        "name": "Pickaxe",
-        "rarity": 20,
-        "prev_evo": null,
-        "next_evo": "Diamond Pickaxe",
-        "required": 7,
-        "abbev": "p",
-        "worth": 7,
-        "comp": true
-    },
-    "Paper": {
-        "name": "Paper",
-        "rarity": 30,
-        "prev_evo": null,
-        "next_evo": "Book",
-        "required": 6,
-        "abbev": "pa",
-        "worth": 3,
-        "comp": true
-    },
-    "Water Drop": {
-        "name": "Water Drop",
-        "rarity": 25,
-        "prev_evo": null,
-        "next_evo": "Cloud",
-        "required": 5,
-        "abbev": "wd",
-        "worth": 7,
         "comp": true
     },
     "Cloth": {
@@ -189,7 +165,6 @@
         "worth": 4,
         "comp": true
     },
-    
     "Hoodie": {
         "name": "Hoodie",
         "rarity": 0,
@@ -200,6 +175,17 @@
         "worth": 10,
         "comp": true
     },
+
+    "Pickaxe": {
+        "name": "Pickaxe",
+        "rarity": 20,
+        "prev_evo": null,
+        "next_evo": "Diamond Pickaxe",
+        "required": 7,
+        "abbev": "p",
+        "worth": 7,
+        "comp": true
+    },
     "Diamond Pickaxe": {
         "name": "Diamond Pickaxe",
         "rarity": 0,
@@ -208,6 +194,17 @@
         "required": 0,
         "abbev": "dp",
         "worth": 20,
+        "comp": true
+    },
+
+    "Paper": {
+        "name": "Paper",
+        "rarity": 30,
+        "prev_evo": null,
+        "next_evo": "Book",
+        "required": 6,
+        "abbev": "pa",
+        "worth": 3,
         "comp": true
     },
     "Book": {
@@ -240,6 +237,17 @@
         "worth": 150,
         "comp": true
     },
+
+    "Water Drop": {
+        "name": "Water Drop",
+        "rarity": 25,
+        "prev_evo": null,
+        "next_evo": "Cloud",
+        "required": 5,
+        "abbev": "wd",
+        "worth": 7,
+        "comp": true
+    },
     "Cloud": {
         "name": "Cloud",
         "rarity": 0,
@@ -270,6 +278,7 @@
         "worth": 50,
         "comp": true
     },
+
     "Cosmic Leviathan": {
         "name": "Cosmic Leviathan",
         "rarity": 0.01,
@@ -280,6 +289,17 @@
         "worth": 750,
         "comp": true
     },
+    "Leviathan Of The Eclipse": {
+        "name": "Leviathan Of The Eclipse",
+        "rarity": 0,
+        "prev_evo": "Cosmic Leviathan",
+        "next_evo": null,
+        "required": 10,
+        "abbev": "le",
+        "worth": 2750,
+        "comp": true
+    },
+
     "Bluejay": {
         "name": "Bluejay",
         "rarity": 0.5,
@@ -290,6 +310,7 @@
         "worth": 750,
         "comp": true
     },
+    
     "Ant": {
         "name": "Ant",
         "rarity": 0.5,
@@ -308,16 +329,6 @@
         "required": 10,
         "abbev": "qa",
         "worth": 250,
-        "comp": true
-    },
-    "Leviathan Of The Eclipse": {
-        "name": "Leviathan Of The Eclipse",
-        "rarity": 0,
-        "prev_evo": "Cosmic Leviathan",
-        "next_evo": null,
-        "required": 10,
-        "abbev": "le",
-        "worth": 2750,
         "comp": true
     },
     "The Admin": {
