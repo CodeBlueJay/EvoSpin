@@ -20,11 +20,17 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 cogs = [module["roll"].roll_group, module["admin"].admin_group, module["shop"].shop_group]
 
+async def get_user(user_id):
+    user = await bot.fetch_user(user_id)
+    return user.name
+
 async def load_commands():
+    commands = ""
     for i in cogs:
         bot.tree.add_command(i)
+        commands += f"{i.name}, "
     synced = await bot.tree.sync()
-    print(f"Synced {len(synced)} commands")
+    print(f"Synced {len(synced)} commands: {commands[:-2]}")
 
 @bot.event
 async def on_ready():
@@ -32,7 +38,6 @@ async def on_ready():
     await init_db()
     await module["roll"].calculate_rarities()
     print(f"{bot.user} connected")
-    await init_db()
     await load_commands()
 
 bot.run(TOKEN)

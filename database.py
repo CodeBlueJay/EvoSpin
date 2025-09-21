@@ -1,4 +1,5 @@
-import os, aiosqlite
+import os, aiosqlite, discord
+from discord.ext import commands
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -14,7 +15,7 @@ translations = {
     "w": "Wolf",
     "le": "Leviathan Of The Eclipse",
     "ta": "The Admin",
-    "msi": "Multi-Spin Potion I"
+    "msi": "Multi-Spin I"
 }
 
 async def test_db():
@@ -32,7 +33,8 @@ async def init_db():
             XP int,
             Inventory varchar(255),
             Coins int,
-            Potions varchar(255)
+            Potions varchar(255),
+            PRIMARY KEY (UserID)
         );
         """)
         await db.commit()
@@ -208,6 +210,22 @@ async def add_potion(potion, user_id):
         potions[potion] += 1
     except:
         potions[potion] = 1
+    encrypted = await encrypt_inventory(potions)
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        UPDATE Users
+        SET Potions = '{encrypted}'
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()
+
+async def remove_potion(potion, user_id):
+    await check_user_exist(user_id)
+    potions = await decrypt_inventory(await get_potions(user_id))
+    potions[potion] = int(potions[potion])
+    potions[potion] -= 1
+    if potions[potion] <= 0:
+        potions.pop(potion)
     encrypted = await encrypt_inventory(potions)
     async with aiosqlite.connect(DB_URL) as db:
         await db.execute(f"""

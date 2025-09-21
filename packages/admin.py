@@ -26,12 +26,13 @@ async def roll_amount(interaction: discord.Interaction, amount: int):
         await interaction.response.send_message("Complete")
 
 @admin_group.command(name="give_item", description="Give an item to a user")
-async def give(interaction: discord.Interaction, user: discord.User, item: str):
+async def give(interaction: discord.Interaction, user: discord.User, item: str, amount: int=1):
     if interaction.user.id != 908954867962380298:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
-    await add_to_inventory(item.title(), user.id)
-    await interaction.response.send_message(f"Gave **{item.title()}** to {user.name}!")
+    for i in range(amount):
+        await add_to_inventory(item.title(), user.id)
+    await interaction.response.send_message(f"Gave **{amount}** **{item.title()}** to {user.name}!")
 
 @admin_group.command(name="give_coins", description="Give coins to a user")
 async def give_coins(interaction: discord.Interaction, user: discord.User, amount: int):
@@ -59,12 +60,13 @@ async def clear_inventory_cmd(interaction: discord.Interaction, user: discord.Us
     await interaction.response.send_message(f"Cleared {user.name}'s inventory!")
 
 @admin_group.command(name="give_potion", description="Give a potion to a user")
-async def give_potion(interaction: discord.Interaction, user: discord.User, potion: str):
+async def give_potion(interaction: discord.Interaction, user: discord.User, potion: str, amount: int=1 ):
     if interaction.user.id != 908954867962380298:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
-    await add_potion(potion.title(), user.id)
-    await interaction.response.send_message(f"Gave **{potion.title()}** to {user.name}!")
+    for i in range(amount):
+        await add_potion(potion.title(), user.id)
+    await interaction.response.send_message(f"Gave **{amount}** **{potion.title()}** to {user.name}!")
 
 @admin_group.command(name="clear_potions", description="Clear a user's potions")
 async def clear_potions(interaction: discord.Interaction, user: discord.User):

@@ -16,9 +16,7 @@ roll_group = discord.app_commands.Group(name="roll", description="Roll commands"
 @roll_group.command(name="random", description="Roll a random item")
 async def rand_roll(interaction: discord.Interaction):
     global sum
-    spun = await spin()
-    await add_to_inventory(spun, interaction.user.id)
-    await interaction.response.send_message(f"You got a **{spun}** (*{things[spun]['chance']}%*)!")
+    await interaction.response.send_message(await spin(interaction.user.id))
 
 @roll_group.command(name="inventory", description="Show your inventory")
 async def inventory(interaction: discord.Interaction, user: discord.User=None):
@@ -71,13 +69,39 @@ async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
                 await interaction.response.send_message(f"You need at least **{things[item.title()]['required'] * amount}** **{item.title()}** to evolve it!")
                 return
 
-async def spin():
+async def spin(user_id):
     spin = round(random.uniform(0, 1), roundTo)
     spun = ""
+    temp = ""
     for i in things:
         if spin < things[i]["rarity"]:
             spun = things[i]["name"]
-    return spun
+    await add_to_inventory(spun, user_id)
+    return f"You got a **{spun}** (*{things[spun]['chance']}%*)!"
+
+@roll_group.command(name="use_potion", description="Use a potion to increase your chances")
+async def use_potion(interaction: discord.Interaction, potion: str):
+    potion_functions = {
+        "Multi-Spin I": [await spin(interaction.user.id) for i in range(3)]
+    }
+    potion = potion.title()
+    potion_inven = await decrypt_inventory(await get_potions(interaction.user.id))
+    if not potion in potion_inven:
+        await interaction.response.send_message("You do not have that potion!")
+    else:
+        if int(potion_inven[potion]) > 0:
+            potion_inven[potion] = str(int(potion_inven[potion]) - 1)
+            if potion_inven[potion] == "0":
+                potion_inven.pop(potion)
+            await remove_potion(potion, interaction.user.id)
+            await interaction.response.send_message(f"You used a **{potion}**!")
+            action = potion_functions.get(potion)
+            temp = ""
+            for i in action:
+                temp += i + "\n"
+            await interaction.followup.send(temp)
+        else:
+            await interaction.response.send_message("You do not have that potion!")
 
 async def calculate_rarities():
     global sum, roundTo
