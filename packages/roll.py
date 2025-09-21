@@ -22,8 +22,11 @@ async def rand_roll(interaction: discord.Interaction):
 async def inventory(interaction: discord.Interaction, user: discord.User=None):
     inven_string = ""
     potion_string = ""
-    if user is None:
+    self = True
+    if user == None:
         user = interaction.user
+    else:
+        self = False
     user_inven = await decrypt_inventory(await get_inventory(user.id))
     potion_inven = await decrypt_inventory(await get_potions(user.id))
     number_of_comp = 0
@@ -40,12 +43,12 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
     for key, value in user_inven.items():
         inven_string += f"**{key}** - x{value}\n"
     if inven_string == "":
-        inven_string = "Your inventory is empty!"
+        inven_string = "Your inventory is empty!" if self == True else f"{user.name}'s inventory is empty!"
     embed.add_field(name="Items", value=inven_string, inline=False)
     for key, value in potion_inven.items():
         potion_string += f"**{key}** - x{value}\n"
     if potion_string == "":
-        potion_string = "You have no potions!"
+        potion_string = "You have no potions!" if self == True else f"{user.name} has no potions!"
     embed.add_field(name="Potions", value=potion_string, inline=False)
     await interaction.response.send_message(embed=embed)
 
