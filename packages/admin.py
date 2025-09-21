@@ -17,9 +17,8 @@ async def roll_amount(interaction: discord.Interaction, amount: int):
         return
     temp = ""
     for i in range(amount):
-        spun = await spin()
-        await add_to_inventory(spun, interaction.user.id)
-        temp += f"You got a **{spun}**! (*{things[spun]['chance']}%*)\n"
+        spun = await spin(interaction.user.id)
+        temp += spun + "\n"
     try:
         await interaction.response.send_message(temp)
     except:

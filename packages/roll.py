@@ -6,6 +6,8 @@ from database import *
 
 with open("configuration/items.json", "r") as items:
     things = json.load(items)
+with open("configuration/settings.json", "r") as settings:
+    settings = json.load(settings)
 
 sum = 0
 roundTo = 1
@@ -73,14 +75,18 @@ async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
                 return
 
 async def spin(user_id):
-    spin = round(random.uniform(0, 1), roundTo)
+    global sum, roundTo
+    spin = random.uniform(0, sum)
     spun = ""
-    temp = ""
-    for i in things:
-        if spin < things[i]["rarity"]:
-            spun = things[i]["name"]
+    cumulative = round(0, roundTo)
+    for key, value in things.items():
+        if not value["rarity"] == 0:
+            cumulative += value["rarity"]
+            if spin <= cumulative:
+                spun = value["name"]
+                break
     await add_to_inventory(spun, user_id)
-    return f"You got a **{spun}** (*{things[spun]['chance']}%*)!"
+    return f"You got a **{spun}** (*{round((things[spun]['rarity']/sum) * 100, roundTo)}%*)!"
 
 @roll_group.command(name="use_potion", description="Use a potion to increase your chances")
 async def use_potion(interaction: discord.Interaction, potion: str):

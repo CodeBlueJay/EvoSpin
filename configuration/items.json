@@ -1,83 +1,90 @@
 {
     "Basic Ball": {
         "name": "Basic Ball",
-        "rarity": 1.0,
+        "rarity": 50,
         "prev_evo": null,
         "next_evo": "Advanced Ball",
         "required": 4,
-        "chance": "40",
         "comp": true
     },
     "Stickman": {
         "name": "Stickman",
-        "rarity": 0.60,
+        "rarity": 30,
         "prev_evo": null,
         "next_evo": "Wooden Stickman",
         "required": 5,
-        "chance": "30",
         "comp": true
     },
     "Dog": {
         "name": "Dog",
-        "rarity": 0.30,
+        "rarity": 30,
         "prev_evo": null,
         "next_evo": "Wolf",
         "required": 6,
-        "chance": "30",
         "comp": true
     },
     "Advanced Ball": {
         "name": "Advanced Ball",
-        "rarity": 0.0,
+        "rarity": 0,
         "prev_evo": "Basic Ball",
         "next_evo": "Master Ball",
         "required": 5,
-        "chance": "0",
         "comp": true
     },
     "Wolf": {
         "name": "Wolf",
-        "rarity": 0.0,
+        "rarity": 0,
         "prev_evo": "Dog",
         "next_evo": "Alpha Wolf",
         "required": 7,
-        "chance": "0",
+        "comp": true
+    },
+    "Wooden Stickman": {
+        "name": "Wooden Stickman",
+        "rarity": 0,
+        "prev_evo": "Stickman",
+        "next_evo": "Armored Stickman",
+        "required": 6,
+        "comp": true
+    },
+    "Honda Civic": {
+        "name": "Honda Civic",
+        "rarity": 10,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 8,
         "comp": true
     },
     "Cosmic Leviathan": {
         "name": "Cosmic Leviathan",
-        "rarity": 0.001,
+        "rarity": 0.01,
         "prev_evo": null,
         "next_evo": "Leviathan Of The Eclipse",
         "required": 5,
-        "chance": "0.001",
         "comp": true
     },
     "Leviathan Of The Eclipse": {
         "name": "Leviathan Of The Eclipse",
-        "rarity": 0.0,
+        "rarity": 0,
         "prev_evo": "Cosmic Leviathan",
         "next_evo": null,
         "required": 10,
-        "chance": "0",
         "comp": true
     },
     "The Admin": {
         "name": "The Admin",
-        "rarity": 0.0,
+        "rarity": 0,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
-        "chance": "0",
         "comp": false
     },
     "Fallback for no rarity yet": {
         "name": "Fallback",
-        "rarity": 0.0,
+        "rarity": 0,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
-        "chance": "fallback",
         "comp": false
     }
 }

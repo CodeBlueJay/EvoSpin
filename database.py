@@ -15,7 +15,9 @@ translations = {
     "w": "Wolf",
     "le": "Leviathan Of The Eclipse",
     "ta": "The Admin",
-    "msi": "Multi-Spin I"
+    "msi": "Multi-Spin I",
+    "ws": "Wooden Stickman",
+    "hc": "Honda Civic",
 }
 
 async def test_db():
