@@ -65,8 +65,8 @@ async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
                 if user_inven[item.title()] == "0":
                     user_inven.pop(item.title())
                 await add_to_inventory(things[item.title()]["next_evo"], interaction.user.id)
-                await interaction.response.send_message(f"You evolved **{item.title()}** into **{things[item.title()]['next_evo']}**!")
-                for i in range(things[item.title()]["required"] * amount - 1):
+                await interaction.response.send_message(f"You evolved **{things[item.title()]["required"] * amount} {item.title()}s** into **{things[item.title()]['next_evo']}**!")
+                for i in range(things[item.title()]["required"] * amount):
                     await remove_from_inventory(item.title(), interaction.user.id)
             else:
                 await interaction.response.send_message(f"You need at least **{things[item.title()]['required'] * amount}** **{item.title()}** to evolve it!")

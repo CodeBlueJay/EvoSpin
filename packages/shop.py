@@ -34,5 +34,5 @@ async def buy_item(interaction: discord.Interaction, item: str):
         await interaction.response.send_message(f"You do not have enough coins to buy **{item}**!")
         return
     await remove_coins(item_price, interaction.user.id)
-    await add_to_inventory(item, interaction.user.id)
+    await add_potion(item, interaction.user.id)
     await interaction.response.send_message(f"You bought **{item}** for *{item_price}* coins!")

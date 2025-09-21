@@ -118,6 +118,8 @@ async def remove_from_inventory(item, user_id):
     try:
         inventory[item] = int(inventory[item])
         inventory[item] -= 1
+        if inventory[item] <= 0:
+            inventory.pop(item)
     except:
         pass
     encrypted = await encrypt_inventory(inventory)
