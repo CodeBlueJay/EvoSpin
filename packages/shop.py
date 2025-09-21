@@ -15,11 +15,11 @@ shop_group = discord.app_commands.Group(name="shop", description="Shop commands"
 async def view_items(interaction: discord.Interaction):
     embed = discord.Embed(
         title="Shop Items",
-        description="Here is the shop:",
+        description=f"Balance: `{await get_coins(interaction.user.id)}` coins",
         color=discord.Color.green()
     )
     for key, value in shop_items.items():
-        embed.add_field(name=f"**`{key}`** - *{value['price']}* coins", value=value["description"], inline=False)
+        embed.add_field(name=f"**`{key}`** - `{value['price']}` coins", value=value["description"], inline=False)
     await interaction.response.send_message(embed=embed)
 
 @shop_group.command(name="buy", description="Buy an item from the shop")
@@ -55,4 +55,4 @@ async def sell_item(interaction: discord.Interaction, item: str, amount: int=1):
     await add_coins(total_worth, interaction.user.id)
     for i in range(amount):
         await remove_from_inventory(item, interaction.user.id)
-    await interaction.response.send_message(f"You sold **{amount}x {item}** for **{total_worth}** coins!")
+    await interaction.response.send_message(f"You sold **{amount} {item}** for **`{total_worth}`** coins!")

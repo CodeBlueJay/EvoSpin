@@ -47,7 +47,7 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
         color=discord.Color.blue()
     )
     embed.set_author(name=user.name, icon_url=user.display_avatar.url)
-    embed.add_field(name="Coins", value=f"***{await get_coins(user.id)}***", inline=False)
+    embed.add_field(name="Coins", value=f"**`{await get_coins(user.id)}`**", inline=False)
     for key, value in user_inven.items():
         inven_string += f"**{key}** - x{value}\n"
     if inven_string == "":
