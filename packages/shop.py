@@ -23,19 +23,20 @@ async def view_items(interaction: discord.Interaction):
     await interaction.response.send_message(embed=embed)
 
 @shop_group.command(name="buy", description="Buy an item from the shop")
-async def buy_item(interaction: discord.Interaction, item: str):
+async def buy_item(interaction: discord.Interaction, item: str, amount: int=1):
     item = item.title()
     if not item in shop_items:
         await interaction.response.send_message(f"Item is not in the shop")
         return
     user_coins = await get_coins(interaction.user.id)
-    item_price = shop_items[item]["price"]
+    item_price = shop_items[item]["price"] * amount
     if user_coins < item_price:
         await interaction.response.send_message(f"You do not have enough coins to buy **{item}**!")
         return
     await remove_coins(item_price, interaction.user.id)
-    await add_potion(item, interaction.user.id)
-    await interaction.response.send_message(f"You bought **{item}** for *{item_price}* coins!")
+    for i in range(amount):
+        await add_potion(item, interaction.user.id)
+    await interaction.response.send_message(f"You bought **{amount} {item}** for *{item_price}* coins!")
 
 @shop_group.command(name="sell", description="Sell an item from your inventory")
 async def sell_item(interaction: discord.Interaction, item: str, amount: int=1):

@@ -3,6 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from database import *
+import packages.potioneffects as potioneffects
 
 with open("configuration/items.json", "r") as items:
     things = json.load(items)
@@ -81,7 +82,7 @@ async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
                 await interaction.response.send_message(f"You need at least **{things[item.title()]['required'] * amount}** **{item.title()}** to evolve it!")
                 return
 
-async def spin(user_id):
+async def spin(user_id, item: str=None):
     global sum, roundTo
     spin = random.uniform(0, sum)
     spun = ""
@@ -92,13 +93,18 @@ async def spin(user_id):
             if spin <= cumulative:
                 spun = value["name"]
                 break
+    if item != None:
+        spun = item.title()
     await add_to_inventory(spun, user_id)
-    return f"You got a **{spun}** (*1 in {round(round(100 / (things[spun]['rarity'] / sum)) / 100)}*)!"
+    try:
+        return f"You got a **{spun}** (*1 in {round(round(100 / (things[spun]['rarity'] / sum)) / 100)}*)!"
+    except:
+        return f"You got a **{spun}** (*1 in 0*)!"
 
 @roll_group.command(name="use_potion", description="Use a potion to increase your chances")
-async def use_potion(interaction: discord.Interaction, potion: str):
+async def use_potion(interaction: discord.Interaction, potion: str, amount: int=1):
     potion_functions = {
-        "Multi-Spin I": [await spin(interaction.user.id) for i in range(3)]
+        "Multi-Spin I": lambda user_id: potioneffects.msi(spin, user_id)
     }
     potion = potion.title()
     potion_inven = await decrypt_inventory(await get_potions(interaction.user.id))
@@ -109,13 +115,14 @@ async def use_potion(interaction: discord.Interaction, potion: str):
             potion_inven[potion] = str(int(potion_inven[potion]) - 1)
             if potion_inven[potion] == "0":
                 potion_inven.pop(potion)
-            await remove_potion(potion, interaction.user.id)
-            await interaction.response.send_message(f"You used a **{potion}**!")
-            action = potion_functions.get(potion)
-            temp = ""
-            for i in action:
-                temp += i + "\n"
-            await interaction.followup.send(temp)
+            await interaction.response.send_message(f"You used **{amount} {potion}**!")
+            for i in range(amount):
+                await remove_potion(potion, interaction.user.id)
+                action = potion_functions.get(potion)
+                temp = ""
+                for j in await action(interaction.user.id):
+                    temp += j + "\n"
+                await interaction.followup.send(temp)
         else:
             await interaction.response.send_message("You do not have that potion!")
 

@@ -29,6 +29,26 @@
         "worth": 2,
         "comp": true
     },
+    "Bug": {
+        "name": "Bug",
+        "rarity": 20,
+        "prev_evo": null,
+        "next_evo": "Infested Wall",
+        "required": 20,
+        "abbev": "bg",
+        "worth": 3,
+        "comp": true
+    },
+    "Infested Wall": {
+        "name": "Infested Wall",
+        "rarity": 0,
+        "prev_evo": "Bug",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "iw",
+        "worth": 70,
+        "comp": true
+    },
     "Advanced Ball": {
         "name": "Advanced Ball",
         "rarity": 0,
@@ -43,10 +63,20 @@
         "name": "Wolf",
         "rarity": 0,
         "prev_evo": "Dog",
-        "next_evo": "Alpha Wolf",
+        "next_evo": "Wolf Pack",
         "required": 7,
         "abbev": "w",
         "worth": 7,
+        "comp": true
+    },
+    "Wolf Pack": {
+        "name": "Wolf Pack",
+        "rarity": 0,
+        "prev_evo": "Wolf",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "wp",
+        "worth": 20,
         "comp": true
     },
     "Wooden Stickman": {
@@ -74,19 +104,39 @@
         "rarity": 15,
         "prev_evo": null,
         "next_evo": "PC",
-        "required": 0,
+        "required": 5,
         "abbev": "l",
         "worth": 15,
         "comp": true
     },
-    "PC": {
-        "name": "PC",
+    "Pc": {
+        "name": "Pc",
         "rarity": 0,
         "prev_evo": "Laptop",
-        "next_evo": null,
-        "required": 0,
+        "next_evo": "Server",
+        "required": 5,
         "abbev": "pc",
         "worth": 25,
+        "comp": true
+    },
+    "Server": {
+        "name": "Server",
+        "rarity": 0,
+        "prev_evo": "Pc",
+        "next_evo": "Server Room",
+        "required": 5,
+        "abbev": "sv",
+        "worth": 50,
+        "comp": true
+    },
+    "Server Room": {
+        "name": "Server Room",
+        "rarity": 0,
+        "prev_evo": "Server",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "sr",
+        "worth": 100,
         "comp": true
     },
     "Wool": {
@@ -165,7 +215,7 @@
         "rarity": 0,
         "prev_evo": "Paper",
         "next_evo": "Trilogy",
-        "required": 4,
+        "required": 3,
         "abbev": "b",
         "worth": 5,
         "comp": true
@@ -174,10 +224,20 @@
         "name": "Trilogy",
         "rarity": 0,
         "prev_evo": "Book",
-        "next_evo": null,
-        "required": 0,
+        "next_evo": "Dark",
+        "required": 10,
         "abbev": "t",
         "worth": 12,
+        "comp": true
+    },
+    "Dark": {
+        "name": "Dark",
+        "rarity": 0,
+        "prev_evo": "Trilogy",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "dr",
+        "worth": 150,
         "comp": true
     },
     "Cloud": {
@@ -220,14 +280,34 @@
         "worth": 750,
         "comp": true
     },
-    "BlueJay": {
-        "name": "BlueJay",
+    "Bluejay": {
+        "name": "Bluejay",
         "rarity": 0.5,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
         "abbev": "bj",
         "worth": 750,
+        "comp": true
+    },
+    "Ant": {
+        "name": "Ant",
+        "rarity": 0.5,
+        "prev_evo": null,
+        "next_evo": "Queen Ant",
+        "required": 10,
+        "abbev": "a",
+        "worth": 100,
+        "comp": true
+    },
+    "Queen Ant": {
+        "name": "Queen Ant",
+        "rarity": 0,
+        "prev_evo": "Ant",
+        "next_evo": null,
+        "required": 10,
+        "abbev": "qa",
+        "worth": 250,
         "comp": true
     },
     "Leviathan Of The Eclipse": {
