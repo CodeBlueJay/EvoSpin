@@ -16,9 +16,15 @@ small_value = 0.000000000000000000001 # Because .uniform method is exclusive of 
 roll_group = discord.app_commands.Group(name="roll", description="Roll commands")
 
 @roll_group.command(name="random", description="Roll a random item")
+@app_commands.checks.cooldown(1, settings["cooldown"], key=lambda i: i.user.id)
 async def rand_roll(interaction: discord.Interaction):
     global sum
     await interaction.response.send_message(await spin(interaction.user.id))
+
+@rand_roll.error
+async def rand_roll_error(interaction: discord.Interaction, error):
+    if isinstance(error, app_commands.CommandOnCooldown):
+        await interaction.response.send_message(f"Slow down, you're on cooldown.", ephemeral=True)
 
 @roll_group.command(name="inventory", description="Show your inventory")
 async def inventory(interaction: discord.Interaction, user: discord.User=None):
@@ -66,8 +72,9 @@ async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
                 user_inven[item.title()] = str(int(user_inven[item.title()]) - things[item.title()]["required"] * amount)
                 if user_inven[item.title()] == "0":
                     user_inven.pop(item.title())
-                await add_to_inventory(things[item.title()]["next_evo"], interaction.user.id)
-                await interaction.response.send_message(f"You evolved **{things[item.title()]["required"] * amount} {item.title()}s** into **{things[item.title()]['next_evo']}**!")
+                for i in range(amount):
+                    await add_to_inventory(things[item.title()]["next_evo"], interaction.user.id)
+                await interaction.response.send_message(f"You evolved **{things[item.title()]["required"] * amount} {item.title()}** into **{amount} {things[item.title()]['next_evo']}**!")
                 for i in range(things[item.title()]["required"] * amount):
                     await remove_from_inventory(item.title(), interaction.user.id)
             else:
@@ -86,7 +93,7 @@ async def spin(user_id):
                 spun = value["name"]
                 break
     await add_to_inventory(spun, user_id)
-    return f"You got a **{spun}** (*{round((things[spun]['rarity']/sum) * 100, roundTo)}%*)!"
+    return f"You got a **{spun}** (*1 in {round(round(100 / (things[spun]['rarity'] / sum)) / 100)}*)!"
 
 @roll_group.command(name="use_potion", description="Use a potion to increase your chances")
 async def use_potion(interaction: discord.Interaction, potion: str):

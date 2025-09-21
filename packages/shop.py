@@ -19,7 +19,7 @@ async def view_items(interaction: discord.Interaction):
         color=discord.Color.green()
     )
     for key, value in shop_items.items():
-        embed.add_field(name=f"**{key}** - *{value['price']}* coins", value=value["description"], inline=False)
+        embed.add_field(name=f"**`{key}`** - *{value['price']}* coins", value=value["description"], inline=False)
     await interaction.response.send_message(embed=embed)
 
 @shop_group.command(name="buy", description="Buy an item from the shop")
@@ -36,3 +36,23 @@ async def buy_item(interaction: discord.Interaction, item: str):
     await remove_coins(item_price, interaction.user.id)
     await add_potion(item, interaction.user.id)
     await interaction.response.send_message(f"You bought **{item}** for *{item_price}* coins!")
+
+@shop_group.command(name="sell", description="Sell an item from your inventory")
+async def sell_item(interaction: discord.Interaction, item: str, amount: int=1):
+    item = item.title()
+    if not item in things:
+        await interaction.response.send_message(f"Item is not sellable")
+        return
+    user_inven = await decrypt_inventory(await get_inventory(interaction.user.id))
+    if not item in user_inven:
+        await interaction.response.send_message(f"You do not have any **{item}** to sell!")
+        return
+    if int(user_inven[item]) < amount:
+        await interaction.response.send_message(f"You do not have enough **{item}** to sell!")
+        return
+    item_worth = things[item]["worth"]
+    total_worth = item_worth * amount
+    await add_coins(total_worth, interaction.user.id)
+    for i in range(amount):
+        await remove_from_inventory(item, interaction.user.id)
+    await interaction.response.send_message(f"You sold **{amount}x {item}** for **{total_worth}** coins!")

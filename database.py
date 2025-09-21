@@ -1,24 +1,18 @@
-import os, aiosqlite, discord
+import os, aiosqlite, discord, json
 from discord.ext import commands
 from dotenv import load_dotenv
+
+with open("configuration/items.json", "r") as items:
+    things = json.load(items)
+with open("configuration/shop.json", "r") as settings:
+    potions = json.load(settings)
 
 load_dotenv()
 
 DB_URL = "data.db"
 
-translations = {
-    "bb": "Basic Ball",
-    "s": "Stickman",
-    "d": "Dog",
-    "cl": "Cosmic Leviathan",
-    "ab": "Advanced Ball",
-    "w": "Wolf",
-    "le": "Leviathan Of The Eclipse",
-    "ta": "The Admin",
-    "msi": "Multi-Spin I",
-    "ws": "Wooden Stickman",
-    "hc": "Honda Civic",
-}
+translations = {things[i]["abbev"]: i for i in things}
+translations.update({potions[i]["abbev"]: i for i in potions})
 
 async def test_db():
     async with aiosqlite.connect(DB_URL) as db:
