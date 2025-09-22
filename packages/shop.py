@@ -54,6 +54,7 @@ async def sell_item(interaction: discord.Interaction, item: str, amount: int=1):
     item_worth = things[item]["worth"]
     total_worth = item_worth * amount
     await add_coins(total_worth, interaction.user.id)
+    await add_xp(total_worth, interaction.user.id)
     for i in range(amount):
         await remove_from_inventory(item, interaction.user.id)
     await interaction.response.send_message(f"You sold **{amount} {item}** for **`{total_worth}`** coins!")

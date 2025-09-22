@@ -13,14 +13,14 @@ with open("configuration/settings.json", "r") as settings_file:
 admin_group = discord.app_commands.Group(name="admin", description="Admin commands")
 
 @admin_group.command(name="roll", description="Admin type command :fire:")
-async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str=None, potion_strength: float=0.0):
+async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str=None, potion_strength: float=0.0, transmutate: bool=False):
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
     temp = ""
     await interaction.response.send_message(f"Admin: Rolling `{amount}` times")
     for i in range(amount):
-        spun = await spin(interaction.user.id, item, potion_strength=potion_strength)
+        spun = await spin(interaction.user.id, item, potion_strength=potion_strength, transmutate=transmutate)
         temp += spun + "\n"
     try:
         await interaction.followup.send(temp)
