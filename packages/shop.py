@@ -36,7 +36,7 @@ async def buy_item(interaction: discord.Interaction, item: str, amount: int=1):
     await remove_coins(item_price, interaction.user.id)
     for i in range(amount):
         await add_potion(item, interaction.user.id)
-    await interaction.response.send_message(f"You bought **{amount} {item}** for *{item_price}* coins!")
+    await interaction.response.send_message(f"You bought **{amount} {item}** for `{item_price}` coins!")
 
 @shop_group.command(name="sell", description="Sell an item from your inventory")
 async def sell_item(interaction: discord.Interaction, item: str, amount: int=1):

@@ -1,17 +1,42 @@
 {
-    "Multi-Spin I": {
+    "Multi-Spin 1": {
         "price": 100,
         "description": "Rolls 3 items at once for 1 roll.",
-        "abbev": "msi"
+        "abbev": "ms1"
     },
-    "Luck I": {
+    "Multi-Spin 2": {
         "price": 150,
-        "description": "Gives you a 50% luck boost for 1 roll.",
+        "description": "Rolls 5 items at once for 1 roll.",
+        "abbev": "ms2"
+    },
+    "Multi-Spin 3": {
+        "price": 250,
+        "description": "Rolls 10 items at once for 1 roll.",
+        "abbev": "ms3"
+    },
+    "Luck 1": {
+        "price": 150,
+        "description": "Increases your chance of getting rare items by 100% for 1 roll.",
         "abbev": "l1"
     },
+    "Luck 2": {
+        "price": 400,
+        "description": "Increases your chance of getting rare items by 500% for 1 roll.",
+        "abbev": "l2"
+    },
+    "Luck 3": {
+        "price": 700,
+        "description": "Increases your chance of getting rare items by 1000% for 1 roll.",
+        "abbev": "l3"
+    },
     "Transmutate": {
-        "price": 200,
-        "description": "Evolves the item you roll into its next evolution.",
+        "price": 500,
+        "description": "Evolves the next item you roll into its evolution.",
         "abbev": "t"
+    },
+    "Xp Bottle": {
+        "price": 300,
+        "description": "Gives you 500 XP.",
+        "abbev": "xp"
     }
 }

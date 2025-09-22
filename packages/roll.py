@@ -61,7 +61,8 @@ async def spin(user_id, item: str=None, transmutate: bool=False, potion_strength
     exponent_base = 1 - luck_strength
     exponent_final = exponent_base * (1 - potion_strength * potion_exponent_factor)
     if exponent_final < 0.12:
-        exponent_final = 0.12
+        #exponent_final = 0.12
+        pass
     population = [things[i]["name"] for i in things if things[i]["rarity"] > 0]
     weights = [things[i]["rarity"] for i in things if things[i]["rarity"] > 0]
     transformed_weights = [w ** exponent_final for w in weights]
@@ -84,9 +85,14 @@ async def spin(user_id, item: str=None, transmutate: bool=False, potion_strength
 @roll_group.command(name="use_potion", description="Use a potion to increase your chances")
 async def use_potion(interaction: discord.Interaction, potion: str, amount: int=1):
     potion_functions = {
-        "Multi-Spin I": lambda user_id: potioneffects.msi(spin, user_id),
+        "Multi-Spin 1": lambda user_id: potioneffects.msi(spin, user_id),
         "Transmutate": lambda user_id: potioneffects.transmutate(spin, user_id),
-        "Luck I": lambda user_id: potioneffects.l1(spin, user_id)
+        "Luck 1": lambda user_id: potioneffects.l1(spin, user_id),
+        "Luck 2": lambda user_id: potioneffects.l2(spin, user_id),
+        "Luck 3": lambda user_id: potioneffects.l3(spin, user_id),
+        "Multi-Spin 2": lambda user_id: potioneffects.msii(spin, user_id),
+        "Multi-Spin 3": lambda user_id: potioneffects.msiii(spin, user_id),
+        "Xp Bottle": lambda user_id: potioneffects.xp(user_id)
     }
     potion = potion.title()
     potion_inven = await decrypt_inventory(await get_potions(interaction.user.id))

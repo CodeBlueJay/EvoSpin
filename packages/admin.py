@@ -71,7 +71,7 @@ async def give_potion(interaction: discord.Interaction, user: discord.User, poti
     await interaction.response.send_message(f"Gave **{amount}** **{potion.title()}** to {user.mention}!")
 
 @admin_group.command(name="clear_potions", description="Clear a user's potions")
-async def clear_potions(interaction: discord.Interaction, user: discord.User):
+async def clear_user_potions(interaction: discord.Interaction, user: discord.User):
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return

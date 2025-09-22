@@ -272,16 +272,26 @@
         "name": "Storm",
         "rarity": 0,
         "prev_evo": "Rain",
-        "next_evo": null,
-        "required": 0,
+        "next_evo": "Random Storm",
+        "required": 10,
         "abbev": "st",
         "worth": 50,
+        "comp": true
+    },
+    "Random Storm": {
+        "name": "Random Storm",
+        "rarity": 0,
+        "prev_evo": "Storm",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "rs",
+        "worth": 100,
         "comp": true
     },
 
     "Cosmic Leviathan": {
         "name": "Cosmic Leviathan",
-        "rarity": 0.01,
+        "rarity": 0.001,
         "prev_evo": null,
         "next_evo": "Leviathan Of The Eclipse",
         "required": 5,
@@ -304,13 +314,44 @@
         "name": "Bluejay",
         "rarity": 0.5,
         "prev_evo": null,
-        "next_evo": null,
-        "required": 0,
+        "next_evo": "Codebluejay",
+        "required": 12,
         "abbev": "bj",
         "worth": 750,
         "comp": true
     },
+    "Codebluejay": {
+        "name": "Codebluejay",
+        "rarity": 0,
+        "prev_evo": "Bluejay",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "cbj",
+        "worth": 2000,
+        "comp": true
+    },
     
+    "Lieand": {
+        "name": "Lieand",
+        "rarity": 1,
+        "prev_evo": null,
+        "next_evo": "Gay",
+        "required": 69,
+        "abbev": "li",
+        "worth": 2000,
+        "comp": true
+    },
+    "Gay": {
+        "name": "Gay",
+        "rarity": 0,
+        "prev_evo": "Lieand",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "gy",
+        "worth": 2000,
+        "comp": true
+    },
+
     "Ant": {
         "name": "Ant",
         "rarity": 0.5,
@@ -441,6 +482,49 @@
         "required": 0,
         "abbev": "f22",
         "worth": 1500,
+        "comp": true
+    },
+
+    "Dragon With Eyes Of Blue": {
+        "name": "Dragon With Eyes Of Blue",
+        "rarity": 0.05,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "dw",
+        "worth": 500,
+        "comp": true
+    },
+
+    "Ultra Frog": {
+        "name": "Ultra Frog",
+        "rarity": 0.005,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "uf",
+        "worth": 700,
+        "comp": true
+    },
+
+    "Minecrack": {
+        "name": "Minecrack",
+        "rarity": 0.024,
+        "prev_evo": null,
+        "next_evo": "Minceraft",
+        "required": 10,
+        "abbev": "mc",
+        "worth": 1000,
+        "comp": true
+    },
+    "Minceraft": {
+        "name": "Minceraft",
+        "rarity": 0,
+        "prev_evo": "Minecrack",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "mct",
+        "worth": 3000,
         "comp": true
     },
 
