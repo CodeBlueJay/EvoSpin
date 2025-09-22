@@ -4,6 +4,11 @@
         "description": "Rolls 3 items at once for 1 roll.",
         "abbev": "msi"
     },
+    "Luck I": {
+        "price": 150,
+        "description": "Gives you a 50% luck boost for 1 roll.",
+        "abbev": "l1"
+    },
     "Transmutate": {
         "price": 200,
         "description": "Evolves the item you roll into its next evolution.",

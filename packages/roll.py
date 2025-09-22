@@ -84,7 +84,8 @@ async def spin(user_id, item: str=None, transmutate: bool=False, potion_strength
 async def use_potion(interaction: discord.Interaction, potion: str, amount: int=1):
     potion_functions = {
         "Multi-Spin I": lambda user_id: potioneffects.msi(spin, user_id),
-        "Transmutate": lambda user_id: potioneffects.transmutate(spin, user_id)
+        "Transmutate": lambda user_id: potioneffects.transmutate(spin, user_id),
+        "Luck I": lambda user_id: potioneffects.l1(spin, user_id)
     }
     potion = potion.title()
     potion_inven = await decrypt_inventory(await get_potions(interaction.user.id))

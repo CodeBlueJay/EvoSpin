@@ -8,3 +8,6 @@ async def msi(spinfn, user_id: int):
 async def transmutate(spinfn, user_id: int):
     result = await spinfn(user_id, transmutate=True)
     return [result]
+
+async def l1(spinfn, user_id: int):
+    return [await spinfn(user_id, potion_strength=0.2)]
