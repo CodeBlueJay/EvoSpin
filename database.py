@@ -242,3 +242,48 @@ async def clear_potions(user_id):
         WHERE UserID = {user_id};
         """)
         await db.commit()
+
+async def get_xp(user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"""
+        SELECT XP FROM Users WHERE UserID = {user_id};
+        """)
+        xp = await cursor.fetchone()
+        return xp[0] if xp[0] != None else 0
+    
+async def add_xp(amount, user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"""
+        SELECT XP FROM Users WHERE UserID = {user_id};
+        """)
+        xp = await cursor.fetchone()
+        xp = xp[0] if xp[0] != None else 0
+        xp += amount
+        if xp < 0:
+            xp = 0
+        await db.execute(f"""
+        UPDATE Users
+        SET XP = {xp}
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()
+
+async def remove_xp(amount, user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"""
+        SELECT XP FROM Users WHERE UserID = {user_id};
+        """)
+        xp = await cursor.fetchone()
+        xp = xp[0] if xp[0] != None else 0
+        xp -= amount
+        if xp < 0:
+            xp = 0
+        await db.execute(f"""
+        UPDATE Users
+        SET XP = {xp}
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()

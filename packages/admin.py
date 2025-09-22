@@ -77,3 +77,19 @@ async def clear_potions(interaction: discord.Interaction, user: discord.User):
         return
     await clear_potions(user.id)
     await interaction.response.send_message(f"Cleared {user.mention}'s potions!")
+
+@admin_group.command(name="add_xp", description="Add XP to a user")
+async def add_xp_cmd(interaction: discord.Interaction, user: discord.User, amount: int):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    await add_xp(amount, user.id)
+    await interaction.response.send_message(f"Added **{amount}** XP to {user.mention}!")
+
+@admin_group.command(name="remove_xp", description="Remove XP from a user")
+async def remove_xp_cmd(interaction: discord.Interaction, user: discord.User, amount: int):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    await remove_xp(amount, user.id)
+    await interaction.response.send_message(f"Removed **{amount}** XP from {user.mention}!")

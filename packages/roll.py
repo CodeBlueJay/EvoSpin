@@ -1,4 +1,4 @@
-import discord, json, random
+import discord, json, random, math
 from discord import app_commands
 from discord.ext import commands
 
@@ -26,40 +26,6 @@ async def rand_roll_error(interaction: discord.Interaction, error):
     if isinstance(error, app_commands.CommandOnCooldown):
         await interaction.response.send_message(f"Slow down, you're on cooldown.", ephemeral=True)
 
-@roll_group.command(name="inventory", description="Show your inventory")
-async def inventory(interaction: discord.Interaction, user: discord.User=None):
-    inven_string = ""
-    potion_string = ""
-    self = True
-    if user == None:
-        user = interaction.user
-    else:
-        self = False
-    user_inven = await decrypt_inventory(await get_inventory(user.id))
-    potion_inven = await decrypt_inventory(await get_potions(user.id))
-    number_of_comp = 0
-    for key in things:
-        if things[key]["comp"]:
-            number_of_comp += 1
-    embed = discord.Embed(
-        title=f"{user.name}'s Inventory",
-        description="Completion: " + f"`{len(user_inven)}/{number_of_comp}`",
-        color=discord.Color.blue()
-    )
-    embed.set_author(name=user.name, icon_url=user.display_avatar.url)
-    embed.add_field(name="Coins", value=f"**`{await get_coins(user.id)}`**", inline=False)
-    for key, value in user_inven.items():
-        inven_string += f"**{key}** - x{value}\n"
-    if inven_string == "":
-        inven_string = "Your inventory is empty!" if self == True else f"{user.name}'s inventory is empty!"
-    embed.add_field(name="Items", value=inven_string, inline=False)
-    for key, value in potion_inven.items():
-        potion_string += f"**{key}** - x{value}\n"
-    if potion_string == "":
-        potion_string = "You have no potions!" if self == True else f"{user.name} has no potions!"
-    embed.add_field(name="Potions", value=potion_string, inline=False)
-    await interaction.response.send_message(embed=embed)
-
 @roll_group.command(name="evolve", description="Evolve an item")
 async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
     user_inven = await decrypt_inventory(await get_inventory(interaction.user.id))
@@ -81,12 +47,25 @@ async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
                 await interaction.response.send_message(f"You need at least **{things[item.title()]['required'] * amount}** **{item.title()}** to evolve it!")
                 return
 
-async def spin(user_id, item: str=None, transmutate: bool=False):
+async def spin(user_id, item: str=None, transmutate: bool=False, potion_strength: float=0.0):
     spun = ""
     temp = ""
+    xp = await get_xp(user_id)
+    xp_scale = settings.get("xp_scale", 25000)
+    max_luck_strength = settings.get("max_luck_strength", 0.8)
+    potion_exponent_factor = settings.get("potion_exponent_factor", 0.5)
+    if xp_scale <= 0:
+        xp_scale = 1
+    progress = 1 - math.exp(-xp / xp_scale)
+    luck_strength = progress * max_luck_strength
+    exponent_base = 1 - luck_strength
+    exponent_final = exponent_base * (1 - potion_strength * potion_exponent_factor)
+    if exponent_final < 0.12:
+        exponent_final = 0.12
     population = [things[i]["name"] for i in things if things[i]["rarity"] > 0]
     weights = [things[i]["rarity"] for i in things if things[i]["rarity"] > 0]
-    spun = random.choices(population, weights=weights, k=1)[0]
+    transformed_weights = [w ** exponent_final for w in weights]
+    spun = random.choices(population, weights=transformed_weights, k=1)[0]
     total = sum(weights)
     if transmutate:
         temp = things[spun]["name"]
@@ -127,25 +106,29 @@ async def use_potion(interaction: discord.Interaction, potion: str, amount: int=
         else:
             await interaction.response.send_message("You do not have that potion!")
 
-@roll_group.command(name="completion", description="Show your completion info")
-async def completion(interaction: discord.Interaction, user: discord.User=None):
+@roll_group.command(name="inventory", description="Show your inventory")
+async def inventory(interaction: discord.Interaction, user: discord.User=None):
+    user_inven = await decrypt_inventory(await get_inventory(user.id if user else interaction.user.id))
+    potion_inven = await decrypt_inventory(await get_potions(user.id if user else interaction.user.id))
+    potion_string = ""
     self = True
     if user == None:
         user = interaction.user
     else:
         self = False
-    user_inven = await decrypt_inventory(await get_inventory(user.id))
+    user_inven = await decrypt_inventory(await get_inventory(user.id if user else interaction.user.id))
     number_of_comp = 0
     for key in things:
         if things[key]["comp"]:
             number_of_comp += 1
     embed = discord.Embed(
-        title=f"{user.name}'s Completion Info",
-        description="Completion: " + f"`{len(user_inven)}/{number_of_comp}` " + f"(`{round(len(user_inven)/number_of_comp * 100, 2)}%`)",
+        title=f"{user.name}'s Inventory",
+        description=f"Completion: `{len(user_inven)}/{number_of_comp}` (`{round(len(user_inven)/number_of_comp * 100, 2)}%`)\nXP: `{await get_xp(user.id if user else interaction.user.id)}`",
         color=discord.Color.purple()
     )
     embed.set_author(name=user.name, icon_url=user.display_avatar.url)
     temp = ""
+    embed.add_field(name="Coins", value=f"`{await get_coins(user.id)}`", inline=False)
     if False:
         embed.add_field(name="Info", value="You have no items in your inventory!" if self == True else f"{user.name} has no items in their inventory!", inline=False)
         await interaction.response.send_message(embed=embed)
@@ -170,13 +153,18 @@ async def completion(interaction: discord.Interaction, user: discord.User=None):
         for i in evolution_chains:
             for j in i:
                 if j in user_inven:
-                    temp += f"**{j}**"
+                    temp += f"**({user_inven[j]}) {j}**"
                 else:
                     temp += j
                 if not j == i[-1]:
                     temp += " > "
             temp += "\n"
-    embed.add_field(name="Info", value="**Owned**/Not Owned\n\n" + temp, inline=True)
+    embed.add_field(name="Inventory", value=temp, inline=True)
+    for key, value in potion_inven.items():
+        potion_string += f"**({value}) {key}**\n"
+    if potion_string == "":
+        potion_string = "You have no potions!" if self == True else f"{user.name} has no potions!"
+    embed.add_field(name="Potions", value=potion_string, inline=False)
     await interaction.response.send_message(embed=embed)
 
 async def calculate_rarities():
