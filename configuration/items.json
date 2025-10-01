@@ -238,6 +238,77 @@
         "comp": true
     },
 
+    "Holy Roman Empire": {
+        "name": "Holy Roman Empire",
+        "rarity": 5,
+        "prev_evo": null,
+        "next_evo": "North German Confederation",
+        "required": 5,
+        "abbev": "hre",
+        "worth": 20,
+        "comp": true
+    },
+    "North German Confederation": {
+        "name": "North German Confederation",
+        "rarity": 0,
+        "prev_evo": "Holy Roman Empire",
+        "next_evo": "German Empire",
+        "required": 5,
+        "abbev": "ngc",
+        "worth": 50,
+        "comp": true
+    },
+    "German Empire": {
+        "name": "German Empire",
+        "rarity": 0,
+        "prev_evo": "North German Confederation",
+        "next_evo": "Weimar Republic",
+        "required": 5,
+        "abbev": "ge",
+        "worth": 100,
+        "comp": true
+    },
+    "Weimar Republic": {
+        "name": "Weimar Republic",
+        "rarity": 0,
+        "prev_evo": "German Empire",
+        "next_evo": "Third Reich",
+        "required": 5,
+        "abbev": "wr",
+        "worth": 200,
+        "comp": true
+    },
+    "Third Reich": {
+        "name": "Third Reich",
+        "rarity": 0,
+        "prev_evo": "Weimar Republic",
+        "next_evo": "DDR-BRD",
+        "required": 5,
+        "abbev": "trh",
+        "worth": 500,
+        "comp": true
+    },
+    "DDR-BRD": {
+        "name": "DDR-BRD",
+        "rarity": 0,
+        "prev_evo": "Third Reich",
+        "next_evo": "Germany",
+        "required": 5,
+        "abbev": "db",
+        "worth": 1000,
+        "comp": true
+    },
+    "Germany": {
+        "name": "Germany",
+        "rarity": 0,
+        "prev_evo": "DDR-BRD",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "g",
+        "worth": 2000,
+        "comp": true
+    },
+
     "Water Drop": {
         "name": "Water Drop",
         "rarity": 25,
