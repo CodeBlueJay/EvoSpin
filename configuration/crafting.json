@@ -1,0 +1,21 @@
+{
+    "Egf Gang": {
+        "components": {
+            "Codebluejay": 1,
+            "Lieand": 1,
+            "Ant": 1
+        },
+        "description": "The people of Eat Good Food",
+        "abbev": "egf",
+        "value": 5000
+    },
+    "Dog Ball": {
+        "components": {
+            "Basic Ball": 1,
+            "Dog": 1
+        },
+        "description": "A dog in the shape of a ball.",
+        "abbev": "db",
+        "value": 200
+    }
+}

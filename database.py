@@ -6,6 +6,8 @@ with open("configuration/items.json", "r") as items:
     things = json.load(items)
 with open("configuration/shop.json", "r") as settings:
     potions = json.load(settings)
+with open("configuration/crafting.json", "r") as craftables:
+    craftables = json.load(craftables)
 
 load_dotenv()
 
@@ -13,6 +15,7 @@ DB_URL = "data.db"
 
 translations = {things[i]["abbev"]: i for i in things}
 translations.update({potions[i]["abbev"]: i for i in potions})
+translations.update({craftables[i]["abbev"]: i for i in craftables})
 
 async def test_db():
     async with aiosqlite.connect(DB_URL) as db:
@@ -284,6 +287,61 @@ async def remove_xp(amount, user_id):
         await db.execute(f"""
         UPDATE Users
         SET XP = {xp}
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()
+
+async def add_column(column_name, column_type):
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        ALTER TABLE Users
+        ADD {column_name} {column_type};
+        """)
+        await db.commit()
+
+async def get_craftables(user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"""
+        SELECT Craftables FROM Users WHERE UserID = {user_id};
+        """)
+        craftables = await cursor.fetchone()
+        if craftables[0] == None:
+            return ""
+        return craftables[0]
+
+async def add_craftable(craftable, user_id):
+    await check_user_exist(user_id)
+    craftables = await decrypt_inventory(await get_craftables(user_id))
+    try:
+        craftables[craftable] = int(craftables[craftable])
+        craftables[craftable] += 1
+    except:
+        craftables[craftable] = 1
+    encrypted = await encrypt_inventory(craftables)
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        UPDATE Users
+        SET Craftables = '{encrypted}'
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()
+
+async def remove_craftable(craftable, user_id):
+    await check_user_exist(user_id)
+    craftables = await decrypt_inventory(await get_craftables(user_id))
+    try:
+        craftables[craftable] = int(craftables[craftable])
+        craftables[craftable] -= 1
+        if craftables[craftable] <= 0:
+            craftables.pop(craftable)
+    except:
+        pass
+    encrypted = await encrypt_inventory(craftables)
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        UPDATE Users
+        SET Craftables = '{encrypted}'
         WHERE UserID = {user_id};
         """)
         await db.commit()
