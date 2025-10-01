@@ -621,6 +621,73 @@
         "comp": true
     },
 
+    "Strike Gundam": {
+        "name": "Strike Gundam",
+        "rarity": 2,
+        "prev_evo": null,
+        "next_evo": "Freedom Gundam",
+        "required": 8,
+        "abbev": "sg",
+        "worth": 300,
+        "comp": true,
+        "description": "A versatile mobile suit from the Gundam SEED series, known for its adaptability in various combat situations."
+    },
+    "Freedom Gundam": {
+        "name": "Freedom Gundam",
+        "rarity": 0,
+        "prev_evo": "Strike Gundam",
+        "next_evo": "Strike Freedom Gundam",
+        "required": 6,
+        "abbev": "fg",
+        "worth": 500,
+        "comp": true,
+        "description": "A powerful mobile suit from the Gundam SEED series, known for its advanced technology and combat capabilities."
+    },
+    "Strike Freedom Gundam": {
+        "name": "Strike Freedom Gundam",
+        "rarity": 0,
+        "prev_evo": "Freedom Gundam",
+        "next_evo": "Rising Freedom Gundam",
+        "required": 4,
+        "abbev": "sfg",
+        "worth": 1000,
+        "comp": true,
+        "description": "An upgraded version of the Freedom Gundam, featuring enhanced weaponry and mobility."
+    },
+    "Rising Freedom Gundam": {
+        "name": "Rising Freedom Gundam",
+        "rarity": 0,
+        "prev_evo": "Strike Freedom Gundam",
+        "next_evo": "Strike Freedom Gundam Type 2",
+        "required": 3,
+        "abbev": "rfg",
+        "worth": 2000,
+        "comp": true,
+        "description": "A further enhanced version of the Strike Freedom Gundam, boasting superior firepower and agility."
+    },
+    "Strike Freedom Gundam Type 2": {
+        "name": "Strike Freedom Gundam Type 2",
+        "rarity": 0,
+        "prev_evo": "Rising Freedom Gundam",
+        "next_evo": "Mighty Strike Freedom Gundam",
+        "required": 2,
+        "abbev": "sfgt2",
+        "worth": 4000,
+        "comp": true,
+        "description": "The ultimate evolution of the Strike Freedom Gundam, equipped with cutting-edge technology and unparalleled combat prowess."
+    },
+    "Mighty Strike Freedom Gundam": {
+        "name": "Mighty Strike Freedom Gundam",
+        "rarity": 0,
+        "prev_evo": "Strike Freedom Gundam Type 2",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "msfg",
+        "worth": 8000,
+        "comp": true,
+        "description": "The pinnacle of mobile suit evolution, the Mighty Strike Freedom Gundam represents the zenith of engineering and combat capability."
+    },
+
     "Ultra Frog": {
         "name": "Ultra Frog",
         "rarity": 0.005,
