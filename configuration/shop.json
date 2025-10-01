@@ -29,10 +29,10 @@
         "description": "Increases your chance of getting rare items by 1000% for 1 roll.",
         "abbev": "l3"
     },
-    "Transmutate": {
+    "Transmutate 1": {
         "price": 500,
         "description": "Evolves the next item you roll into its evolution.",
-        "abbev": "t"
+        "abbev": "t1"
     },
     "Xp Bottle": {
         "price": 300,

@@ -47,7 +47,7 @@ async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
                 await interaction.response.send_message(f"You need at least **{things[item.title()]['required'] * amount}** **{item.title()}** to evolve it!")
                 return
 
-async def spin(user_id, item: str=None, transmutate: bool=False, potion_strength: float=0.0):
+async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_strength: float=0.0):
     spun = ""
     temp = ""
     xp = await get_xp(user_id)
@@ -68,11 +68,12 @@ async def spin(user_id, item: str=None, transmutate: bool=False, potion_strength
     transformed_weights = [w ** exponent_final for w in weights]
     spun = random.choices(population, weights=transformed_weights, k=1)[0]
     total = sum(weights)
-    if transmutate:
-        temp = things[spun]["name"]
-        spun = things[spun]["next_evo"]
-        if spun == None:
-            spun = temp
+    if transmutate_amount > 0:
+        for i in range(transmutate_amount):
+            temp = things[spun]["name"]
+            spun = things[spun]["next_evo"]
+            if spun == None:
+                spun = temp
     if item != None:
         spun = item.title()
     await add_to_inventory(spun, user_id)
@@ -86,7 +87,7 @@ async def spin(user_id, item: str=None, transmutate: bool=False, potion_strength
 async def use_potion(interaction: discord.Interaction, potion: str, amount: int=1):
     potion_functions = {
         "Multi-Spin 1": lambda user_id: potioneffects.msi(spin, user_id),
-        "Transmutate": lambda user_id: potioneffects.transmutate(spin, user_id),
+        "Transmutate 1": lambda user_id: potioneffects.transmutate1(spin, user_id),
         "Luck 1": lambda user_id: potioneffects.l1(spin, user_id),
         "Luck 2": lambda user_id: potioneffects.l2(spin, user_id),
         "Luck 3": lambda user_id: potioneffects.l3(spin, user_id),
