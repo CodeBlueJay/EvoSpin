@@ -7,7 +7,8 @@
         "required": 4,
         "abbev": "bb",
         "worth": 1,
-        "comp": true
+        "comp": true,
+        "description": "A simple ball. Can be evolved into an Advanced Ball."
     },
     "Advanced Ball": {
         "name": "Advanced Ball",
@@ -17,7 +18,8 @@
         "required": 5,
         "abbev": "ab",
         "worth": 4,
-        "comp": true
+        "comp": true,
+        "description": "An advanced upgrade of the Basic Ball."
     },
 
     "Stickman": {
@@ -28,7 +30,8 @@
         "required": 5,
         "abbev": "s",
         "worth": 2,
-        "comp": true
+        "comp": true,
+        "description": "A simple stick figure. Can be upgraded with wood"
     },
     "Wooden Stickman": {
         "name": "Wooden Stickman",
@@ -38,7 +41,8 @@
         "required": 6,
         "abbev": "ws",
         "worth": 7,
-        "comp": true
+        "comp": true,
+        "description": "A stick figure made out of wood. Stronger than a regular Stickman."
     },
 
     "Dog": {
@@ -49,7 +53,8 @@
         "required": 6,
         "abbev": "d",
         "worth": 2,
-        "comp": true
+        "comp": true,
+        "description": "A loyal companion. Can be evolved into a Wolf."
     },
     "Wolf": {
         "name": "Wolf",
@@ -59,7 +64,8 @@
         "required": 7,
         "abbev": "w",
         "worth": 7,
-        "comp": true
+        "comp": true,
+        "description": "A wild canine. Can come together with others to form a Wolf Pack."
     },
     "Wolf Pack": {
         "name": "Wolf Pack",
@@ -69,7 +75,8 @@
         "required": 0,
         "abbev": "wp",
         "worth": 20,
-        "comp": true
+        "comp": true,
+        "description": "A pack of wolves. Stronger together."
     },
 
     "Bug": {
@@ -80,7 +87,8 @@
         "required": 20,
         "abbev": "bg",
         "worth": 3,
-        "comp": true
+        "comp": true,
+        "description": "A small bug. Can infest walls."
     },
     "Infested Wall": {
         "name": "Infested Wall",
@@ -90,7 +98,8 @@
         "required": 0,
         "abbev": "iw",
         "worth": 70,
-        "comp": true
+        "comp": true,
+        "description": "A wall infested with bugs. Dangerous to touch."
     },
     
     "Honda Civic": {
@@ -101,7 +110,8 @@
         "required": 8,
         "abbev": "hc",
         "worth": 10,
-        "comp": true
+        "comp": true,
+        "description": "A reliable car. Known for its fuel efficiency."
     },
 
     "Laptop": {
@@ -112,7 +122,8 @@
         "required": 5,
         "abbev": "l",
         "worth": 15,
-        "comp": true
+        "comp": true,
+        "description": "A portable computer. Can be upgraded to a Pc."
     },
     "Pc": {
         "name": "Pc",
@@ -122,7 +133,8 @@
         "required": 5,
         "abbev": "pc",
         "worth": 25,
-        "comp": true
+        "comp": true,
+        "description": "A personal computer. More powerful than a Laptop."
     },
     "Server": {
         "name": "Server",
@@ -132,7 +144,8 @@
         "required": 5,
         "abbev": "sv",
         "worth": 50,
-        "comp": true
+        "comp": true,
+        "description": "A powerful server. Can be housed in a Server Room."
     },
     "Server Room": {
         "name": "Server Room",
@@ -142,7 +155,8 @@
         "required": 0,
         "abbev": "sr",
         "worth": 100,
-        "comp": true
+        "comp": true,
+        "description": "A room full of servers. Extremely powerful."
     },
 
     "Wool": {
@@ -153,7 +167,8 @@
         "required": 8,
         "abbev": "wo",
         "worth": 1,
-        "comp": true
+        "comp": true,
+        "description": "Soft and fluffy. Can be spun into Cloth."
     },
     "Cloth": {
         "name": "Cloth",
@@ -163,7 +178,8 @@
         "required": 5,
         "abbev": "clo",
         "worth": 4,
-        "comp": true
+        "comp": true,
+        "description": "A piece of fabric. Can be sewn into a Hoodie."
     },
     "Hoodie": {
         "name": "Hoodie",
@@ -173,7 +189,8 @@
         "required": 3,
         "abbev": "h",
         "worth": 10,
-        "comp": true
+        "comp": true,
+        "description": "A comfortable hoodie. Keeps you warm."
     },
 
     "Pickaxe": {
@@ -184,7 +201,8 @@
         "required": 7,
         "abbev": "p",
         "worth": 7,
-        "comp": true
+        "comp": true,
+        "description": "A tool for mining. Can be upgraded to a Diamond Pickaxe."
     },
     "Diamond Pickaxe": {
         "name": "Diamond Pickaxe",
@@ -194,7 +212,8 @@
         "required": 0,
         "abbev": "dp",
         "worth": 20,
-        "comp": true
+        "comp": true,
+        "description": "A pickaxe made of diamond. Extremely durable."
     },
 
     "Paper": {
@@ -205,7 +224,8 @@
         "required": 6,
         "abbev": "pa",
         "worth": 3,
-        "comp": true
+        "comp": true,
+        "description": "A sheet of paper. Can be used for writing."
     },
     "Book": {
         "name": "Book",
@@ -215,7 +235,8 @@
         "required": 3,
         "abbev": "b",
         "worth": 5,
-        "comp": true
+        "comp": true,
+        "description": "A book made from paper. Can contain stories."
     },
     "Trilogy": {
         "name": "Trilogy",
@@ -225,7 +246,8 @@
         "required": 10,
         "abbev": "tr",
         "worth": 12,
-        "comp": true
+        "comp": true,
+        "description": "A set of three books. Can be evolved into something darker."
     },
     "Dark": {
         "name": "Dark",
@@ -235,7 +257,86 @@
         "required": 0,
         "abbev": "dr",
         "worth": 150,
-        "comp": true
+        "comp": true,
+        "description": "The first EvoSpin Playtester. A truly gifted author."
+    },
+
+    "Holy Roman Empire": {
+        "name": "Holy Roman Empire",
+        "rarity": 5,
+        "prev_evo": null,
+        "next_evo": "North German Confederation",
+        "required": 5,
+        "abbev": "hre",
+        "worth": 20,
+        "comp": true,
+        "description": "An empire in Central Europe that existed from the medieval period until its dissolution in 1806."
+    },
+    "North German Confederation": {
+        "name": "North German Confederation",
+        "rarity": 0,
+        "prev_evo": "Holy Roman Empire",
+        "next_evo": "German Empire",
+        "required": 4,
+        "abbev": "ngc",
+        "worth": 50,
+        "comp": true,
+        "description": "A federal state in northern Germany that existed from 1867 to 1871, preceding the German Empire."
+    },
+    "German Empire": {
+        "name": "German Empire",
+        "rarity": 0,
+        "prev_evo": "North German Confederation",
+        "next_evo": "Weimar Republic",
+        "required": 3,
+        "abbev": "ge",
+        "worth": 100,
+        "comp": true,
+        "description": "The German Empire, also known as the Second Reich, was the unified German nation-state that existed from 1871 to 1918."
+    },
+    "Weimar Republic": {
+        "name": "Weimar Republic",
+        "rarity": 0,
+        "prev_evo": "German Empire",
+        "next_evo": "Third Reich",
+        "required": 3,
+        "abbev": "wr",
+        "worth": 200,
+        "comp": true,
+        "description": "The Weimar Republic was the democratic government that ruled Germany from 1919 to 1933, following World War I and preceding the rise of the Third Reich."
+    },
+    "Third Reich": {
+        "name": "Third Reich",
+        "rarity": 0,
+        "prev_evo": "Weimar Republic",
+        "next_evo": "DDR-BRD",
+        "required": 3,
+        "abbev": "trh",
+        "worth": 500,
+        "comp": true,
+        "description": "The Third Reich, also known as the Nazi regime, was the period of Nazi rule in Germany from 1933 to 1945."
+    },
+    "DDR-BRD": {
+        "name": "DDR-BRD",
+        "rarity": 0,
+        "prev_evo": "Third Reich",
+        "next_evo": "Germany",
+        "required": 2,
+        "abbev": "db",
+        "worth": 1000,
+        "comp": true,
+        "description": "The period of division in Germany from 1949 to 1990, when the country was split into East Germany (DDR) and West Germany (BRD), before reunification."
+    },
+    "Germany": {
+        "name": "Germany",
+        "rarity": 0,
+        "prev_evo": "DDR-BRD",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "g",
+        "worth": 2000,
+        "comp": true,
+        "description": "The modern nation of Germany, reunified in 1990 and known for its rich history, culture, and economic strength."
     },
 
     "Water Drop": {
@@ -246,7 +347,8 @@
         "required": 5,
         "abbev": "wd",
         "worth": 7,
-        "comp": true
+        "comp": true,
+        "description": "A single drop of water. Can evaporate to form a Cloud."
     },
     "Cloud": {
         "name": "Cloud",
@@ -256,7 +358,8 @@
         "required": 5,
         "abbev": "c",
         "worth": 15,
-        "comp": true
+        "comp": true,
+        "description": "A fluffy cloud in the sky. Can condense to form Rain."
     },
     "Rain": {
         "name": "Rain",
@@ -266,7 +369,8 @@
         "required": 4,
         "abbev": "r",
         "worth": 25,
-        "comp": true
+        "comp": true,
+        "description": "Falling water droplets from the sky. Can intensify to form a Storm."
     },
     "Storm": {
         "name": "Storm",
@@ -276,7 +380,8 @@
         "required": 10,
         "abbev": "st",
         "worth": 50,
-        "comp": true
+        "comp": true,
+        "description": "A powerful weather event with heavy rain and strong winds. Can evolve into a Random Storm."
     },
     "Random Storm": {
         "name": "Random Storm",
@@ -286,7 +391,8 @@
         "required": 0,
         "abbev": "rs",
         "worth": 100,
-        "comp": true
+        "comp": true,
+        "description": "A friend of Dark, a devoted EvoSpinner."
     },
 
     "Cosmic Leviathan": {
@@ -297,7 +403,8 @@
         "required": 5,
         "abbev": "cl",
         "worth": 750,
-        "comp": true
+        "comp": true,
+        "description": "A mythical sea creature said to dwell in the depths of space. During times of Solar Eclipse, it is said to transcend to a higher form."
     },
     "Leviathan Of The Eclipse": {
         "name": "Leviathan Of The Eclipse",
@@ -307,7 +414,8 @@
         "required": 10,
         "abbev": "le",
         "worth": 2750,
-        "comp": true
+        "comp": true,
+        "description": "An even more mythical form of the Cosmic Leviathan, said to appear only during a total Solar Eclipse. A true legend among EvoSpinners."
     },
 
     "Bluejay": {
@@ -318,7 +426,8 @@
         "required": 12,
         "abbev": "bj",
         "worth": 750,
-        "comp": true
+        "comp": true,
+        "description": "A vibrant blue bird known for its intelligence and complex social behavior. Can evolve into Codebluejay."
     },
     "Codebluejay": {
         "name": "Codebluejay",
@@ -328,7 +437,8 @@
         "required": 0,
         "abbev": "cbj",
         "worth": 2000,
-        "comp": true
+        "comp": true,
+        "description": "The creator of EvoSpin, a legendary EvoSpinner."
     },
     
     "Lieand": {
@@ -339,7 +449,8 @@
         "required": 69,
         "abbev": "li",
         "worth": 2000,
-        "comp": true
+        "comp": true,
+        "description": "A notable figure in the EvoSpin community, known for his contributions and presence."
     },
     "Gay": {
         "name": "Gay",
@@ -349,7 +460,8 @@
         "required": 0,
         "abbev": "gy",
         "worth": 2000,
-        "comp": true
+        "comp": true,
+        "description": "The next evolution of Lieand, representing a significant milestone."
     },
 
     "Ant": {
@@ -360,7 +472,8 @@
         "required": 10,
         "abbev": "a",
         "worth": 100,
-        "comp": true
+        "comp": true,
+        "description": "The friend of Codebluejay, a notable figure in the EvoSpin community."
     },
     "Queen Ant": {
         "name": "Queen Ant",
@@ -370,7 +483,8 @@
         "required": 10,
         "abbev": "qa",
         "worth": 250,
-        "comp": true
+        "comp": true,
+        "description": "The ruler of the ant colony, known for her leadership and strength."
     },
 
     "Fokker Dr.1": {
@@ -378,10 +492,11 @@
         "rarity": 20,
         "prev_evo": null,
         "next_evo": "Bf.109",
-        "required": 3,
+        "required": 5,
         "abbev": "fd",
         "worth": 20,
-        "comp": true
+        "comp": true,
+        "description": "A World War I fighter aircraft known for its distinctive triplane design."
     },
     "Bf.109": {
         "name": "Bf.109",
@@ -391,37 +506,41 @@
         "required": 4,
         "abbev": "bf",
         "worth": 50,
-        "comp": true
+        "comp": true,
+        "description": "A German fighter aircraft that was one of the most advanced of its time."
     },
     "Ju87 Stuka": {
         "name": "Ju87 Stuka",
         "rarity": 0,
         "prev_evo": "Bf.109",
         "next_evo": "Me262",
-        "required": 5,
+        "required": 3,
         "abbev": "ju",
         "worth": 100,
-        "comp": true
+        "comp": true,
+        "description": "A German dive bomber and ground-attack aircraft used during World War II."
     },
     "Me262": {
         "name": "Me262",
         "rarity": 0,
         "prev_evo": "Ju87 Stuka",
         "next_evo": "Panavia Tornado",
-        "required": 5,
+        "required": 3,
         "abbev": "me",
         "worth": 250,
-        "comp": true
+        "comp": true,
+        "description": "The world's first operational jet-powered fighter aircraft, used by Germany during World War II."
     },
     "Panavia Tornado": {
         "name": "Panavia Tornado",
         "rarity": 0,
         "prev_evo": "Me262",
         "next_evo": "Eurofighter Typhoon",
-        "required": 5,
+        "required": 2,
         "abbev": "pt",
         "worth": 500,
-        "comp": true
+        "comp": true,
+        "description": "A multirole combat aircraft developed and used by several European nations."
     },
     "Eurofighter Typhoon": {
         "name": "Eurofighter Typhoon",
@@ -431,7 +550,8 @@
         "required": 0,
         "abbev": "et",
         "worth": 1000,
-        "comp": true
+        "comp": true,
+        "description": "A highly advanced multirole fighter aircraft used by several European air forces."
     },
 
     "P51 Mustang": {
@@ -439,10 +559,11 @@
         "rarity": 15,
         "prev_evo": null,
         "next_evo": "F86 Sabre",
-        "required": 3,
+        "required": 5,
         "abbev": "p51",
         "worth": 40,
-        "comp": true
+        "comp": true,
+        "description": "An American long-range, single-seat fighter and fighter-bomber used during World War II and the Korean War."
     },
     "F86 Sabre": {
         "name": "F86 Sabre",
@@ -452,27 +573,30 @@
         "required": 4,
         "abbev": "f86",
         "worth": 100,
-        "comp": true
+        "comp": true,
+        "description": "A transonic jet fighter aircraft developed by North American Aviation. It was the United States' first swept-wing fighter."
     },
     "F4 Phantom": {
         "name": "F4 Phantom",
         "rarity": 0,
         "prev_evo": "F86 Sabre",
         "next_evo": "F15 Eagle",
-        "required": 5,
+        "required": 3,
         "abbev": "f4",
         "worth": 250,
-        "comp": true
+        "comp": true,
+        "description": "A tandem two-seat, twin-engine, long-range supersonic jet interceptor and fighter-bomber originally developed by McDonnell Aircraft for the United States Navy."
     },
     "F15 Eagle": {
         "name": "F15 Eagle",
         "rarity": 0,
         "prev_evo": "F4 Phantom",
         "next_evo": "F22 Raptor",
-        "required": 5,
+        "required": 2,
         "abbev": "f15",
         "worth": 700,
-        "comp": true
+        "comp": true,
+        "description": "An American twin-engine, all-weather tactical fighter aircraft designed by McDonnell Douglas to gain and maintain air supremacy in aerial combat."
     },
     "F22 Raptor": {
         "name": "F22 Raptor",
@@ -482,7 +606,8 @@
         "required": 0,
         "abbev": "f22",
         "worth": 1500,
-        "comp": true
+        "comp": true,
+        "description": "A fifth-generation, single-seat, twin-engine, all-weather stealth tactical fighter aircraft developed for the United States Air Force."
     },
 
     "Dragon With Eyes Of Blue": {
@@ -493,7 +618,75 @@
         "required": 0,
         "abbev": "dw",
         "worth": 500,
-        "comp": true
+        "comp": true,
+        "description": "A mystical dragon known for its striking blue eyes. A rare and powerful creature."
+    },
+
+    "Strike Gundam": {
+        "name": "Strike Gundam",
+        "rarity": 2,
+        "prev_evo": null,
+        "next_evo": "Freedom Gundam",
+        "required": 8,
+        "abbev": "sg",
+        "worth": 300,
+        "comp": true,
+        "description": "A versatile mobile suit from the Gundam SEED series, known for its adaptability in various combat situations."
+    },
+    "Freedom Gundam": {
+        "name": "Freedom Gundam",
+        "rarity": 0,
+        "prev_evo": "Strike Gundam",
+        "next_evo": "Strike Freedom Gundam",
+        "required": 6,
+        "abbev": "fg",
+        "worth": 500,
+        "comp": true,
+        "description": "A powerful mobile suit from the Gundam SEED series, known for its advanced technology and combat capabilities."
+    },
+    "Strike Freedom Gundam": {
+        "name": "Strike Freedom Gundam",
+        "rarity": 0,
+        "prev_evo": "Freedom Gundam",
+        "next_evo": "Rising Freedom Gundam",
+        "required": 4,
+        "abbev": "sfg",
+        "worth": 1000,
+        "comp": true,
+        "description": "An upgraded version of the Freedom Gundam, featuring enhanced weaponry and mobility."
+    },
+    "Rising Freedom Gundam": {
+        "name": "Rising Freedom Gundam",
+        "rarity": 0,
+        "prev_evo": "Strike Freedom Gundam",
+        "next_evo": "Strike Freedom Gundam Type 2",
+        "required": 3,
+        "abbev": "rfg",
+        "worth": 2000,
+        "comp": true,
+        "description": "A further enhanced version of the Strike Freedom Gundam, boasting superior firepower and agility."
+    },
+    "Strike Freedom Gundam Type 2": {
+        "name": "Strike Freedom Gundam Type 2",
+        "rarity": 0,
+        "prev_evo": "Rising Freedom Gundam",
+        "next_evo": "Mighty Strike Freedom Gundam",
+        "required": 2,
+        "abbev": "sfgt2",
+        "worth": 4000,
+        "comp": true,
+        "description": "The ultimate evolution of the Strike Freedom Gundam, equipped with cutting-edge technology and unparalleled combat prowess."
+    },
+    "Mighty Strike Freedom Gundam": {
+        "name": "Mighty Strike Freedom Gundam",
+        "rarity": 0,
+        "prev_evo": "Strike Freedom Gundam Type 2",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "msfg",
+        "worth": 8000,
+        "comp": true,
+        "description": "The pinnacle of mobile suit evolution, the Mighty Strike Freedom Gundam represents the zenith of engineering and combat capability."
     },
 
     "Ultra Frog": {
@@ -504,7 +697,8 @@
         "required": 0,
         "abbev": "uf",
         "worth": 700,
-        "comp": true
+        "comp": true,
+        "description": "A legendary frog with extraordinary abilities. A true rarity among EvoSpinners."
     },
 
     "Minecrack": {
@@ -515,7 +709,8 @@
         "required": 10,
         "abbev": "mc",
         "worth": 1000,
-        "comp": true
+        "comp": true,
+        "description": "Minecraft but not really: Episode 1"
     },
     "Minceraft": {
         "name": "Minceraft",
@@ -525,7 +720,8 @@
         "required": 0,
         "abbev": "mct",
         "worth": 3000,
-        "comp": true
+        "comp": true,
+        "description": "Minecraft but not really: Episode 2"
     },
 
     "The Admin": {
@@ -535,7 +731,8 @@
         "next_evo": null,
         "required": 0,
         "abbev": "ta",
-        "comp": false
+        "comp": false,
+        "description": "The exclusive Admin Only item."
     },
     "Fallback for no rarity yet": {
         "name": "Fallback",
@@ -544,6 +741,7 @@
         "next_evo": null,
         "required": 0,
         "abbev": null,
-        "comp": false
+        "comp": false,
+        "description": "This item is a fallback for when an item has no rarity set."
     }
 }
