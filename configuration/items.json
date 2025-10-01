@@ -618,8 +618,7 @@
         "required": 0,
         "abbev": "dw",
         "worth": 500,
-        "comp": true,
-        "description": "A mystical dragon known for its striking blue eyes. A rare and powerful creature."
+        "comp": true
     },
 
     "Ultra Frog": {
