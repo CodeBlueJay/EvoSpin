@@ -7,7 +7,11 @@
         },
         "description": "The people of Eat Good Food",
         "abbev": "egf",
-        "value": 5000
+        "worth": 5000,
+        "rarity": -1,
+        "comp": "Craftable",
+        "next_evo": null,
+        "prev_evo": null
     },
     "Dog Ball": {
         "components": {
@@ -16,6 +20,10 @@
         },
         "description": "A dog in the shape of a ball.",
         "abbev": "db",
-        "value": 200
+        "worth": 200,
+        "rarity": -1,
+        "comp": "Craftable",
+        "next_evo": null,
+        "prev_evo": null
     }
 }

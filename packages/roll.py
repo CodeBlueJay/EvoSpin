@@ -9,6 +9,8 @@ with open("configuration/items.json", "r") as items:
     things = json.load(items)
 with open("configuration/settings.json", "r") as settings:
     settings = json.load(settings)
+with open("configuration/crafting.json", "r") as craftables:
+    craft = json.load(craftables)
 
 totalsum = 0
 roundTo = 1
@@ -183,6 +185,48 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
         potion_string = "You have no potions!" if self == True else f"{user.name} has no potions!"
     embed.add_field(name="Potions", value=potion_string, inline=False)
     await interaction.response.send_message(embed=embed)
+
+@roll_group.command(name="info", description="Show an item's info")
+async def item_info(interaction: discord.Interaction, item: str):
+    item = item.title()
+    if not item in things and not item in craft:
+        await interaction.response.send_message("That item does not exist!")
+        return
+    if item in craft:
+        data = craft[item]
+    else:
+        data = things[item]
+    embed = discord.Embed(
+        title=f"{item} Info",
+        color=discord.Color.blue()
+    )
+    # embed.set_thumbnail(url=data.get("image", ""))
+    if data["rarity"] > 0 and data["rarity"] != None:
+        temp = f"1 in {round((totalsum / data['rarity']))}"
+    elif data["rarity"] == 0:
+        temp = "Evolution"
+    else:
+        temp = "Craftable"
+    embed.add_field(name="Rarity", value=temp, inline=True)
+    embed.add_field(name="Value", value=f"{str(data['worth'])} coins" if data['worth'] != None else "0", inline=True)
+    if data["rarity"] == 0:
+        embed.add_field(name="Obtainment", value=f"Evolution", inline=True)
+    elif data["comp"] == "Craftable":
+        embed.add_field(name="Obtainment", value="Craftable", inline=True)
+    elif data["comp"] != None:
+        embed.add_field(name="Obtainment", value="Natural", inline=True)
+    if data["next_evo"] != None:
+        embed.add_field(name="Next Evolution", value=f"{data['next_evo']} (Requires {data['required']})", inline=True)
+    else:
+        embed.add_field(name="Next Evolution", value="None", inline=True)
+    if data["prev_evo"] != None:
+        embed.add_field(name="Previous Evolution", value=f"{data['prev_evo']}", inline=True)
+    else:
+        embed.add_field(name="Previous Evolution", value="None", inline=True)
+    if data.get("description", None) != None:
+        embed.add_field(name="Description", value=data["description"], inline=False)
+    await interaction.response.defer(thinking=True)
+    await interaction.followup.send(embed=embed)
 
 async def calculate_rarities():
     global totalsum, roundTo
