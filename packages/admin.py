@@ -13,7 +13,7 @@ with open("configuration/settings.json", "r") as settings_file:
 admin_group = discord.app_commands.Group(name="admin", description="Admin commands")
 
 @admin_group.command(name="roll", description="Admin type command :fire:")
-async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str=None, potion_strength: float=0.0, transmutate: bool=False):
+async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str=None, potion_strength: float=0.0, transmutate: bool=False, seperate: bool=False):
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
@@ -22,8 +22,12 @@ async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str
     for i in range(amount):
         spun = await spin(interaction.user.id, item, potion_strength=potion_strength, transmutate=transmutate)
         temp += spun + "\n"
+        if seperate:
+            await interaction.followup.send(spun)
+            temp = ""
     try:
-        await interaction.followup.send(temp)
+        if not seperate:
+            await interaction.followup.send(temp)
     except:
         await interaction.followup.send("Complete (result too large to show in message)")
 
