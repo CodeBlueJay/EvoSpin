@@ -492,7 +492,7 @@
         "rarity": 20,
         "prev_evo": null,
         "next_evo": "Bf.109",
-        "required": 5,
+        "required": 3,
         "abbev": "fd",
         "worth": 20,
         "comp": true,
