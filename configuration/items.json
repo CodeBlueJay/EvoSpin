@@ -223,7 +223,7 @@
         "prev_evo": "Book",
         "next_evo": "Dark",
         "required": 10,
-        "abbev": "t",
+        "abbev": "tr",
         "worth": 12,
         "comp": true
     },
@@ -378,7 +378,7 @@
         "rarity": 20,
         "prev_evo": null,
         "next_evo": "Bf.109",
-        "required": 10,
+        "required": 3,
         "abbev": "fd",
         "worth": 20,
         "comp": true
@@ -388,7 +388,7 @@
         "rarity": 0,
         "prev_evo": "Fokker Dr.1",
         "next_evo": "Ju87 Stuka",
-        "required": 10,
+        "required": 4,
         "abbev": "bf",
         "worth": 50,
         "comp": true
@@ -398,7 +398,7 @@
         "rarity": 0,
         "prev_evo": "Bf.109",
         "next_evo": "Me262",
-        "required": 10,
+        "required": 5,
         "abbev": "ju",
         "worth": 100,
         "comp": true
@@ -408,7 +408,7 @@
         "rarity": 0,
         "prev_evo": "Ju87 Stuka",
         "next_evo": "Panavia Tornado",
-        "required": 10,
+        "required": 5,
         "abbev": "me",
         "worth": 250,
         "comp": true
@@ -418,7 +418,7 @@
         "rarity": 0,
         "prev_evo": "Me262",
         "next_evo": "Eurofighter Typhoon",
-        "required": 10,
+        "required": 5,
         "abbev": "pt",
         "worth": 500,
         "comp": true
@@ -439,7 +439,7 @@
         "rarity": 15,
         "prev_evo": null,
         "next_evo": "F86 Sabre",
-        "required": 10,
+        "required": 3,
         "abbev": "p51",
         "worth": 40,
         "comp": true
@@ -449,7 +449,7 @@
         "rarity": 0,
         "prev_evo": "P51 Mustang",
         "next_evo": "F4 Phantom",
-        "required": 10,
+        "required": 4,
         "abbev": "f86",
         "worth": 100,
         "comp": true
@@ -459,7 +459,7 @@
         "rarity": 0,
         "prev_evo": "F86 Sabre",
         "next_evo": "F15 Eagle",
-        "required": 10,
+        "required": 5,
         "abbev": "f4",
         "worth": 250,
         "comp": true
@@ -469,7 +469,7 @@
         "rarity": 0,
         "prev_evo": "F4 Phantom",
         "next_evo": "F22 Raptor",
-        "required": 10,
+        "required": 5,
         "abbev": "f15",
         "worth": 700,
         "comp": true

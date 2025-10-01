@@ -92,7 +92,8 @@ async def use_potion(interaction: discord.Interaction, potion: str, amount: int=
         "Luck 3": lambda user_id: potioneffects.l3(spin, user_id),
         "Multi-Spin 2": lambda user_id: potioneffects.msii(spin, user_id),
         "Multi-Spin 3": lambda user_id: potioneffects.msiii(spin, user_id),
-        "Xp Bottle": lambda user_id: potioneffects.xp(user_id)
+        "Xp Bottle": lambda user_id: potioneffects.xpbottle(add_xp, user_id),
+        "Godly": lambda user_id: potioneffects.godly(spin, user_id),
     }
     potion = potion.title()
     potion_inven = await decrypt_inventory(await get_potions(interaction.user.id))
@@ -118,6 +119,7 @@ async def use_potion(interaction: discord.Interaction, potion: str, amount: int=
 async def inventory(interaction: discord.Interaction, user: discord.User=None):
     user_inven = await decrypt_inventory(await get_inventory(user.id if user else interaction.user.id))
     potion_inven = await decrypt_inventory(await get_potions(user.id if user else interaction.user.id))
+    craftables = await decrypt_inventory(await get_craftables(user.id if user else interaction.user.id))
     potion_string = ""
     self = True
     if user == None:
@@ -168,6 +170,12 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
                     temp += " > "
             temp += "\n"
     embed.add_field(name="Inventory", value=temp, inline=True)
+    craft_string = ""
+    for key in craftables:
+        craft_string += f"**({craftables[key]}) {key}**\n"
+    if craft_string == "":
+        craft_string = "You have no craftable items!" if self == True else f"{user.name} has no craftable items!"
+    embed.add_field(name="Craftables", value=craft_string, inline=False)
     for key, value in potion_inven.items():
         potion_string += f"**({value}) {key}**\n"
     if potion_string == "":

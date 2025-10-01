@@ -93,3 +93,20 @@ async def remove_xp_cmd(interaction: discord.Interaction, user: discord.User, am
         return
     await remove_xp(amount, user.id)
     await interaction.response.send_message(f"Removed **{amount}** XP from {user.mention}!")
+
+@admin_group.command(name="add_column", description="Add a column to the database")
+async def add_column_cmd(interaction: discord.Interaction, column_name: str, data_type: str=""):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    await add_column(column_name, data_type)
+    await interaction.response.send_message(f"Added column **{column_name}** to the database!")
+
+@admin_group.command(name="add_craftable", description="Add a craftable item to a user")
+async def add_craftable_cmd(interaction: discord.Interaction, user: discord.User, item: str, amount: int=1):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    for i in range(amount):
+        await add_craftable(item.title(), user.id)
+    await interaction.response.send_message(f"Gave **{amount}** **{item.title()}** to {user.mention}!")

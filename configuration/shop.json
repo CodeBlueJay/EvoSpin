@@ -38,5 +38,10 @@
         "price": 300,
         "description": "Gives you 500 XP.",
         "abbev": "xp"
+    },
+    "Godly": {
+        "price": 20000,
+        "description": "Gives you a 30000% luck boost for 1 roll.",
+        "abbev": "g"
     }
 }
