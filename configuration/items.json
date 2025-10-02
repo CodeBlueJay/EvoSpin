@@ -333,7 +333,7 @@
         "prev_evo": "Multivariable Calculus",
         "next_evo": null,
         "required": 0,
-        "abbev": "s",
+        "abbev": "stats",
         "worth": 500,
         "comp": true,
         "description": "The study of data collection, analysis, interpretation, and presentation."

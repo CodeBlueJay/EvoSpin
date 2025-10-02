@@ -172,19 +172,40 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
                 if not j == i[-1]:
                     temp += " > "
             temp += "\n"
-    embed.add_field(name="Inventory", value=temp, inline=True)
-    craft_string = ""
-    for key in craftables:
-        craft_string += f"**({craftables[key]}) {key}**\n"
+    def add_chunked_fields(embed_obj: discord.Embed, base_name: str, text: str, inline=False):
+        text = text.rstrip('\n')
+        if len(text) <= 1024:
+            embed_obj.add_field(name=base_name, value=text if text else "(Empty)", inline=inline)
+            return
+        lines = text.split('\n')
+        current = ""
+        idx = 1
+        for line in lines:
+            projected = (len(current) + (1 if current else 0) + len(line))
+            if projected > 1024:
+                embed_obj.add_field(name=f"{base_name}", value=current or "(Empty)", inline=inline)
+                current = line
+                idx += 1
+            else:
+                current = line if not current else current + "\n" + line
+        if current:
+            embed_obj.add_field(name=f"{base_name}", value=current, inline=inline)
+    add_chunked_fields(embed, "Inventory", temp or "(Empty)", inline=False)
+    craft_string = "".join(f"**({craftables[key]}) {key}**\n" for key in craftables)
     if craft_string == "":
         craft_string = "You have no craftable items!" if self == True else f"{user.name} has no craftable items!"
-    embed.add_field(name="Craftables", value=craft_string, inline=False)
+    add_chunked_fields(embed, "Craftables", craft_string, inline=False)
     for key, value in potion_inven.items():
         potion_string += f"**({value}) {key}**\n"
     if potion_string == "":
         potion_string = "You have no potions!" if self == True else f"{user.name} has no potions!"
-    embed.add_field(name="Potions", value=potion_string, inline=False)
-    await interaction.response.send_message(embed=embed)
+    add_chunked_fields(embed, "Potions", potion_string, inline=False)
+    if len(embed.fields) > 25:
+        full_text = "INVENTORY\n" + (temp or "(Empty)") + "\n\nCRAFTABLES\n" + craft_string + "\n\nPOTIONS\n" + potion_string
+        file = discord.File(fp=discord.utils._BytesIO(full_text.encode('utf-8')), filename="inventory.txt")
+        await interaction.response.send_message(content="Inventory too large, sent as file instead.", file=file)
+    else:
+        await interaction.response.send_message(embed=embed)
 
 @roll_group.command(name="info", description="Show an item's info")
 async def item_info(interaction: discord.Interaction, item: str):
