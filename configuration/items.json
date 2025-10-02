@@ -261,6 +261,84 @@
         "description": "The first EvoSpin Playtester. A truly gifted author."
     },
 
+    "Algebra 1": {
+        "name": "Algebra 1",
+        "rarity": 25,
+        "prev_evo": null,
+        "next_evo": "Geometry",
+        "required": 5,
+        "abbev": "a1",
+        "worth": 5,
+        "comp": true,
+        "description": "A basic math course covering fundamental algebraic concepts."
+    },
+    "Geometry": {
+        "name": "Geometry",
+        "rarity": 0,
+        "prev_evo": "Algebra 1",
+        "next_evo": "Algebra 2",
+        "required": 5,
+        "abbev": "g",
+        "worth": 15,
+        "comp": true,
+        "description": "A math course focusing on the properties and relations of points, lines, surfaces, and solids."
+    },
+    "Algebra 2": {
+        "name": "Algebra 2",
+        "rarity": 0,
+        "prev_evo": "Geometry",
+        "next_evo": "Precalculus",
+        "required": 4,
+        "abbev": "a2",
+        "worth": 30,
+        "comp": true,
+        "description": "An advanced math course that builds on Algebra 1 and introduces complex numbers and functions."
+    },
+    "Precalculus": {
+        "name": "Precalculus",
+        "rarity": 0,
+        "prev_evo": "Algebra 2",
+        "next_evo": "Calculus",
+        "required": 3,
+        "abbev": "prc",
+        "worth": 60,
+        "comp": true,
+        "description": "A math course that prepares students for calculus by covering topics such as functions, trigonometry, and complex numbers."
+    },
+    "Calculus": {
+        "name": "Calculus",
+        "rarity": 0,
+        "prev_evo": "Precalculus",
+        "next_evo": "Multivariable Calculus",
+        "required": 3,
+        "abbev": "c",
+        "worth": 120,
+        "comp": true,
+        "description": "A branch of mathematics that studies continuous change, including concepts such as limits, derivatives, and integrals."
+    },
+    "Multivariable Calculus": {
+        "name": "Multivariable Calculus",
+        "rarity": 0,
+        "prev_evo": "Calculus",
+        "next_evo": "Statistics",
+        "required": 2,
+        "abbev": "mc",
+        "worth": 250,
+        "comp": true,
+        "description": "An advanced calculus course that extends the concepts of single-variable calculus to functions of multiple variables."
+    },
+    "Statistics": {
+        "name": "Statistics",
+        "rarity": 0,
+        "prev_evo": "Multivariable Calculus",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "s",
+        "worth": 500,
+        "comp": true,
+        "description": "The study of data collection, analysis, interpretation, and presentation."
+    },
+
     "Holy Roman Empire": {
         "name": "Holy Roman Empire",
         "rarity": 5,
@@ -629,8 +707,74 @@
         "required": 0,
         "abbev": "dw",
         "worth": 500,
+        "comp": true
+    },
+
+    "Strike Gundam": {
+        "name": "Strike Gundam",
+        "rarity": 2,
+        "prev_evo": null,
+        "next_evo": "Freedom Gundam",
+        "required": 8,
+        "abbev": "sg",
+        "worth": 300,
         "comp": true,
-        "description": "A mystical dragon known for its striking blue eyes. A rare and powerful creature."
+        "description": "A versatile mobile suit from the Gundam SEED series, known for its adaptability in various combat situations."
+    },
+    "Freedom Gundam": {
+        "name": "Freedom Gundam",
+        "rarity": 0,
+        "prev_evo": "Strike Gundam",
+        "next_evo": "Strike Freedom Gundam",
+        "required": 6,
+        "abbev": "fg",
+        "worth": 500,
+        "comp": true,
+        "description": "A powerful mobile suit from the Gundam SEED series, known for its advanced technology and combat capabilities."
+    },
+    "Strike Freedom Gundam": {
+        "name": "Strike Freedom Gundam",
+        "rarity": 0,
+        "prev_evo": "Freedom Gundam",
+        "next_evo": "Rising Freedom Gundam",
+        "required": 4,
+        "abbev": "sfg",
+        "worth": 1000,
+        "comp": true,
+        "description": "An upgraded version of the Freedom Gundam, featuring enhanced weaponry and mobility."
+    },
+    "Rising Freedom Gundam": {
+        "name": "Rising Freedom Gundam",
+        "rarity": 0,
+        "prev_evo": "Strike Freedom Gundam",
+        "next_evo": "Strike Freedom Gundam Type 2",
+        "required": 3,
+        "abbev": "rfg",
+        "worth": 2000,
+        "comp": true,
+        "description": "A further enhanced version of the Strike Freedom Gundam, boasting superior firepower and agility."
+    },
+    "Strike Freedom Gundam Type 2": {
+        "name": "Strike Freedom Gundam Type 2",
+        "rarity": 0,
+        "prev_evo": "Rising Freedom Gundam",
+        "next_evo": "Mighty Strike Freedom Gundam",
+        "required": 2,
+        "abbev": "sfgt2",
+        "worth": 4000,
+        "comp": true,
+        "description": "The ultimate evolution of the Strike Freedom Gundam, equipped with cutting-edge technology and unparalleled combat prowess."
+    },
+    "Mighty Strike Freedom Gundam": {
+        "name": "Mighty Strike Freedom Gundam",
+        "rarity": 0,
+        "prev_evo": "Strike Freedom Gundam Type 2",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "msfg",
+        "worth": 8000,
+        "comp": true,
+        "description": "The pinnacle of mobile suit evolution, the Mighty Strike Freedom Gundam represents the zenith of engineering and combat capability."
     },
 
     "Ultra Frog": {
