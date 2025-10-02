@@ -331,12 +331,23 @@
         "name": "Germany",
         "rarity": 0,
         "prev_evo": "DDR-BRD",
-        "next_evo": null,
-        "required": 0,
+        "next_evo": "Reichtangle",
+        "required": 2,
         "abbev": "g",
         "worth": 2000,
         "comp": true,
         "description": "The modern nation of Germany, reunified in 1990 and known for its rich history, culture, and economic strength."
+    },
+    "Reichtangle": {
+        "name": "Reichtangle",
+        "rarity": 0,
+        "prev_evo": "Germany",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "rt",
+        "worth": 5000,
+        "comp": true,
+        "description": "The Fourth Reich. Guten Tag Poland."
     },
 
     "Water Drop": {
