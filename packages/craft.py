@@ -36,7 +36,7 @@ async def craft_list(interaction: discord.Interaction):
         for j in craftables[i]["components"]:
             components += f"**{craftables[i]['components'][j]} {j}**, "
         components = components[:-2]
-        embed.add_field(name=i, value=f"Ingredients: {components}\nDescription: *{craftables[i]['description']}*\nValue: **`{craftables[i]['value']}`**", inline=False)
+        embed.add_field(name=i, value=f"Ingredients: {components}\nDescription: *{craftables[i]['description']}*\nValue: **`{craftables[i]['worth']}`**", inline=False)
     await interaction.response.send_message(embed=embed)
 
 @craft_group.command(name="concoct", description="Concoct a potion with different effects")

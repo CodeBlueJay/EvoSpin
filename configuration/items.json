@@ -333,7 +333,7 @@
         "prev_evo": "Multivariable Calculus",
         "next_evo": null,
         "required": 0,
-        "abbev": "s",
+        "abbev": "stats",
         "worth": 500,
         "comp": true,
         "description": "The study of data collection, analysis, interpretation, and presentation."
@@ -409,12 +409,23 @@
         "name": "Germany",
         "rarity": 0,
         "prev_evo": "DDR-BRD",
-        "next_evo": null,
-        "required": 0,
+        "next_evo": "Reichtangle",
+        "required": 2,
         "abbev": "g",
         "worth": 2000,
         "comp": true,
         "description": "The modern nation of Germany, reunified in 1990 and known for its rich history, culture, and economic strength."
+    },
+    "Reichtangle": {
+        "name": "Reichtangle",
+        "rarity": 0,
+        "prev_evo": "Germany",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "rt",
+        "worth": 5000,
+        "comp": true,
+        "description": "The Fourth Reich. Guten Tag Poland."
     },
 
     "Water Drop": {
@@ -468,7 +479,7 @@
         "next_evo": null,
         "required": 0,
         "abbev": "rs",
-        "worth": 100,
+        "worth": 500,
         "comp": true,
         "description": "A friend of Dark, a devoted EvoSpinner."
     },
@@ -480,7 +491,7 @@
         "next_evo": "Leviathan Of The Eclipse",
         "required": 5,
         "abbev": "cl",
-        "worth": 750,
+        "worth": 10000,
         "comp": true,
         "description": "A mythical sea creature said to dwell in the depths of space. During times of Solar Eclipse, it is said to transcend to a higher form."
     },
@@ -491,7 +502,7 @@
         "next_evo": null,
         "required": 10,
         "abbev": "le",
-        "worth": 2750,
+        "worth": 25000,
         "comp": true,
         "description": "An even more mythical form of the Cosmic Leviathan, said to appear only during a total Solar Eclipse. A true legend among EvoSpinners."
     },
@@ -537,7 +548,7 @@
         "next_evo": null,
         "required": 0,
         "abbev": "gy",
-        "worth": 2000,
+        "worth": 6900,
         "comp": true,
         "description": "The next evolution of Lieand, representing a significant milestone."
     },
@@ -560,7 +571,7 @@
         "next_evo": null,
         "required": 10,
         "abbev": "qa",
-        "worth": 250,
+        "worth": 500,
         "comp": true,
         "description": "The ruler of the ant colony, known for her leadership and strength."
     },
@@ -616,7 +627,7 @@
         "next_evo": "Eurofighter Typhoon",
         "required": 2,
         "abbev": "pt",
-        "worth": 500,
+        "worth": 2000,
         "comp": true,
         "description": "A multirole combat aircraft developed and used by several European nations."
     },
@@ -627,7 +638,7 @@
         "next_evo": null,
         "required": 0,
         "abbev": "et",
-        "worth": 1000,
+        "worth": 5000,
         "comp": true,
         "description": "A highly advanced multirole fighter aircraft used by several European air forces."
     },
@@ -650,7 +661,7 @@
         "next_evo": "F4 Phantom",
         "required": 4,
         "abbev": "f86",
-        "worth": 100,
+        "worth": 200,
         "comp": true,
         "description": "A transonic jet fighter aircraft developed by North American Aviation. It was the United States' first swept-wing fighter."
     },
@@ -661,7 +672,7 @@
         "next_evo": "F15 Eagle",
         "required": 3,
         "abbev": "f4",
-        "worth": 250,
+        "worth": 700,
         "comp": true,
         "description": "A tandem two-seat, twin-engine, long-range supersonic jet interceptor and fighter-bomber originally developed by McDonnell Aircraft for the United States Navy."
     },
@@ -672,7 +683,7 @@
         "next_evo": "F22 Raptor",
         "required": 2,
         "abbev": "f15",
-        "worth": 700,
+        "worth": 1500,
         "comp": true,
         "description": "An American twin-engine, all-weather tactical fighter aircraft designed by McDonnell Douglas to gain and maintain air supremacy in aerial combat."
     },
@@ -683,7 +694,7 @@
         "next_evo": null,
         "required": 0,
         "abbev": "f22",
-        "worth": 1500,
+        "worth": 3500,
         "comp": true,
         "description": "A fifth-generation, single-seat, twin-engine, all-weather stealth tactical fighter aircraft developed for the United States Air Force."
     },
@@ -695,7 +706,7 @@
         "next_evo": null,
         "required": 0,
         "abbev": "dw",
-        "worth": 500,
+        "worth": 5000,
         "comp": true
     },
 
@@ -773,7 +784,7 @@
         "next_evo": null,
         "required": 0,
         "abbev": "uf",
-        "worth": 700,
+        "worth": 1500,
         "comp": true,
         "description": "A legendary frog with extraordinary abilities. A true rarity among EvoSpinners."
     },
@@ -785,7 +796,7 @@
         "next_evo": "Minceraft",
         "required": 10,
         "abbev": "mc",
-        "worth": 1000,
+        "worth": 3000,
         "comp": true,
         "description": "Minecraft but not really: Episode 1"
     },
@@ -796,7 +807,7 @@
         "next_evo": null,
         "required": 0,
         "abbev": "mct",
-        "worth": 3000,
+        "worth": 6000,
         "comp": true,
         "description": "Minecraft but not really: Episode 2"
     },

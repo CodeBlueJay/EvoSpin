@@ -8,6 +8,8 @@ with open("configuration/items.json", "r") as items:
     things = json.load(items)
 with open("configuration/shop.json", "r") as shop_file:
     shop_items = json.load(shop_file)
+with open("configuration/crafting.json", "r") as config_file:
+    crafting_items = json.load(config_file)
 
 shop_group = discord.app_commands.Group(name="shop", description="Shop commands")
 
@@ -41,20 +43,31 @@ async def buy_item(interaction: discord.Interaction, item: str, amount: int=1):
 @shop_group.command(name="sell", description="Sell an item from your inventory")
 async def sell_item(interaction: discord.Interaction, item: str, amount: int=1):
     item = item.title()
-    if not item in things:
-        await interaction.response.send_message(f"Item is not sellable")
+    base = things
+    if item in things:
+        pass
+    elif item in crafting_items:
+        base = crafting_items
+    else:
+        await interaction.response.send_message(f"Item does not exist")
         return
     user_inven = await decrypt_inventory(await get_inventory(interaction.user.id))
-    if not item in user_inven:
-        await interaction.response.send_message(f"You do not have any **{item}** to sell!")
-        return
-    if int(user_inven[item]) < amount:
-        await interaction.response.send_message(f"You do not have enough **{item}** to sell!")
-        return
-    item_worth = things[item]["worth"]
+    crafting_inven = await decrypt_inventory(await get_craftables(interaction.user.id))
+    if base == things:
+        if int(user_inven[item]) < amount:
+            await interaction.response.send_message(f"You do not have enough **{item}** to sell!")
+            return
+    elif base == crafting_items:
+        if int(crafting_inven[item]) < amount:
+            await interaction.response.send_message(f"You do not have enough **{item}** to sell!")
+            return
+    item_worth = base[item]["worth"]
     total_worth = item_worth * amount
     await add_coins(total_worth, interaction.user.id)
     await add_xp(total_worth, interaction.user.id)
     for i in range(amount):
-        await remove_from_inventory(item, interaction.user.id)
+        if base == things:
+            await remove_from_inventory(item, interaction.user.id)
+        elif base == crafting_items:
+            await remove_craftable(item, interaction.user.id)
     await interaction.response.send_message(f"You sold **{amount} {item}** for **`{total_worth}`** coins!")
