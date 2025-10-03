@@ -40,7 +40,7 @@ async def craft_list(interaction: discord.Interaction):
     await interaction.response.send_message(embed=embed)
 
 @craft_group.command(name="concoct", description="Concoct a potion with different effects")
-async def concoct(interaction: discord.Interaction, luck: float=0, multi_spin: int=0, transmutate: int=0):
+async def concoct(interaction: discord.Interaction, luck: float=0.0, multi_spin: int=1, transmutate: int=0):
     if luck == multi_spin == transmutate == 0:
         await interaction.response.send_message("You must choose at least one modifier!")
         return
@@ -49,10 +49,7 @@ async def concoct(interaction: discord.Interaction, luck: float=0, multi_spin: i
         await interaction.response.send_message("Luck cannot be greater than 3!")
     else:
         total_cost += luck
-    if multi_spin > 3:
-        await interaction.response.send_message("Multi-spin cannot be greater than 3!")
-    else:
-        total_cost += multi_spin
+    total_cost += multi_spin
     if transmutate > 5:
         await interaction.response.send_message("Transmutate cannot be greater than 5!")
     else:
@@ -64,5 +61,5 @@ async def concoct(interaction: discord.Interaction, luck: float=0, multi_spin: i
     for i in range(multi_spin):
         spun = await spin(interaction.user.id, potion_strength=luck, transmutate_amount=transmutate)
         temp += spun + "\n"
-    await interaction.response.send_message(f"Concocted a potion with **{luck}** luck, **{multi_spin}** multi-spin, and **{transmutate}** transmutation")
+    await interaction.response.send_message(f"Concocted a potion with **{luck}** luck, **{multi_spin}** spin(s), and **{transmutate}** transmutation\nCost: `{total_cost}` XP")
     await interaction.followup.send(temp)
