@@ -1,5 +1,6 @@
 import discord, json, random
 from discord import app_commands
+from discord.ui import Button, View
 from discord.ext import commands
 
 from database import *
@@ -9,6 +10,27 @@ with open("configuration/items.json", "r") as items:
     things = json.load(items)
 with open("configuration/settings.json", "r") as settings_file:
     settings = json.load(settings_file)
+
+class DropView(discord.ui.View):
+    def __init__(self, admin_id, item, amount):
+        super().__init__(timeout=None)
+        self.admin_id = admin_id
+        self.item = item
+        self.amount = amount
+        self.claimed = False
+
+    @discord.ui.button(label="Claim", style=discord.ButtonStyle.green)
+    async def claim(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if self.claimed:
+            await interaction.response.send_message("This drop has already been claimed", ephemeral=True)
+            return
+
+        for i in range(self.amount):
+            await add_to_inventory(self.item, interaction.user.id)
+
+        self.claimed = True
+        await interaction.response.send_message(f"You claimed the drop and received **{self.amount}** **{self.item}**!")
+        self.stop()
 
 admin_group = discord.app_commands.Group(name="admin", description="Admin commands")
 
@@ -114,3 +136,19 @@ async def add_craftable_cmd(interaction: discord.Interaction, user: discord.User
     for i in range(amount):
         await add_craftable(item.title(), user.id)
     await interaction.response.send_message(f"Gave **{amount}** **{item.title()}** to {user.mention}!")
+
+@admin_group.command(name="drop", description="Create a drop giveaway")
+async def drop_cmd(interaction: discord.Interaction, item: str, amount: int):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    if not(item.title() in things):
+        await interaction.response.send_message("That item does not exist")
+        return
+    await interaction.response.send_message(f"Created a drop giveaway for **{amount}** **{item.title()}**!")
+    embed = discord.Embed(
+        title=f"{item.title()} Drop!",
+        description=f"Click the button below to claim **{amount}** **{item.title()}**!",
+        color=discord.Color.gold()
+    )
+    await interaction.followup.send(embed=embed, view=DropView(interaction.user.id, item.title(), amount))
