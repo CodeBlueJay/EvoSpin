@@ -50,10 +50,7 @@ async def concoct(interaction: discord.Interaction, luck: float=0.0, multi_spin:
     else:
         total_cost += luck
     total_cost += multi_spin
-    if transmutate > 5:
-        await interaction.response.send_message("Transmutate cannot be greater than 5!")
-    else:
-        total_cost += transmutate
+    total_cost += transmutate
     multiplier = luck + multi_spin + transmutate
     total_cost = int(5000 * (1 + (multiplier * 0.5)))
     await remove_xp(total_cost, interaction.user.id)
