@@ -34,6 +34,16 @@
         "description": "Evolves the next item you roll into its evolution.",
         "abbev": "t1"
     },
+    "Transmutate 2": {
+        "price": 8000,
+        "description": "Evolves the next item you roll into its 2nd evolution.",
+        "abbev": "t2"
+    },
+    "Transmutate 3": {
+        "price": 15000,
+        "description": "Evolves the next item you roll into its 3rd evolution.",
+        "abbev": "t3"
+    },
     "Xp Bottle": {
         "price": 300,
         "description": "Gives you 500 XP.",
