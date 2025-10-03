@@ -256,7 +256,7 @@
         "next_evo": null,
         "required": 0,
         "abbev": "dr",
-        "worth": 150,
+        "worth": 3000,
         "comp": true,
         "description": "The first EvoSpin Playtester. A truly gifted author."
     },
@@ -278,7 +278,7 @@
         "prev_evo": "Algebra 1",
         "next_evo": "Algebra 2",
         "required": 5,
-        "abbev": "g",
+        "abbev": "geo",
         "worth": 15,
         "comp": true,
         "description": "A math course focusing on the properties and relations of points, lines, surfaces, and solids."
@@ -537,7 +537,7 @@
         "next_evo": "Gay",
         "required": 69,
         "abbev": "li",
-        "worth": 2000,
+        "worth": 1000,
         "comp": true,
         "description": "A notable figure in the EvoSpin community, known for his contributions and presence."
     },
@@ -548,7 +548,7 @@
         "next_evo": null,
         "required": 0,
         "abbev": "gy",
-        "worth": 6900,
+        "worth": 2000,
         "comp": true,
         "description": "The next evolution of Lieand, representing a significant milestone."
     },
@@ -775,6 +775,30 @@
         "worth": 8000,
         "comp": true,
         "description": "The pinnacle of mobile suit evolution, the Mighty Strike Freedom Gundam represents the zenith of engineering and combat capability."
+    },
+
+    "Phoenix": {
+        "name": "Phoenix",
+        "rarity": 0.0002,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "ph",
+        "worth": 10000,
+        "comp": true,
+        "description": "A mythical bird that is cyclically reborn from its ashes. A symbol of immortality and renewal."
+    },
+
+    "Cool Anteater": {
+        "name": "Cool Anteater",
+        "rarity": 0.0005,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "ca",
+        "worth": 7000,
+        "comp": true,
+        "description": "An anteater with a cool demeanor and style. A rare find among EvoSpinners."
     },
 
     "Ultra Frog": {

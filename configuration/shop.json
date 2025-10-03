@@ -5,32 +5,32 @@
         "abbev": "ms1"
     },
     "Multi-Spin 2": {
-        "price": 150,
+        "price": 300,
         "description": "Rolls 5 items at once for 1 roll.",
         "abbev": "ms2"
     },
     "Multi-Spin 3": {
-        "price": 250,
+        "price": 500,
         "description": "Rolls 10 items at once for 1 roll.",
         "abbev": "ms3"
     },
     "Luck 1": {
-        "price": 150,
+        "price": 500,
         "description": "Increases your chance of getting rare items by 100% for 1 roll.",
         "abbev": "l1"
     },
     "Luck 2": {
-        "price": 400,
+        "price": 1000,
         "description": "Increases your chance of getting rare items by 500% for 1 roll.",
         "abbev": "l2"
     },
     "Luck 3": {
-        "price": 700,
+        "price": 2000,
         "description": "Increases your chance of getting rare items by 1000% for 1 roll.",
         "abbev": "l3"
     },
     "Transmutate 1": {
-        "price": 500,
+        "price": 5000,
         "description": "Evolves the next item you roll into its evolution.",
         "abbev": "t1"
     },
