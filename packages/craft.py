@@ -41,18 +41,20 @@ async def craft_list(interaction: discord.Interaction):
 
 @craft_group.command(name="concoct", description="Concoct a potion with different effects")
 async def concoct(interaction: discord.Interaction, luck: float=0.0, multi_spin: int=1, transmutate: int=0):
-    if luck == multi_spin == transmutate == 0:
+    if luck == 0 and transmutate == 0:
         await interaction.response.send_message("You must choose at least one modifier!")
+        return
+    if multi_spin == 0:
+        await interaction.response.send_message("You must spin at least once!")
         return
     total_cost = 0
     if luck > 3:
         await interaction.response.send_message("Luck cannot be greater than 3!")
     else:
         total_cost += luck
-    total_cost += multi_spin
-    total_cost += transmutate
     multiplier = luck + multi_spin + transmutate
-    total_cost = int(5000 * (1 + (multiplier * 0.5)))
+    total_cost += multiplier * (multiplier + 1) / 2
+    total_cost = int(total_cost * 750)
     await remove_xp(total_cost, interaction.user.id)
     temp = ""
     for i in range(multi_spin):
