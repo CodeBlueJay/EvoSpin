@@ -812,6 +812,18 @@
         "description": "An anteater with a cool demeanor and style. A rare find among EvoSpinners."
     },
 
+    "Samsung Galaxy S25 Ultra": {
+        "name": "Samsung Galaxy S25 Ultra",
+        "rarity": 0.0001,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "s25u",
+        "worth": 3000,
+        "comp": true,
+        "description": "The latest and greatest smartphone from Samsung, featuring cutting-edge technology and design."
+    },
+
     "Ultra Frog": {
         "name": "Ultra Frog",
         "rarity": 0.005,
