@@ -90,6 +90,8 @@ async def use_potion(interaction: discord.Interaction, potion: str, amount: int=
     potion_functions = {
         "Multi-Spin 1": lambda user_id: potioneffects.msi(spin, user_id),
         "Transmutate 1": lambda user_id: potioneffects.transmutate1(spin, user_id),
+        "Transmutate 2": lambda user_id: potioneffects.transmutate2(spin, user_id),
+        "Transmutate 3": lambda user_id: potioneffects.transmutate3(spin, user_id),
         "Luck 1": lambda user_id: potioneffects.l1(spin, user_id),
         "Luck 2": lambda user_id: potioneffects.l2(spin, user_id),
         "Luck 3": lambda user_id: potioneffects.l3(spin, user_id),
