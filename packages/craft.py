@@ -55,6 +55,9 @@ async def concoct(interaction: discord.Interaction, luck: float=0.0, multi_spin:
     multiplier = luck + multi_spin + transmutate
     total_cost += multiplier * (multiplier + 1) / 2
     total_cost = int(total_cost * 750)
+    if await get_xp(interaction.user.id) < total_cost:
+        await interaction.response.send_message(f"You need at least **`{total_cost}`** XP to concoct this potion!")
+        return
     await remove_xp(total_cost, interaction.user.id)
     temp = ""
     for i in range(multi_spin):
