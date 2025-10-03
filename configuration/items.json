@@ -322,7 +322,7 @@
         "prev_evo": "Precalculus",
         "next_evo": "Multivariable Calculus",
         "required": 3,
-        "abbev": "c",
+        "abbev": "calc",
         "worth": 120,
         "comp": true,
         "description": "A branch of mathematics that studies continuous change, including concepts such as limits, derivatives, and integrals."
@@ -333,7 +333,7 @@
         "prev_evo": "Calculus",
         "next_evo": "Statistics",
         "required": 2,
-        "abbev": "mc",
+        "abbev": "mcalc",
         "worth": 250,
         "comp": true,
         "description": "An advanced calculus course that extends the concepts of single-variable calculus to functions of multiple variables."
@@ -502,7 +502,7 @@
         "next_evo": "Leviathan Of The Eclipse",
         "required": 5,
         "abbev": "cl",
-        "worth": 10000,
+        "worth": 3000,
         "comp": true,
         "description": "A mythical sea creature said to dwell in the depths of space. During times of Solar Eclipse, it is said to transcend to a higher form."
     },
@@ -513,7 +513,7 @@
         "next_evo": null,
         "required": 10,
         "abbev": "le",
-        "worth": 25000,
+        "worth": 10000,
         "comp": true,
         "description": "An even more mythical form of the Cosmic Leviathan, said to appear only during a total Solar Eclipse. A true legend among EvoSpinners."
     },
@@ -562,6 +562,54 @@
         "worth": 2000,
         "comp": true,
         "description": "The next evolution of Lieand, representing a significant milestone."
+    },
+
+    "Thunder Basilisk": {
+        "name": "Thunder Basilisk",
+        "rarity": 0.00033,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "tb",
+        "worth": 2500,
+        "comp": true,
+        "description": "A mythical creature known for its electrifying presence and legendary status among EvoSpinners."
+    },
+
+    "Missingsdex": {
+        "name": "Missingsdex",
+        "rarity": 0.0005,
+        "prev_evo": null,
+        "next_evo": "Pokedex",
+        "required": 20,
+        "abbev": "md",
+        "worth": 500,
+        "comp": true,
+        "description": "A Ballsdex spinoff created by asianantking8064"
+    },
+
+    "Thaitangle": {
+        "name": "Thaitangle",
+        "rarity": 0.00005,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 10,
+        "abbev": "tt",
+        "worth": 3000,
+        "comp": true,
+        "description": "Thaitangle is the legendary rectangle representing thailand."
+    },
+
+    "George Washingmyhands": {
+        "name": "George Washingmyhands",
+        "rarity": 0.0001,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "gw",
+        "worth": 4000,
+        "comp": true,
+        "description": "A historical figure known for his leadership and hygiene."
     },
 
     "Ant": {
@@ -814,7 +862,7 @@
 
     "Samsung Galaxy S25 Ultra": {
         "name": "Samsung Galaxy S25 Ultra",
-        "rarity": 0.0001,
+        "rarity": 0.00001,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
