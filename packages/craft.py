@@ -40,29 +40,28 @@ async def craft_list(interaction: discord.Interaction):
     await interaction.response.send_message(embed=embed)
 
 @craft_group.command(name="concoct", description="Concoct a potion with different effects")
-async def concoct(interaction: discord.Interaction, luck: float=0, multi_spin: int=0, transmutate: int=0):
-    if luck == multi_spin == transmutate == 0:
+async def concoct(interaction: discord.Interaction, luck: float=0.0, multi_spin: int=1, transmutate: int=0):
+    if luck == 0 and transmutate == 0:
         await interaction.response.send_message("You must choose at least one modifier!")
+        return
+    if multi_spin == 0:
+        await interaction.response.send_message("You must spin at least once!")
         return
     total_cost = 0
     if luck > 3:
         await interaction.response.send_message("Luck cannot be greater than 3!")
     else:
         total_cost += luck
-    if multi_spin > 3:
-        await interaction.response.send_message("Multi-spin cannot be greater than 3!")
-    else:
-        total_cost += multi_spin
-    if transmutate > 5:
-        await interaction.response.send_message("Transmutate cannot be greater than 5!")
-    else:
-        total_cost += transmutate
     multiplier = luck + multi_spin + transmutate
-    total_cost = int(5000 * (1 + (multiplier * 0.5)))
+    total_cost += multiplier * (multiplier + 1) / 2
+    total_cost = int(total_cost * 750)
+    if await get_xp(interaction.user.id) < total_cost:
+        await interaction.response.send_message(f"You need at least **`{total_cost}`** XP to concoct this potion!")
+        return
     await remove_xp(total_cost, interaction.user.id)
     temp = ""
     for i in range(multi_spin):
         spun = await spin(interaction.user.id, potion_strength=luck, transmutate_amount=transmutate)
         temp += spun + "\n"
-    await interaction.response.send_message(f"Concocted a potion with **{luck}** luck, **{multi_spin}** multi-spin, and **{transmutate}** transmutation")
+    await interaction.response.send_message(f"Concocted a potion with **{luck}** luck, **{multi_spin}** spin(s), and **{transmutate}** transmutation\nCost: `{total_cost}` XP")
     await interaction.followup.send(temp)

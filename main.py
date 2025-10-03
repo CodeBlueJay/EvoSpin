@@ -18,7 +18,7 @@ TOKEN = os.getenv("TOKEN")
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-cogs = [module["roll"].roll_group, module["admin"].admin_group, module["shop"].shop_group, module["craft"].craft_group]
+cogs = [module["roll"].roll_group, module["admin"].admin_group, module["shop"].shop_group, module["craft"].craft_group, module["trade"].trade_group]
 
 async def get_user(user_id):
     user = await bot.fetch_user(user_id)

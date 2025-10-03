@@ -81,7 +81,7 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
     await add_to_inventory(spun, user_id)
     await add_xp(1, user_id)
     try:
-        return f"You got a **{spun}** (*1 in {round((total / things[spun]['rarity']))}*)!"
+        return f"You got a **{spun}** (*1 in {'{:,}'.format(round((total / things[spun]['rarity'])))}*)!"
     except:
         return f"You got a **{spun}** (*1 in 0*)!"
 
