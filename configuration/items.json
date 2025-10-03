@@ -106,12 +106,23 @@
         "name": "Honda Civic",
         "rarity": 10,
         "prev_evo": null,
-        "next_evo": null,
+        "next_evo": "Bergentruck",
         "required": 8,
         "abbev": "hc",
         "worth": 10,
         "comp": true,
         "description": "A reliable car. Known for its fuel efficiency."
+    },
+    "Bergentruck": {
+        "name": "Bergentruck",
+        "rarity": 0,
+        "prev_evo": "Honda Civic",
+        "next_evo": null,
+        "required": 5,
+        "abbev": "bt",
+        "worth": 25,
+        "comp": true,
+        "description": "A heavy-duty truck. Can run over a deer right after a beer."
     },
 
     "Laptop": {
