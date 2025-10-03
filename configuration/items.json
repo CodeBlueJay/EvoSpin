@@ -439,6 +439,18 @@
         "description": "The Fourth Reich. Guten Tag Poland."
     },
 
+    "Sky Dragon": {
+        "name": "Sky Dragon",
+        "rarity": 0.0002,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "sd",
+        "worth": 2000,
+        "comp": true,
+        "description": "A mythical dragon that soars through the skies. A symbol of power and freedom."
+    },
+    
     "Water Drop": {
         "name": "Water Drop",
         "rarity": 25,
