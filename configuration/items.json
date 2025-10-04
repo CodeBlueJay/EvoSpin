@@ -614,7 +614,7 @@
 
     "George Washingmyhands": {
         "name": "George Washingmyhands",
-        "rarity": 0.0001,
+        "rarity": 0.00075,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
@@ -848,8 +848,32 @@
         "description": "The pinnacle of mobile suit evolution, the Mighty Strike Freedom Gundam represents the zenith of engineering and combat capability."
     },
 
-    "Phoenix": {
-        "name": "Phoenix",
+    "Equinox": {
+        "name": "Equinox",
+        "rarity": 0.000075,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "eq",
+        "worth": 8000,
+        "comp": true,
+        "description": "A celestial being that embodies the balance of day and night. A rare and powerful entity among EvoSpinners."
+    },
+
+    "Sovereign Dragonlord": {
+        "name": "Sovereign Dragonlord",
+        "rarity": 0.0001,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "sndr",
+        "worth": 6000,
+        "comp": true,
+        "description": "A majestic dragon of immense power and wisdom, ruling over the skies with an iron claw. A legendary figure among EvoSpinners."
+    },
+
+    "Spectral Phoenix": {
+        "name": "Spectral Phoenix",
         "rarity": 0.0002,
         "prev_evo": null,
         "next_evo": null,
@@ -857,7 +881,7 @@
         "abbev": "ph",
         "worth": 10000,
         "comp": true,
-        "description": "A mythical bird that is cyclically reborn from its ashes. A symbol of immortality and renewal."
+        "description": "A mythical bird reborn from ethereal flames, the Spectral Phoenix radiates power and mystery. Its rare appearance is said to bring fortune to those who witness it."
     },
 
     "Cool Anteater": {
