@@ -10,6 +10,10 @@ with open("configuration/items.json", "r") as items:
     things = json.load(items)
 with open("configuration/settings.json", "r") as settings_file:
     settings = json.load(settings_file)
+with open("configuration/shop.json", "r") as potions:
+    potion_data = json.load(potions)
+with open("configuration/crafting.json", "r") as craftables:
+    crafting_data = json.load(craftables)
 
 class DropView(discord.ui.View):
     def __init__(self, admin_id, item, amount):
@@ -29,7 +33,9 @@ class DropView(discord.ui.View):
             await add_to_inventory(self.item, interaction.user.id)
 
         self.claimed = True
-        await interaction.response.send_message(f"You claimed the drop and received **{self.amount}** **{self.item}**!")
+        await interaction.response.send_message(f"{interaction.user.mention} claimed the drop and received **{self.amount}** **{self.item}**!")
+        button.disabled = True
+        await interaction.message.edit(view=self)
         self.stop()
 
 admin_group = discord.app_commands.Group(name="admin", description="Admin commands")
@@ -138,7 +144,7 @@ async def add_craftable_cmd(interaction: discord.Interaction, user: discord.User
     await interaction.response.send_message(f"Gave **{amount}** **{item.title()}** to {user.mention}!")
 
 @admin_group.command(name="drop", description="Create a drop giveaway")
-async def drop_cmd(interaction: discord.Interaction, item: str, amount: int):
+async def drop_cmd(interaction: discord.Interaction, item: str, amount: int=1):
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
@@ -147,8 +153,29 @@ async def drop_cmd(interaction: discord.Interaction, item: str, amount: int):
         return
     await interaction.response.send_message(f"Created a drop giveaway for **{amount}** **{item.title()}**!")
     embed = discord.Embed(
-        title=f"{item.title()} Drop!",
+        title=f"Item Drop!",
         description=f"Click the button below to claim **{amount}** **{item.title()}**!",
         color=discord.Color.gold()
     )
+    embed.add_field(name="Item", value=item.title())
+    embed.add_field(name="Amount", value=str(amount))
     await interaction.followup.send(embed=embed, view=DropView(interaction.user.id, item.title(), amount))
+
+@admin_group.command(name="max", description="Give a user all items, potions, and craftables")
+async def max_cmd(interaction: discord.Interaction, user: discord.User):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+
+    await interaction.response.defer(thinking=True)
+
+    added = 0
+    for k, v in things.items():
+        print(f"{k} | {v.get('comp', True)} | {v.get('abbev', None)}")
+        if v.get("comp", True):
+            await add_to_inventory(k, user.id)
+    for potion in potion_data:
+        await add_potion(potion, user.id)
+    for craftable in crafting_data:
+        await add_craftable(craftable, user.id)
+    await interaction.followup.send(f"Gave full completion to {user.mention}!")
