@@ -174,7 +174,6 @@ async def max_cmd(interaction: discord.Interaction, user: discord.User):
 
     added = 0
     for k, v in things.items():
-        print(f"{k} | {v.get('comp', True)} | {v.get('abbev', None)}")
         if v.get("comp", True):
             await add_to_inventory(k, user.id)
     for potion in potion_data:
@@ -182,3 +181,29 @@ async def max_cmd(interaction: discord.Interaction, user: discord.User):
     for craftable in crafting_data:
         await add_craftable(craftable, user.id)
     await interaction.followup.send(f"Gave full completion to {user.mention}!")
+
+@admin_group.command(name="check_dupes", description="Check for abbreviation conflicts")
+async def check_dupes_cmd(interaction: discord.Interaction):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+
+    await interaction.response.defer(thinking=True)
+
+    abbevs = {}
+    dupe_abbevs = []
+    for k, v in things.items():
+        if v.get("abbev", None):
+            if v["abbev"] in abbevs:
+                dupe_abbevs.append(v["abbev"])
+            else:
+                abbevs[v["abbev"]] = k
+
+    if dupe_abbevs:
+        response = "Found the following abbreviation conflicts:\n"
+        for dupe in dupe_abbevs:
+            items_with_dupe = [k for k, v in things.items() if v.get("abbev", None) == dupe]
+            response += f"Abbreviation **{dupe}** is used by: {', '.join(items_with_dupe)}\n"
+        await interaction.followup.send(response)
+    else:
+        await interaction.followup.send("No abbreviation conflicts found.")

@@ -441,7 +441,7 @@
 
     "Equinox": {
         "name": "Equinox",
-        "rarity": 0.000075,
+        "rarity": 0.00000075,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
@@ -453,7 +453,7 @@
 
     "Sovereign Dragonlord": {
         "name": "Sovereign Dragonlord",
-        "rarity": 0.0001,
+        "rarity": 0.00001,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
@@ -465,7 +465,7 @@
 
     "Spectral Phoenix": {
         "name": "Spectral Phoenix",
-        "rarity": 0.0002,
+        "rarity": 0.00002,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
@@ -643,7 +643,7 @@
         "next_evo": null,
         "required": 10,
         "abbev": "tt",
-        "worth": 3000,
+        "worth": 3000000,
         "comp": true,
         "description": "Thaitangle is the legendary rectangle representing thailand."
     },
@@ -884,16 +884,280 @@
         "description": "The pinnacle of mobile suit evolution, the Mighty Strike Freedom Gundam represents the zenith of engineering and combat capability."
     },
 
-    "Phoenix": {
-        "name": "Phoenix",
-        "rarity": 0.0002,
+    "Carrot": {
+        "name": "Carrot",
+        "rarity": 40,
         "prev_evo": null,
-        "next_evo": null,
-        "required": 0,
-        "abbev": "ph",
+        "next_evo": "Strawberry",
+        "required": 10,
+        "abbev": "car",
+        "worth": 5,
+        "comp": true,
+        "description": "A crunchy vegetable. Can be evolved into a Strawberry."
+    },
+    "Strawberry": {
+        "name": "Strawberry",
+        "rarity": 0,
+        "prev_evo": "Carrot",
+        "next_evo": "Blueberry",
+        "required": 5,
+        "abbev": "str",
+        "worth": 15,
+        "comp": true,
+        "description": "A sweet fruit. Can be evolved into a Blueberry."
+    },
+    "Blueberry": {
+        "name": "Blueberry",
+        "rarity": 0,
+        "prev_evo": "Strawberry",
+        "next_evo": "Orange Tulip",
+        "required": 5,
+        "abbev": "blu",
+        "worth": 50,
+        "comp": true,
+        "description": "A sweet fruit. Can be evolved into Orange Tulip."
+    },
+    "Orange Tulip": {
+        "name": "Orange Tulip",
+        "rarity": 0,
+        "prev_evo": "Blueberry",
+        "next_evo": "Tomato",
+        "required": 5,
+        "abbev": "ot",
+        "worth": 150,
+        "comp": true,
+        "description": "A beautiful flower. Can be evolved into a Tomato."
+    },
+    "Tomato": {
+        "name": "Tomato",
+        "rarity": 0,
+        "prev_evo": "Orange Tulip",
+        "next_evo": "Daffodil",
+        "required": 5,
+        "abbev": "tom",
+        "worth": 500,
+        "comp": true,
+        "description": "A juicy fruit. Can be evolved into a Daffodil."
+    },
+    "Daffodil": {
+        "name": "Daffodil",
+        "rarity": 0,
+        "prev_evo": "Tomato",
+        "next_evo": "Corn",
+        "required": 5,
+        "abbev": "daf",
+        "worth": 2000,
+        "comp": true,
+        "description": "A beautiful flower. Can be evolved into Corn."
+    },
+    "Corn": {
+        "name": "Corn",
+        "rarity": 0,
+        "prev_evo": "Daffodil",
+        "next_evo": "Watermelon",
+        "required": 5,
+        "abbev": "cor",
+        "worth": 5000,
+        "comp": true,
+        "description": "A staple crop. Can be evolved into Watermelon."
+    },
+    "Watermelon": {
+        "name": "Watermelon",
+        "rarity": 0,
+        "prev_evo": "Corn",
+        "next_evo": "Pumpkin",
+        "required": 5,
+        "abbev": "wm",
         "worth": 10000,
         "comp": true,
-        "description": "A mythical bird that is cyclically reborn from its ashes. A symbol of immortality and renewal."
+        "description": "A refreshing fruit. Can be evolved into Pumpkin."
+    },
+    "Pumpkin": {
+        "name": "Pumpkin",
+        "rarity": 0,
+        "prev_evo": "Watermelon",
+        "next_evo": "Apple",
+        "required": 5,
+        "abbev": "pum",
+        "worth": 20000,
+        "comp": true,
+        "description": "A large fruit often associated with autumn and Halloween. Can be evolved into Apple."
+    },
+    "Apple": {
+        "name": "Apple",
+        "rarity": 0,
+        "prev_evo": "Pumpkin",
+        "next_evo": "Bamboo",
+        "required": 5,
+        "abbev": "app",
+        "worth": 50000,
+        "comp": true,
+        "description": "A popular fruit known for its crisp texture and sweet flavor. Can be evolved into Bamboo."
+    },
+    "Bamboo": {
+        "name": "Bamboo",
+        "rarity": 0,
+        "prev_evo": "Apple",
+        "next_evo": "Coconut",
+        "required": 5,
+        "abbev": "bam",
+        "worth": 100000,
+        "comp": true,
+        "description": "A fast-growing plant known for its strength and versatility. Can be evolved into Coconut."
+    },
+    "Coconut": {
+        "name": "Coconut",
+        "rarity": 0,
+        "prev_evo": "Bamboo",
+        "next_evo": "Cactus",
+        "required": 5,
+        "abbev": "coc",
+        "worth": 250000,
+        "comp": true,
+        "description": "A tropical fruit known for its hard shell and refreshing water. Can be evolved into Cactus."
+    },
+    "Cactus": {
+        "name": "Cactus",
+        "rarity": 0,
+        "prev_evo": "Coconut",
+        "next_evo": "Dragon Fruit",
+        "required": 5,
+        "abbev": "cac",
+        "worth": 500000,
+        "comp": true,
+        "description": "A resilient plant adapted to arid environments. Can be evolved into Dragon Fruit."
+    },
+    "Dragon Fruit": {
+        "name": "Dragon Fruit",
+        "rarity": 0,
+        "prev_evo": "Cactus",
+        "next_evo": "Mango",
+        "required": 5,
+        "abbev": "df",
+        "worth": 1000000,
+        "comp": true,
+        "description": "A vibrant fruit known for its unique appearance and sweet taste. Can be evolved into Mango."
+    },
+    "Mango": {
+        "name": "Mango",
+        "rarity": 0,
+        "prev_evo": "Dragon Fruit",
+        "next_evo": "Mushroom",
+        "required": 5,
+        "abbev": "mang",
+        "worth": 2500000,
+        "comp": true,
+        "description": "A tropical fruit celebrated for its juicy flesh and rich flavor. Can be evolved into Mushroom."
+    },
+    "Mushroom": {
+        "name": "Mushroom",
+        "rarity": 0,
+        "prev_evo": "Mango",
+        "next_evo": "Grape",
+        "required": 5,
+        "abbev": "msh",
+        "worth": 5000000,
+        "comp": true,
+        "description": "A fungi known for its culinary and medicinal uses. Can be evolved into Grape."
+    },
+    "Grape": {
+        "name": "Grape",
+        "rarity": 0,
+        "prev_evo": "Mushroom",
+        "next_evo": "Pepper",
+        "required": 5,
+        "abbev": "grap",
+        "worth": 7500000,
+        "comp": true,
+        "description": "A small fruit often used to make wine. Can be evolved into Pepper."
+    },
+    "Pepper": {
+        "name": "Pepper",
+        "rarity": 0,
+        "prev_evo": "Grape",
+        "next_evo": "Cacao",
+        "required": 5,
+        "abbev": "pep",
+        "worth": 10000000,
+        "comp": true,
+        "description": "A spice known for its pungent flavor. Can be evolved into Cacao."
+    },
+    "Cacao": {
+        "name": "Cacao",
+        "rarity": 0,
+        "prev_evo": "Pepper",
+        "next_evo": "Beanstalk",
+        "required": 5,
+        "abbev": "cacoa",
+        "worth": 15000000,
+        "comp": true,
+        "description": "The seed from which chocolate is made. Can be evolved into Beanstalk."
+    },
+    "Beanstalk": {
+        "name": "Beanstalk",
+        "rarity": 0,
+        "prev_evo": "Cacao",
+        "next_evo": "Ember Lily",
+        "required": 5,
+        "abbev": "bs",
+        "worth": 20000000,
+        "comp": true,
+        "description": "A giant plant that reaches the sky. Can be evolved into Ember Lily."
+    },
+    "Ember Lily": {
+        "name": "Ember Lily",
+        "rarity": 0,
+        "prev_evo": "Beanstalk",
+        "next_evo": "Sugar Apple",
+        "required": 5,
+        "abbev": "el",
+        "worth": 30000000,
+        "comp": true,
+        "description": "A fiery flower that blooms with intense heat. Can be evolved into Sugar Apple."
+    },
+    "Sugar Apple": {
+        "name": "Sugar Apple",
+        "rarity": 0,
+        "prev_evo": "Ember Lily",
+        "next_evo": "Elder Strawberry",
+        "required": 5,
+        "abbev": "sa",
+        "worth": 50000000,
+        "comp": true,
+        "description": "A sweet fruit known for its creamy texture. Can be evolved into Crimson Thorn."
+    },
+    "Elder Strawberry": {
+        "name": "Elder Strawberry",
+        "rarity": 0,
+        "prev_evo": "Sugar Apple",
+        "next_evo": "Romanesco",
+        "required": 0,
+        "abbev": "es",
+        "worth": 75000000,
+        "comp": true,
+        "description": "A rare and ancient variety of strawberry, known for its exceptional flavor and longevity."
+    },
+    "Romanesco": {
+        "name": "Romanesco",
+        "rarity": 0,
+        "prev_evo": "Elder Strawberry",
+        "next_evo": "Crimson Thorn",
+        "required": 0,
+        "abbev": "rom",
+        "worth": 90000000,
+        "comp": true,
+        "description": "A unique vegetable known for its fractal-like appearance and vibrant green color. Can be evolved into Crimson Thorn."
+    },
+    "Crimson Thorn": {
+        "name": "Crimson Thorn",
+        "rarity": 0,
+        "prev_evo": "Romanesco",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "ct",
+        "worth": 100000000,
+        "comp": true,
+        "description": "The final evolution in the food chain, representing the pinnacle of growth and transformation."
     },
 
     "Cool Anteater": {

@@ -252,6 +252,16 @@ async def item_info(interaction: discord.Interaction, item: str):
     await interaction.response.defer(thinking=True)
     await interaction.followup.send(embed=embed)
 
+@roll_group.command(name="rarity_list", description="Show the rarity list")
+async def rarity_list(interaction: discord.Interaction):
+    await interaction.response.defer()
+    temp = ""
+    sorted_things = dict(sorted(things.items(), key=lambda item: item[1]["rarity"], reverse=True))
+    for i in sorted_things:
+        if sorted_things[i]["rarity"] > 0 and sorted_things[i]["rarity"] != None:
+            temp += f"**{i}** - 1 in {'{:,}'.format(round((totalsum / sorted_things[i]['rarity'])))}\n"
+    await interaction.followup.send(f"**Naturally Spawning Items Rarity List:**\n{temp}")
+
 async def calculate_rarities():
     global totalsum, roundTo
     for i in things:
