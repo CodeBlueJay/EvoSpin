@@ -20,13 +20,13 @@ async def transmutate3(spinfn, user_id: int):
     return [result]
 
 async def l1(spinfn, user_id: int):
-    return [await spinfn(user_id, potion_strength=1.2)]
+    return [await spinfn(user_id, potion_strength=2)]
 
 async def l2(spinfn, user_id: int):
-    return [await spinfn(user_id, potion_strength=1.5)]
+    return [await spinfn(user_id, potion_strength=3)]
 
 async def l3(spinfn, user_id: int):
-    return [await spinfn(user_id, potion_strength=2)]
+    return [await spinfn(user_id, potion_strength=5)]
 
 async def msii(spinfn, user_id: int):
     return [await spinfn(user_id) for i in range(5)]
@@ -39,4 +39,4 @@ async def xpbottle(xpfn, user_id: int):
     return ["You gained **100 XP**!"]
 
 async def godly(spinfn, user_id: int):
-    return [await spinfn(user_id, potion_strength=3)]
+    return [await spinfn(user_id, potion_strength=50)]

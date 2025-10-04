@@ -361,3 +361,58 @@ async def remove_craftable(craftable, user_id):
         WHERE UserID = {user_id};
         """)
         await db.commit()
+
+async def remove_column(column_name):
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        ALTER TABLE Users
+        DROP COLUMN {column_name};
+        """)
+        await db.commit()
+
+async def get_mutated(user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"""
+        SELECT Mutated FROM Users WHERE UserID = {user_id};
+        """)
+        mutated = await cursor.fetchone()
+        if mutated[0] == None:
+            return ""
+        return mutated[0]
+
+async def add_mutated(mutated, user_id):
+    await check_user_exist(user_id)
+    mutated_list = await decrypt_inventory(await get_mutated(user_id))
+    try:
+        mutated_list[mutated] = int(mutated_list[mutated])
+        mutated_list[mutated] += 1
+    except:
+        mutated_list[mutated] = 1
+    encrypted = await encrypt_inventory(mutated_list)
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        UPDATE Users
+        SET Mutated = '{encrypted}'
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()
+
+async def remove_mutated(mutated, user_id):
+    await check_user_exist(user_id)
+    mutated_list = await decrypt_inventory(await get_mutated(user_id))
+    try:
+        mutated_list[mutated] = int(mutated_list[mutated])
+        mutated_list[mutated] -= 1
+        if mutated_list[mutated] <= 0:
+            mutated_list.pop(mutated)
+    except:
+        pass
+    encrypted = await encrypt_inventory(mutated_list)
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        UPDATE Users
+        SET Mutated = '{encrypted}'
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()

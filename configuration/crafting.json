@@ -20,7 +20,7 @@
         },
         "description": "A dog in the shape of a ball.",
         "abbev": "db",
-        "worth": 200,
+        "worth": 5,
         "rarity": -1,
         "comp": "Craftable",
         "next_evo": null,

@@ -207,3 +207,20 @@ async def check_dupes_cmd(interaction: discord.Interaction):
         await interaction.followup.send(response)
     else:
         await interaction.followup.send("No abbreviation conflicts found.")
+
+@admin_group.command(name="remove_column", description="Remove a column from the database")
+async def remove_column_cmd(interaction: discord.Interaction, column_name: str):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    await remove_column(column_name)
+    await interaction.response.send_message(f"Removed column **{column_name}** from the database!")
+
+@admin_group.command(name="add_mutated", description="Add a mutated item to a user")
+async def add_mutated_cmd(interaction: discord.Interaction, user: discord.User, item: str, amount: int=1):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    for i in range(amount):
+        await add_mutated(item.title(), user.id)
+    await interaction.response.send_message(f"Gave **{amount}** **{item.title()}** to {user.mention}!")

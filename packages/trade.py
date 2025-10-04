@@ -44,6 +44,18 @@ class GiveView(discord.ui.View):
             i.disabled = True
         self.stop()
 
+    @discord.ui.button(label="Cancel", style=discord.ButtonStyle.grey)
+    async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id != self.user_id:
+            await interaction.response.send_message("You cannot cancel this gift", ephemeral=True)
+            return
+
+        await interaction.response.send_message("Gift cancelled")
+        for i in self.children:
+            i.disabled = True
+        await interaction.message.edit(view=self)
+        self.stop()
+
 @trade_group.command(name="give", description="Give an item to another user")
 async def give(interaction: discord.Interaction, member: discord.Member, item: str, amount: int=1):
     user_id = interaction.user.id

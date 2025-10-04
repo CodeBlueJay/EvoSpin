@@ -85,15 +85,12 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
             base_total = sum(weights) or 0
             base_p = (base_w / base_total) if base_total > 0 else 0
             base_1in = round(1 / base_p) if base_p > 0 else 0
-            sum_trans_xp = sum((w ** exponent_base) for w in weights) or 0
-            xp_w = base_w ** exponent_base
-            xp_p = (xp_w / sum_trans_xp) if sum_trans_xp > 0 else 0
-            xp_1in = round(1 / xp_p) if xp_p > 0 else 0
             sum_trans = sum(transformed_weights) or 0
             luck_w = base_w ** exponent_final
             luck_p = (luck_w / sum_trans) if sum_trans > 0 else 0
             luck_1in = round(1 / luck_p) if luck_p > 0 else 0
-            return f"You got a **{spun}** (*1 in {base_1in:,}*)\n\n(*1 in {xp_1in:,}* with XP luck)\n(*1 in {luck_1in:,}* with luck boost {potion_strength:.2f})"
+            combined_luck_strength = max(0.0, min(1.0, 1.0 - float(exponent_final)))
+            return f"You got a **{spun}** (*1 in {base_1in:,}*)"
         else:
             return f"You got a **{spun}** (*Evolution*)!"
     except:

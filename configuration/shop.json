@@ -1,56 +1,56 @@
 {
   "Multi-Spin 1": {
-    "price": 5000,
+    "price": 750,
     "description": "Rolls 3 items at once for 1 roll.",
     "abbev": "ms1"
   },
   "Multi-Spin 2": {
-    "price": 20000,
-    "description": "Rolls 5 items at once for 1 roll.",
+    "price": 6000,
+    "description": "Rolls 6 items at once for 1 roll.",
     "abbev": "ms2"
   },
   "Multi-Spin 3": {
-    "price": 75000,
+    "price": 10000,
     "description": "Rolls 10 items at once for 1 roll.",
     "abbev": "ms3"
   },
   "Luck 1": {
-    "price": 4000,
+    "price": 500,
     "description": "Increases your chance of getting rare items slightly for 1 roll.",
     "abbev": "l1"
   },
   "Luck 2": {
-    "price": 15000,
+    "price": 750,
     "description": "Increases your chance of getting rare items moderately for 1 roll.",
     "abbev": "l2"
   },
   "Luck 3": {
-    "price": 60000,
+    "price": 1000,
     "description": "Increases your chance of getting rare items strongly for 1 roll.",
     "abbev": "l3"
   },
   "Transmutate 1": {
-    "price": 75000,
+    "price": 10000,
     "description": "Evolves the next item you roll into its evolution.",
     "abbev": "t1"
   },
   "Transmutate 2": {
-    "price": 200000,
+    "price": 15000,
     "description": "Evolves the next item you roll into its 2nd evolution.",
     "abbev": "t2"
   },
   "Transmutate 3": {
-    "price": 600000,
+    "price": 20000,
     "description": "Evolves the next item you roll into its 3rd evolution.",
     "abbev": "t3"
   },
   "Xp Bottle": {
-    "price": 30000,
+    "price": 500,
     "description": "Gives you 500 XP.",
     "abbev": "xp"
   },
   "Godly": {
-    "price": 2000000,
+    "price": 200000,
     "description": "Gives you a big luck boost for 1 roll.",
     "abbev": "g"
   }
