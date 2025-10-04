@@ -25,5 +25,31 @@
         "comp": "Craftable",
         "next_evo": null,
         "prev_evo": null
+    },
+    "Elemental Dragon: Storm": {
+        "components": {
+            "Sky Dragon": 1,
+            "Storm": 1
+        },
+        "description": "A powerful dragon that embodies the forces of nature.",
+        "abbev": "eds",
+        "worth": 10000,
+        "rarity": -1,
+        "comp": "Craftable",
+        "next_evo": null,
+        "prev_evo": null
+    },
+    "Elemental Dragon: Blue-Eyes": {
+        "components": {
+            "Sky Dragon": 1,
+            "Dragon With Eyes Of Blue": 1
+        },
+        "description": "A majestic dragon with piercing blue eyes.",
+        "abbev": "edb",
+        "worth": 14000,
+        "rarity": -1,
+        "comp": "Craftable",
+        "next_evo": null,
+        "prev_evo": null
     }
 }

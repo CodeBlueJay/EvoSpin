@@ -398,20 +398,20 @@
         "name": "Third Reich",
         "rarity": 0,
         "prev_evo": "Weimar Republic",
-        "next_evo": "DDR-BRD",
+        "next_evo": "Ddr-Brd",
         "required": 3,
         "abbev": "trh",
         "worth": 500,
         "comp": true,
         "description": "The Third Reich, also known as the Nazi regime, was the period of Nazi rule in Germany from 1933 to 1945."
     },
-    "DDR-BRD": {
-        "name": "DDR-BRD",
+    "Ddr-Brd": {
+        "name": "Ddr-Brd",
         "rarity": 0,
         "prev_evo": "Third Reich",
         "next_evo": "Germany",
         "required": 2,
-        "abbev": "db",
+        "abbev": "ddbr",
         "worth": 1000,
         "comp": true,
         "description": "The period of division in Germany from 1949 to 1990, when the country was split into East Germany (DDR) and West Germany (BRD), before reunification."
@@ -419,10 +419,10 @@
     "Germany": {
         "name": "Germany",
         "rarity": 0,
-        "prev_evo": "DDR-BRD",
+        "prev_evo": "Ddr-Brd",
         "next_evo": "Reichtangle",
         "required": 2,
-        "abbev": "g",
+        "abbev": "ger",
         "worth": 2000,
         "comp": true,
         "description": "The modern nation of Germany, reunified in 1990 and known for its rich history, culture, and economic strength."
@@ -437,6 +437,20 @@
         "worth": 5000,
         "comp": true,
         "description": "The Fourth Reich. Guten Tag Poland."
+    },
+
+    
+
+    "Phoenix": {
+        "name": "Phoenix",
+        "rarity": 0.0002,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "ph",
+        "worth": 10000,
+        "comp": true,
+        "description": "A mythical bird that is cyclically reborn from its ashes. A symbol of immortality and renewal."
     },
 
     "Sky Dragon": {
@@ -592,7 +606,7 @@
         "name": "Missingsdex",
         "rarity": 0.0005,
         "prev_evo": null,
-        "next_evo": "Pokedex",
+        "next_evo": null,
         "required": 20,
         "abbev": "md",
         "worth": 500,
@@ -602,7 +616,7 @@
 
     "Thaitangle": {
         "name": "Thaitangle",
-        "rarity": 0.00005,
+        "rarity": 0.0000001,
         "prev_evo": null,
         "next_evo": null,
         "required": 10,
@@ -848,32 +862,8 @@
         "description": "The pinnacle of mobile suit evolution, the Mighty Strike Freedom Gundam represents the zenith of engineering and combat capability."
     },
 
-    "Equinox": {
-        "name": "Equinox",
-        "rarity": 0.000075,
-        "prev_evo": null,
-        "next_evo": null,
-        "required": 0,
-        "abbev": "eq",
-        "worth": 8000,
-        "comp": true,
-        "description": "A celestial being that embodies the balance of day and night. A rare and powerful entity among EvoSpinners."
-    },
-
-    "Sovereign Dragonlord": {
-        "name": "Sovereign Dragonlord",
-        "rarity": 0.0001,
-        "prev_evo": null,
-        "next_evo": null,
-        "required": 0,
-        "abbev": "sndr",
-        "worth": 6000,
-        "comp": true,
-        "description": "A majestic dragon of immense power and wisdom, ruling over the skies with an iron claw. A legendary figure among EvoSpinners."
-    },
-
-    "Spectral Phoenix": {
-        "name": "Spectral Phoenix",
+    "Phoenix": {
+        "name": "Phoenix",
         "rarity": 0.0002,
         "prev_evo": null,
         "next_evo": null,
@@ -881,7 +871,7 @@
         "abbev": "ph",
         "worth": 10000,
         "comp": true,
-        "description": "A mythical bird reborn from ethereal flames, the Spectral Phoenix radiates power and mystery. Its rare appearance is said to bring fortune to those who witness it."
+        "description": "A mythical bird that is cyclically reborn from its ashes. A symbol of immortality and renewal."
     },
 
     "Cool Anteater": {
@@ -952,15 +942,5 @@
         "abbev": "ta",
         "comp": false,
         "description": "The exclusive Admin Only item."
-    },
-    "Fallback for no rarity yet": {
-        "name": "Fallback",
-        "rarity": 0,
-        "prev_evo": null,
-        "next_evo": null,
-        "required": 0,
-        "abbev": null,
-        "comp": false,
-        "description": "This item is a fallback for when an item has no rarity set."
     }
 }

@@ -41,6 +41,8 @@ async def init_db():
 async def encrypt_inventory(inventory):
     string = ""
     for key, value in inventory.items():
+        if key == None:
+            continue
         for k, v in translations.items():
             if key == v:
                 string += k
@@ -96,6 +98,8 @@ async def add_user(user_id):
 
 async def add_to_inventory(item, user_id):
     await check_user_exist(user_id)
+    if item == None:
+        return
     inventory = await decrypt_inventory(await get_inventory(user_id))
     try:
         inventory[item] = int(inventory[item])
@@ -191,6 +195,8 @@ async def clear_inventory(user_id):
         WHERE UserID = {user_id};
         """)
         await db.commit()
+    await clear_potions(user_id)
+    await clear_craftables(user_id)
 
 async def get_potions(user_id):
     await check_user_exist(user_id)
@@ -323,6 +329,16 @@ async def add_craftable(craftable, user_id):
         await db.execute(f"""
         UPDATE Users
         SET Craftables = '{encrypted}'
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()
+
+async def clear_craftables(user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        UPDATE Users
+        SET Craftables = ''
         WHERE UserID = {user_id};
         """)
         await db.commit()

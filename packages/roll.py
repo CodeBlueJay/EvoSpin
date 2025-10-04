@@ -122,6 +122,7 @@ async def use_potion(interaction: discord.Interaction, potion: str, amount: int=
 
 @roll_group.command(name="inventory", description="Show your inventory")
 async def inventory(interaction: discord.Interaction, user: discord.User=None):
+    await interaction.response.defer()
     user_inven = await decrypt_inventory(await get_inventory(user.id if user else interaction.user.id))
     potion_inven = await decrypt_inventory(await get_potions(user.id if user else interaction.user.id))
     craftables = await decrypt_inventory(await get_craftables(user.id if user else interaction.user.id))
@@ -205,9 +206,9 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
     if len(embed.fields) > 25:
         full_text = "INVENTORY\n" + (temp or "(Empty)") + "\n\nCRAFTABLES\n" + craft_string + "\n\nPOTIONS\n" + potion_string
         file = discord.File(fp=discord.utils._BytesIO(full_text.encode('utf-8')), filename="inventory.txt")
-        await interaction.response.send_message(content="Inventory too large, sent as file instead.", file=file)
+        await interaction.followup.send(content="Inventory too large, sent as file instead.", file=file)
     else:
-        await interaction.response.send_message(embed=embed)
+        await interaction.followup.send(embed=embed)
 
 @roll_group.command(name="info", description="Show an item's info")
 async def item_info(interaction: discord.Interaction, item: str):

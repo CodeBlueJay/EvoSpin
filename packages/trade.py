@@ -4,7 +4,7 @@ from discord.ui import Button, View
 from discord import app_commands
 from database import *
 
-with open("items.json", "r") as f:
+with open("configuration/items.json", "r") as f:
     things = json.load(f)
 
 trade_group = discord.app_commands.Group(name="trade", description="Trading commands")
@@ -23,10 +23,14 @@ class GiveView(discord.ui.View):
             await interaction.response.send_message("This gift is not for you", ephemeral=True)
             return
 
-        await remove_from_inventory(self.user_id, self.item, self.amount)
-        await add_to_inventory(self.target_id, self.item, self.amount)
+        for i in range(self.amount):
+            await remove_from_inventory(self.item, self.user_id)
+            await add_to_inventory(self.item, self.target_id)
 
-        await interaction.response.send_message("Gift accepted! You received " + str(self.amount) + " " + self.item + "(s)")
+        await interaction.response.send_message("Gift accepted! You received **" + str(self.amount) + " " + self.item + "(s)**")
+        for i in self.children:
+            i.disabled = True
+        await interaction.message.edit(view=self)
         self.stop()
     
     @discord.ui.button(label="Decline", style=discord.ButtonStyle.red)
@@ -36,12 +40,16 @@ class GiveView(discord.ui.View):
             return
 
         await interaction.response.send_message("Gift declined")
+        for i in self.children:
+            i.disabled = True
         self.stop()
 
 @trade_group.command(name="give", description="Give an item to another user")
-async def give(interaction: discord.Interaction, member: discord.Member, item: str, amount: int):
+async def give(interaction: discord.Interaction, member: discord.Member, item: str, amount: int=1):
     user_id = interaction.user.id
     target_id = member.id
+    item = item.title()
+    user_inven = await decrypt_inventory(await get_inventory(user_id))
 
     if user_id == target_id:
         await interaction.response.send_message("You cannot give yourself items")
@@ -50,9 +58,8 @@ async def give(interaction: discord.Interaction, member: discord.Member, item: s
     if not(item in things):
         await interaction.response.send_message("That item does not exist")
         return
-
-    if things[item] < amount:
+    if int(user_inven[item]) < amount:
         await interaction.response.send_message("You do not have enough " + item + "(s) to give")
         return
 
-    await interaction.response.send_message(user_id.mention + " is giving you " + str(amount) + " " + item + f"(s)\n\n{target_id.mention}", view=GiveView(user_id, target_id, item, amount))
+    await interaction.response.send_message(f"<@{user_id}> is giving you **{amount} {item}(s)**\n\n<@{target_id}>", view=GiveView(user_id, target_id, item, amount))
