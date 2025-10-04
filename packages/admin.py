@@ -151,14 +151,16 @@ async def drop_cmd(interaction: discord.Interaction, item: str, amount: int=1):
     if not(item.title() in things):
         await interaction.response.send_message("That item does not exist")
         return
-    await interaction.response.send_message(f"Created a drop giveaway for **{amount}** **{item.title()}**!")
+    await interaction.response.send_message(f"Spawned a new drop for **{amount}** **{item.title()}(s)**!")
     embed = discord.Embed(
         title=f"Item Drop!",
-        description=f"Click the button below to claim **{amount}** **{item.title()}**!",
+        description=f"First person to click the button gets **{amount}** **{item.title()}(s)**!",
         color=discord.Color.gold()
     )
     embed.add_field(name="Item", value=item.title())
     embed.add_field(name="Amount", value=str(amount))
+    embed.add_field(name="Rarity", value=str(things[item.title()]["rarity"]))
+    embed.add_field(name="Value", value=str(things[item.title()]["worth"]))
     await interaction.followup.send(embed=embed, view=DropView(interaction.user.id, item.title(), amount))
 
 @admin_group.command(name="max", description="Give a user all items, potions, and craftables")
