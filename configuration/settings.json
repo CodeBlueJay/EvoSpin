@@ -1,7 +1,7 @@
 {
-    "cooldown": 1,
+    "cooldown": 2,
     "admins": [908954867962380298],
     "xp_scale": 25000,
-    "max_luck_strength": 0.8,
-    "potion_exponent_factor": 0.5
+    "max_luck_strength": 0.25,
+    "potion_exponent_factor": 0.06
 }

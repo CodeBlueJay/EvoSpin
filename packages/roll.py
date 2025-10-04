@@ -62,9 +62,8 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
     luck_strength = progress * max_luck_strength
     exponent_base = 1 - luck_strength
     exponent_final = exponent_base * (1 - potion_strength * potion_exponent_factor)
-    if exponent_final < 0.12:
-        #exponent_final = 0.12
-        pass
+    if exponent_final < 0.1:
+        exponent_final = 0.1
     population = [things[i]["name"] for i in things if things[i]["rarity"] > 0]
     weights = [things[i]["rarity"] for i in things if things[i]["rarity"] > 0]
     transformed_weights = [w ** exponent_final for w in weights]
@@ -81,7 +80,22 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
     await add_to_inventory(spun, user_id)
     await add_xp(1, user_id)
     try:
-        return f"You got a **{spun}** (*1 in {'{:,}'.format(round((total / things[spun]['rarity'])))}*)!"
+        base_w = things[spun].get("rarity", 0)
+        if base_w and base_w > 0:
+            base_total = sum(weights) or 0
+            base_p = (base_w / base_total) if base_total > 0 else 0
+            base_1in = round(1 / base_p) if base_p > 0 else 0
+            sum_trans_xp = sum((w ** exponent_base) for w in weights) or 0
+            xp_w = base_w ** exponent_base
+            xp_p = (xp_w / sum_trans_xp) if sum_trans_xp > 0 else 0
+            xp_1in = round(1 / xp_p) if xp_p > 0 else 0
+            sum_trans = sum(transformed_weights) or 0
+            luck_w = base_w ** exponent_final
+            luck_p = (luck_w / sum_trans) if sum_trans > 0 else 0
+            luck_1in = round(1 / luck_p) if luck_p > 0 else 0
+            return f"You got a **{spun}** (*1 in {base_1in:,}*)\n\n(*1 in {xp_1in:,}* with XP luck)\n(*1 in {luck_1in:,}* with luck boost {potion_strength:.2f})"
+        else:
+            return f"You got a **{spun}** (*Evolution*)!"
     except:
         return f"You got a **{spun}** (*1 in 0*)!"
 
@@ -261,6 +275,16 @@ async def rarity_list(interaction: discord.Interaction):
         if sorted_things[i]["rarity"] > 0 and sorted_things[i]["rarity"] != None:
             temp += f"**{i}** - 1 in {'{:,}'.format(round((totalsum / sorted_things[i]['rarity'])))}\n"
     await interaction.followup.send(f"**Naturally Spawning Items Rarity List:**\n{temp}")
+
+'''
+@roll_group.command(name="values", description="Check the values of items")
+async def values(interaction: discord.Interaction):
+    await interaction.response.defer()
+    temp = ""
+    for i in things:
+        temp += f"**{i}**: {things[i]['worth']} coins\n"
+    await interaction.followup.send(f"**Item Values:**\n{temp}")
+'''
 
 async def calculate_rarities():
     global totalsum, roundTo
