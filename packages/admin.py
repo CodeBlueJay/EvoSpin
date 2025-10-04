@@ -159,7 +159,8 @@ async def drop_cmd(interaction: discord.Interaction, item: str, amount: int=1):
     )
     embed.add_field(name="Item", value=item.title())
     embed.add_field(name="Amount", value=str(amount))
-    embed.add_field(name="Rarity", value=str(things[item.title()]["rarity"]))
+    total = sum([things[i]["rarity"] for i in things if things[i]["rarity"] > 0])
+    embed.add_field(name="Rarity", value=f"1 in {'{:,}'.format(round((total / things[item.title()]['rarity'])))}")
     embed.add_field(name="Value", value=str(things[item.title()]["worth"]))
     await interaction.followup.send(embed=embed, view=DropView(interaction.user.id, item.title(), amount))
 
