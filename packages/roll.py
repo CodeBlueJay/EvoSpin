@@ -71,16 +71,16 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
     spun = random.choices(population, weights=transformed_weights, k=1)[0]
     spun_name = things[spun]["name"]
     total = sum(weights)
+    if item != None:
+        spun = item.title()
+        spun_name = spun
     if transmutate_amount > 0:
         for i in range(transmutate_amount):
             temp = things[spun]["name"]
             spun = things[spun]["next_evo"]
             if spun == None:
                 spun = temp
-                spun_name = spun
-    if item != None:
-        spun = item.title()
-        spun_name = spun
+    spun_name = spun
     mutated = False
     mutations = things.get(spun, {}).get("mutations")
     if mutations and random.randint(1, 100) <= mutation_chance:
@@ -109,16 +109,11 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
             base_total = sum(weights) or 0
             base_p = (base_w / base_total) if base_total > 0 else 0
             base_1in = round(1 / base_p) if base_p > 0 else 0
-            sum_trans = sum(transformed_weights) or 0
-            luck_w = base_w ** exponent_final
-            luck_p = (luck_w / sum_trans) if sum_trans > 0 else 0
-            luck_1in = round(1 / luck_p) if luck_p > 0 else 0
-            combined_luck_strength = max(0.0, min(1.0, 1.0 - float(exponent_final)))
             return f"You got a **{spun_name}** (*1 in {base_1in:,}*)"
         else:
             return f"You got a **{spun_name}** (*Evolution*)!"
     except:
-        return f"You got a **{spun_name}** (*1 in 0*)!"
+        return f"You got a **{spun_name}** (*Mutation*)!"
 
 @roll_group.command(name="use_potion", description="Use a potion to increase your chances")
 async def use_potion(interaction: discord.Interaction, potion: str, amount: int=1):
