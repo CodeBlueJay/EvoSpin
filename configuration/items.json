@@ -563,7 +563,27 @@
         "abbev": "eq",
         "worth": 6000,
         "comp": true,
-        "description": "A celestial being that embodies the balance of day and night. A rare and powerful entity among EvoSpinners."
+        "description": "A celestial being that embodies the balance of day and night. A rare and powerful entity among EvoSpinners.",
+        "mutations": {
+            "Equinox: Solar": {
+                "name": "Equinox: Solar",
+                "abbev": "eqs",
+                "worth": 12000,
+                "description": "A radiant version of the Equinox, symbolizing the power of the sun."
+            },
+            "Equinox: Lunar": {
+                "name": "Equinox: Lunar",
+                "abbev": "eql",
+                "worth": 12000,
+                "description": "A mystical version of the Equinox, representing the serene beauty of the moon."
+            },
+            "Equinox: Celestial": {
+                "name": "Equinox: Celestial",
+                "abbev": "eqc",
+                "worth": 12000,
+                "description": "A divine form of the Equinox, embodying the harmony of the cosmos."
+            }
+        }
     },
 
     "Sovereign Dragonlord": {
@@ -575,7 +595,15 @@
         "abbev": "sndr",
         "worth": 5000,
         "comp": true,
-        "description": "A majestic dragon of immense power and wisdom, ruling over the skies with an iron claw. A legendary figure among EvoSpinners."
+        "description": "A majestic dragon of immense power and wisdom, ruling over the skies with an iron claw. A legendary figure among EvoSpinners.",
+        "mutations": {
+            "Sovereign Dragonlord: Ultimate Ruler": {
+                "name": "Sovereign Dragonlord: Ultimate Ruler",
+                "abbev": "sndrug",
+                "worth": 10000,
+                "description": "A rare golden variant of the Sovereign Dragonlord, symbolizing prosperity and strength."
+            }
+        }
     },
 
     "Spectral Phoenix": {
@@ -587,7 +615,15 @@
         "abbev": "ph",
         "worth": 4000,
         "comp": true,
-        "description": "A mythical bird reborn from ethereal flames, the Spectral Phoenix radiates power and mystery. Its rare appearance is said to bring fortune to those who witness it."
+        "description": "A mythical bird reborn from ethereal flames, the Spectral Phoenix radiates power and mystery. Its rare appearance is said to bring fortune to those who witness it.",
+        "mutations": {
+            "Spectral Phoenix: Astral": {
+                "name": "Spectral Phoenix: Astral",
+                "abbev": "phia",
+                "worth": 8000,
+                "description": "A more powerful version of the Spectral Phoenix, engulfed in flames and radiating intense heat."
+            }
+        }
     },
 
     "Elemental Dragon": {
@@ -943,7 +979,16 @@
         "required": 0,
         "abbev": "dw",
         "worth": 5000,
-        "comp": true
+        "comp": true,
+        "description": "A mythical dragon known for its piercing blue eyes and legendary status among EvoSpinners.",
+        "mutations": {
+            "Dragon With Eyes Of Blue: Neo Ultimate": {
+                "name": "Dragon With Eyes Of Blue: Neo Ultimate",
+                "abbev": "udw",
+                "worth": 10000,
+                "description": "An even more powerful version of the Dragon With Eyes Of Blue, known for its unparalleled strength and mystical abilities."
+            }
+        }
     },
 
     "Strike Gundam": {
