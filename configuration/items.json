@@ -590,8 +590,8 @@
         "description": "A mythical bird reborn from ethereal flames, the Spectral Phoenix radiates power and mystery. Its rare appearance is said to bring fortune to those who witness it."
     },
 
-    "Sky Dragon": {
-        "name": "Sky Dragon",
+    "Elemental Dragon": {
+        "name": "Elemental Dragon",
         "rarity": 1e-6,
         "prev_evo": null,
         "next_evo": null,
@@ -599,7 +599,21 @@
         "abbev": "sd",
         "worth": 1500,
         "comp": true,
-        "description": "A mythical dragon that soars through the skies. A symbol of power and freedom."
+        "description": "A mythical dragon that soars through the skies. A symbol of power and freedom.",
+        "mutations": {
+            "Elemental Dragon: Storm": {
+                "name": "Elemental Dragon: Storm",
+                "abbev": "edst",
+                "worth": 3000,
+                "description": "A powerful dragon that embodies the forces of nature."
+            },
+            "Elemental Dragon: Blue-Eyes": {
+                "name": "Elemental Dragon: Blue-Eyes",
+                "abbev": "edbe",
+                "worth": 3000,
+                "description": "A majestic dragon with piercing blue eyes."
+            }
+        }
     },
     
     "Water Drop": {

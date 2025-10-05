@@ -41,14 +41,14 @@ class DropView(discord.ui.View):
 admin_group = discord.app_commands.Group(name="admin", description="Admin commands")
 
 @admin_group.command(name="roll", description="Admin type command :fire:")
-async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str=None, potion_strength: float=0.0, transmutate_amount: int=0, seperate: bool=False):
+async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str=None, potion_strength: float=0.0, transmutate_amount: int=0, seperate: bool=False, mutation_chance: int=1):
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
     temp = ""
     await interaction.response.send_message(f"Admin: Rolling `{amount}` times")
     for i in range(amount):
-        spun = await spin(interaction.user.id, item, potion_strength=potion_strength, transmutate_amount=transmutate_amount)
+        spun = await spin(interaction.user.id, item, potion_strength=potion_strength, transmutate_amount=transmutate_amount, mutation_chance=mutation_chance)
         temp += spun + "\n"
         if seperate:
             await interaction.followup.send(spun)

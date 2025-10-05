@@ -13,9 +13,19 @@ load_dotenv()
 
 DB_URL = "data.db"
 
+mutation_translation = {}
+for item_name, data in things.items():
+    muts = data.get("mutations")
+    if isinstance(muts, dict):
+        for mut_name, mut_data in muts.items():
+            ab = mut_data.get("abbev")
+            if ab:
+                mutation_translation[ab] = mut_name
+
 translations = {things[i]["abbev"]: i for i in things}
 translations.update({potions[i]["abbev"]: i for i in potions})
 translations.update({craftables[i]["abbev"]: i for i in craftables})
+translations.update(mutation_translation)
 
 async def test_db():
     async with aiosqlite.connect(DB_URL) as db:
@@ -38,7 +48,7 @@ async def init_db():
         """)
         await db.commit()
 
-async def encrypt_inventory(inventory):
+async def encrypt_inventory(inventory, translations=translations):
     string = ""
     for key, value in inventory.items():
         if key == None:
@@ -389,7 +399,7 @@ async def add_mutated(mutated, user_id):
         mutated_list[mutated] += 1
     except:
         mutated_list[mutated] = 1
-    encrypted = await encrypt_inventory(mutated_list)
+    encrypted = await encrypt_inventory(mutated_list, mutation_translation)
     async with aiosqlite.connect(DB_URL) as db:
         await db.execute(f"""
         UPDATE Users

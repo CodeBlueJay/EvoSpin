@@ -49,8 +49,9 @@ async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
                 await interaction.response.send_message(f"You need at least **{things[item.title()]['required'] * amount}** **{item.title()}** to evolve it!")
                 return
 
-async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_strength: float=0.0):
+async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_strength: float=0.0, mutation_chance: int=1):
     spun = ""
+    spun_name = ""
     temp = ""
     xp = await get_xp(user_id)
     xp_scale = settings.get("xp_scale", 25000)
@@ -68,6 +69,7 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
     weights = [things[i]["rarity"] for i in things if things[i]["rarity"] > 0]
     transformed_weights = [w ** exponent_final for w in weights]
     spun = random.choices(population, weights=transformed_weights, k=1)[0]
+    spun_name = things[spun]["name"]
     total = sum(weights)
     if transmutate_amount > 0:
         for i in range(transmutate_amount):
@@ -75,9 +77,31 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
             spun = things[spun]["next_evo"]
             if spun == None:
                 spun = temp
+                spun_name = spun
     if item != None:
         spun = item.title()
-    await add_to_inventory(spun, user_id)
+        spun_name = spun
+    mutated = False
+    mutations = things.get(spun, {}).get("mutations")
+    if mutations and random.randint(1, 100) <= mutation_chance:
+        if isinstance(mutations, dict):
+            mut_name = random.choice(list(mutations.keys()))
+            spun = mut_name
+            spun_name = mut_name
+            mutated = True
+        elif isinstance(mutations, list):
+            choice = random.choice(mutations)
+            if isinstance(choice, str):
+                spun = choice.split(": ", 1)[0] if ": " in choice else choice
+                spun_name = choice
+            else:
+                spun = str(choice)
+                spun_name = spun
+            mutated = True
+    if mutated:
+        await add_mutated(spun, user_id)
+    else:
+        await add_to_inventory(spun, user_id)
     await add_xp(1, user_id)
     try:
         base_w = things[spun].get("rarity", 0)
@@ -90,11 +114,11 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
             luck_p = (luck_w / sum_trans) if sum_trans > 0 else 0
             luck_1in = round(1 / luck_p) if luck_p > 0 else 0
             combined_luck_strength = max(0.0, min(1.0, 1.0 - float(exponent_final)))
-            return f"You got a **{spun}** (*1 in {base_1in:,}*)"
+            return f"You got a **{spun_name}** (*1 in {base_1in:,}*)"
         else:
-            return f"You got a **{spun}** (*Evolution*)!"
+            return f"You got a **{spun_name}** (*Evolution*)!"
     except:
-        return f"You got a **{spun}** (*1 in 0*)!"
+        return f"You got a **{spun_name}** (*1 in 0*)!"
 
 @roll_group.command(name="use_potion", description="Use a potion to increase your chances")
 async def use_potion(interaction: discord.Interaction, potion: str, amount: int=1):
@@ -235,9 +259,8 @@ async def item_info(interaction: discord.Interaction, item: str):
         title=f"{item} Info",
         color=discord.Color.blue()
     )
-    # embed.set_thumbnail(url=data.get("image", ""))
     if data["rarity"] > 0 and data["rarity"] != None:
-        temp = f"1 in {round((totalsum / data['rarity']))}"
+        temp = f"1 in {{:,}}".format(round((totalsum / data['rarity'])))
     elif data["rarity"] == 0:
         temp = "Evolution"
     else:
@@ -258,6 +281,16 @@ async def item_info(interaction: discord.Interaction, item: str):
         embed.add_field(name="Previous Evolution", value=f"{data['prev_evo']}", inline=True)
     else:
         embed.add_field(name="Previous Evolution", value="None", inline=True)
+    if data.get("mutations", None) != None:
+        if isinstance(data["mutations"], dict):
+            mutation_list = [f"{key}" for key, value in data["mutations"].items()]
+            embed.add_field(name="Mutations", value="\n".join(mutation_list), inline=False)
+        elif isinstance(data["mutations"], list):
+            mutation_list = []
+            for mutation in data["mutations"]:
+                if isinstance(mutation, str):
+                    mutation_list.append(mutation)
+            embed.add_field(name="Mutations", value="\n".join(mutation_list), inline=False)
     if data.get("description", None) != None:
         embed.add_field(name="Description", value=data["description"], inline=False)
     await interaction.response.defer(thinking=True)
