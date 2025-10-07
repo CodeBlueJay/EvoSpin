@@ -233,7 +233,16 @@
         "abbev": "iw",
         "worth": 140,
         "comp": true,
-        "description": "A wall infested with bugs. Dangerous to touch."
+        "description": "A wall infested with bugs. Dangerous to touch.",
+        "mutations": {
+            "Infested Wall: Infested Cobblestone": {
+                "name": "Infested Wall: Infested Cobblestone",
+                "abbev": "iwic",
+                "worth": 280,
+                "weight": 1,
+                "description": "A rare variant of Infested Wall, made from infested cobblestone, known for its enhanced durability and menacing appearance."
+            }
+        }
     },
     "Honda Civic": {
         "name": "Honda Civic",
@@ -255,7 +264,16 @@
         "abbev": "bt",
         "worth": 50,
         "comp": true,
-        "description": "A heavy-duty truck. Can run over a deer right after a beer."
+        "description": "A heavy-duty truck. Can run over a deer right after a beer.",
+        "mutations": {
+            "Bergentruck: Driving In My Car Right After A Beer": {
+                "name": "Bergentruck: Driving In My Car Right After A Beer",
+                "abbev": "btbaab",
+                "worth": 100,
+                "weight": 1,
+                "description": "A rare variant of the Bergentruck, known for its enhanced performance and rugged design, perfect for tough terrains."
+            }
+        }
     },
     "Laptop": {
         "name": "Laptop",
@@ -308,7 +326,16 @@
         "abbev": "sr",
         "worth": 200,
         "comp": true,
-        "description": "A room full of servers. Extremely powerful."
+        "description": "A room full of servers. Extremely powerful.",
+        "mutations": {
+            "Server Room: Cisco": {
+                "name": "Server Room: Cisco",
+                "abbev": "src",
+                "worth": 400,
+                "weight": 1,
+                "description": "A rare Cisco-branded Server Room, known for its high reliability and advanced networking capabilities."
+            }
+        }
     },
     "Wool": {
         "name": "Wool",
@@ -792,15 +819,22 @@
                 "name": "Equinox: Solar",
                 "abbev": "eqs",
                 "worth": 24000,
-                "weight": 9,
+                "weight": 10,
                 "description": "A radiant version of the Equinox, symbolizing the power of the sun."
             },
-            "Equinox: Lunar": {
-                "name": "Equinox: Lunar",
-                "abbev": "eql",
+            "Equinox: Interstellar": {
+                "name": "Equinox: Interstellar",
+                "abbev": "eqi",
+                "worth": 24000,
+                "weight": 4,
+                "description": "A mystical version of the Equinox, representing the serene beauty of the cosmos."
+            },
+            "Equinox: Divine": {
+                "name": "Equinox: Divine",
+                "abbev": "eqd",
                 "worth": 24000,
                 "weight": 1,
-                "description": "A mystical version of the Equinox, representing the serene beauty of the moon."
+                "description": "A holy version of the Equinox, embodying the essence of balance and harmony."
             }
         }
     },
@@ -859,15 +893,22 @@
                 "name": "Elemental Dragon: Storm",
                 "abbev": "edst",
                 "worth": 6000,
-                "weight": 2,
+                "weight": 5,
                 "description": "A powerful dragon that embodies the forces of nature."
             },
             "Elemental Dragon: Blue-Eyes": {
                 "name": "Elemental Dragon: Blue-Eyes",
                 "abbev": "edbe",
                 "worth": 6000,
-                "weight": 1,
+                "weight": 3,
                 "description": "A majestic dragon with piercing blue eyes."
+            },
+            "Elemental Dragon: Luminosity": {
+                "name": "Elemental Dragon: Luminosity",
+                "abbev": "edl",
+                "worth": 6000,
+                "weight": 1,
+                "description": "A radiant dragon that shines with an inner light."
             }
         }
     },
@@ -984,7 +1025,16 @@
         "abbev": "cbj",
         "worth": 4000,
         "comp": true,
-        "description": "The creator of EvoSpin, a legendary EvoSpinner."
+        "description": "The creator of EvoSpin, a legendary EvoSpinner.",
+        "mutations": {
+            "Codebluejay: Equinox": {
+                "name": "Codebluejay: Equinox",
+                "abbev": "cbje",
+                "worth": 8000,
+                "weight": 1,
+                "description": "A rare variant of Codebluejay, symbolizing balance and harmony."
+            }
+        }
     },
     "Lieand": {
         "name": "Lieand",
@@ -995,7 +1045,16 @@
         "abbev": "li",
         "worth": 2000,
         "comp": true,
-        "description": "A notable figure in the EvoSpin community, known for his contributions and presence."
+        "description": "A notable figure in the EvoSpin community, known for his contributions and presence.",
+        "mutations": {
+            "Lieand: Moon Knight": {
+                "name": "Lieand: Moon Knight",
+                "abbev": "lisup",
+                "worth": 4000,
+                "weight": 1,
+                "description": "A rare variant of Lieand, symbolizing leadership and authority."
+            }
+        }
     },
     "Gay": {
         "name": "Gay",
@@ -1049,11 +1108,11 @@
         "worth": 100000,
         "comp": true,
         "description": "Thaitangle is the legendary rectangle representing thailand.",
-        "Thaitangle: Awakened": {
-            "name": "Thaitangle: Awakened",
-            "abbev": "tta",
+        "Thaitangle: Enlightened": {
+            "name": "Thaitangle: Enlightened",
+            "abbev": "tte",
             "worth": 200000,
-            "description": "A rare awakened version of Thaitangle, symbolizing enlightenment and prosperity."
+            "description": "A rare enlightened version of Thaitangle, symbolizing enlightenment and prosperity."
         }
     },
     "George Washingmyhands": {
