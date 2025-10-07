@@ -25,5 +25,45 @@
         "comp": "Craftable",
         "next_evo": null,
         "prev_evo": null
+    },
+    "Cold War": {
+        "components": {
+            "Ussr": 1,
+            "United States": 1
+        },
+        "description": "The Cold War was a period of geopolitical tension between the Soviet Union and the United States and their respective allies.",
+        "abbev": "cw",
+        "worth": 50000,
+        "rarity": -1,
+        "comp": "Craftable",
+        "next_evo": null,
+        "prev_evo": null
+    },
+    "Torn Poland": {
+        "components": {
+            "Third Reich": 1,
+            "Ussr": 1
+        },
+        "description": "Poland, a country in Central Europe, was invaded and partitioned by the German Empire and the Soviet Union in 1939, leading to its occupation during World War II.",
+        "abbev": "tp",
+        "worth": 20000,
+        "rarity": -1,
+        "comp": "Craftable",
+        "next_evo": null,
+        "prev_evo": null
+    },
+    "Big Brother": {
+        "components": {
+            "Book": 1,
+            "Ussr": 1,
+            "United States": 1
+        },
+        "description": "A term used to describe the surveillance state of East Germany (GDR) and the United States during the Cold War.",
+        "abbev": "bb",
+        "worth": 15000,
+        "rarity": -1,
+        "comp": "Craftable",
+        "next_evo": null,
+        "prev_evo": null
     }
 }

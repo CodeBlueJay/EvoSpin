@@ -6,7 +6,7 @@
         "next_evo": "Advanced Ball",
         "required": 4,
         "abbev": "bb",
-        "worth": 1,
+        "worth": 2,
         "comp": true,
         "description": "A simple ball. Can be evolved into an Advanced Ball."
     },
@@ -17,11 +17,10 @@
         "next_evo": null,
         "required": 5,
         "abbev": "ab",
-        "worth": 4,
+        "worth": 8,
         "comp": true,
         "description": "An advanced upgrade of the Basic Ball."
     },
-
     "Pebble": {
         "name": "Pebble",
         "rarity": 35,
@@ -29,11 +28,10 @@
         "next_evo": null,
         "required": 5,
         "abbev": "peb",
-        "worth": 2,
+        "worth": 4,
         "comp": true,
         "description": "A small smooth stone. Can be compacted into Stone."
     },
-
     "Seed": {
         "name": "Seed",
         "rarity": 45,
@@ -41,7 +39,7 @@
         "next_evo": "Sprout",
         "required": 5,
         "abbev": "sed",
-        "worth": 1,
+        "worth": 2,
         "comp": true,
         "description": "The start of something green. Can grow into a Sprout."
     },
@@ -52,7 +50,7 @@
         "next_evo": "Sapling",
         "required": 5,
         "abbev": "spt",
-        "worth": 3,
+        "worth": 6,
         "comp": true,
         "description": "A tender shoot. Can grow into a Sapling."
     },
@@ -63,7 +61,7 @@
         "next_evo": "Tree",
         "required": 0,
         "abbev": "sap",
-        "worth": 8,
+        "worth": 16,
         "comp": true,
         "description": "A young tree. Full of potential."
     },
@@ -74,11 +72,10 @@
         "next_evo": null,
         "required": 0,
         "abbev": "tree",
-        "worth": 20,
+        "worth": 40,
         "comp": true,
         "description": "A fully grown tree. Majestic and strong."
     },
-
     "Copper Ore": {
         "name": "Copper Ore",
         "rarity": 22,
@@ -86,9 +83,18 @@
         "next_evo": "Copper Ingot",
         "required": 5,
         "abbev": "cuo",
-        "worth": 6,
+        "worth": 12,
         "comp": true,
-        "description": "Raw copper-bearing rock. Can be smelted."
+        "description": "Raw copper-bearing rock. Can be smelted.",
+        "mutations": {
+            "Copper Ore: Oxidized": {
+                "name": "Copper Ore: Oxidized",
+                "abbev": "cuoox",
+                "worth": 24,
+                "weight": 1,
+                "description": "A rare oxidized version of Copper Ore, indicating higher purity and quality."
+            }
+        }
     },
     "Copper Ingot": {
         "name": "Copper Ingot",
@@ -97,11 +103,10 @@
         "next_evo": null,
         "required": 5,
         "abbev": "cui",
-        "worth": 14,
+        "worth": 28,
         "comp": true,
         "description": "Refined copper ready for crafting."
     },
-
     "Feather": {
         "name": "Feather",
         "rarity": 28,
@@ -109,11 +114,10 @@
         "next_evo": null,
         "required": 5,
         "abbev": "fth",
-        "worth": 4,
+        "worth": 8,
         "comp": true,
         "description": "Light and soft. Can be fashioned into a Quill."
     },
-
     "Clay": {
         "name": "Clay",
         "rarity": 26,
@@ -121,7 +125,7 @@
         "next_evo": "Brick",
         "required": 5,
         "abbev": "cly",
-        "worth": 5,
+        "worth": 10,
         "comp": true,
         "description": "Malleable earth. Can be fired into a Brick."
     },
@@ -132,11 +136,10 @@
         "next_evo": null,
         "required": 5,
         "abbev": "brk",
-        "worth": 12,
+        "worth": 24,
         "comp": true,
         "description": "A solid building block from fired clay."
     },
-
     "Stickman": {
         "name": "Stickman",
         "rarity": 30,
@@ -144,7 +147,7 @@
         "next_evo": "Wooden Stickman",
         "required": 5,
         "abbev": "s",
-        "worth": 2,
+        "worth": 4,
         "comp": true,
         "description": "A simple stick figure. Can be upgraded with wood"
     },
@@ -155,11 +158,10 @@
         "next_evo": null,
         "required": 6,
         "abbev": "ws",
-        "worth": 7,
+        "worth": 14,
         "comp": true,
         "description": "A stick figure made out of wood. Stronger than a regular Stickman."
     },
-
     "Dog": {
         "name": "Dog",
         "rarity": 30,
@@ -167,9 +169,18 @@
         "next_evo": "Wolf",
         "required": 6,
         "abbev": "d",
-        "worth": 2,
+        "worth": 4,
         "comp": true,
-        "description": "A loyal companion. Can be evolved into a Wolf."
+        "description": "A loyal companion. Can be evolved into a Wolf.",
+        "mutations": {
+            "Dog: Chernobyl": {
+                "name": "Dog: Chernobyl",
+                "abbev": "dch",
+                "worth": 8,
+                "weight": 1,
+                "description": "A rare mutated version of Dog, known for its resilience and unique appearance."
+            }
+        }
     },
     "Wolf": {
         "name": "Wolf",
@@ -178,7 +189,7 @@
         "next_evo": "Wolf Pack",
         "required": 7,
         "abbev": "w",
-        "worth": 7,
+        "worth": 14,
         "comp": true,
         "description": "A wild canine. Can come together with others to form a Wolf Pack."
     },
@@ -189,11 +200,10 @@
         "next_evo": null,
         "required": 0,
         "abbev": "wp",
-        "worth": 20,
+        "worth": 40,
         "comp": true,
         "description": "A pack of wolves. Stronger together."
     },
-
     "Bug": {
         "name": "Bug",
         "rarity": 20,
@@ -201,9 +211,18 @@
         "next_evo": "Infested Wall",
         "required": 20,
         "abbev": "bg",
-        "worth": 3,
+        "worth": 6,
         "comp": true,
-        "description": "A small bug. Can infest walls."
+        "description": "A small bug. Can infest walls.",
+        "mutations": {
+            "Bug: Alien": {
+                "name": "Bug: Alien",
+                "abbev": "bgalien",
+                "worth": 12,
+                "weight": 1,
+                "description": "A rare alien variant of Bug, known for its unusual features and extraterrestrial origin."
+            }
+        }
     },
     "Infested Wall": {
         "name": "Infested Wall",
@@ -212,11 +231,10 @@
         "next_evo": null,
         "required": 0,
         "abbev": "iw",
-        "worth": 70,
+        "worth": 140,
         "comp": true,
         "description": "A wall infested with bugs. Dangerous to touch."
     },
-    
     "Honda Civic": {
         "name": "Honda Civic",
         "rarity": 10,
@@ -224,7 +242,7 @@
         "next_evo": "Bergentruck",
         "required": 8,
         "abbev": "hc",
-        "worth": 10,
+        "worth": 20,
         "comp": true,
         "description": "A reliable car. Known for its fuel efficiency."
     },
@@ -235,11 +253,10 @@
         "next_evo": null,
         "required": 5,
         "abbev": "bt",
-        "worth": 25,
+        "worth": 50,
         "comp": true,
         "description": "A heavy-duty truck. Can run over a deer right after a beer."
     },
-
     "Laptop": {
         "name": "Laptop",
         "rarity": 15,
@@ -247,9 +264,18 @@
         "next_evo": "Pc",
         "required": 5,
         "abbev": "l",
-        "worth": 15,
+        "worth": 30,
         "comp": true,
-        "description": "A portable computer. Can be upgraded to a Pc."
+        "description": "A portable computer. Can be upgraded to a Pc.",
+        "mutations": {
+            "Laptop: SUPREME GAMING LAPTOP I AM SO MUCH BETTER THAN A PC *dies of no power*": {
+                "name": "Laptop: SUPREME GAMING LAPTOP I AM SO MUCH BETTER THAN A PC *dies of no power*",
+                "abbev": "lsgl",
+                "worth": 60,
+                "weight": 1,
+                "description": "A supreme gaming laptop, boasting high-end specs and performance, but ironically limited by its battery life."
+            }
+        }
     },
     "Pc": {
         "name": "Pc",
@@ -258,7 +284,7 @@
         "next_evo": "Server",
         "required": 5,
         "abbev": "pc",
-        "worth": 25,
+        "worth": 50,
         "comp": true,
         "description": "A personal computer. More powerful than a Laptop."
     },
@@ -269,7 +295,7 @@
         "next_evo": "Server Room",
         "required": 5,
         "abbev": "sv",
-        "worth": 50,
+        "worth": 100,
         "comp": true,
         "description": "A powerful server. Can be housed in a Server Room."
     },
@@ -280,11 +306,10 @@
         "next_evo": null,
         "required": 0,
         "abbev": "sr",
-        "worth": 100,
+        "worth": 200,
         "comp": true,
         "description": "A room full of servers. Extremely powerful."
     },
-
     "Wool": {
         "name": "Wool",
         "rarity": 40,
@@ -292,7 +317,7 @@
         "next_evo": "Cloth",
         "required": 8,
         "abbev": "wo",
-        "worth": 1,
+        "worth": 2,
         "comp": true,
         "description": "Soft and fluffy. Can be spun into Cloth."
     },
@@ -303,7 +328,7 @@
         "next_evo": "Hoodie",
         "required": 5,
         "abbev": "clo",
-        "worth": 4,
+        "worth": 8,
         "comp": true,
         "description": "A piece of fabric. Can be sewn into a Hoodie."
     },
@@ -314,11 +339,149 @@
         "next_evo": null,
         "required": 3,
         "abbev": "h",
-        "worth": 10,
+        "worth": 20,
         "comp": true,
         "description": "A comfortable hoodie. Keeps you warm."
     },
-
+    "Russian Empire": {
+        "name": "Russian Empire",
+        "rarity": 15,
+        "prev_evo": null,
+        "next_evo": "Rsfsr",
+        "required": 5,
+        "abbev": "re",
+        "worth": 30,
+        "comp": true,
+        "description": "The Russian Empire, also known as Imperial Russia, was a historical empire that existed from 1721 until the Russian Revolution in 1917."
+    },
+    "Rsfsr": {
+        "name": "Rsfsr",
+        "rarity": 0,
+        "prev_evo": "Russian Empire",
+        "next_evo": "Ussr",
+        "required": 4,
+        "abbev": "rsfsr",
+        "worth": 80,
+        "comp": true,
+        "description": "The Russian Soviet Federative Socialist Republic (RSFSR) was the largest and most influential constituent of the Soviet Union."
+    },
+    "Ussr": {
+        "name": "Ussr",
+        "rarity": 0,
+        "prev_evo": "Rsfsr",
+        "next_evo": "Russia",
+        "required": 3,
+        "abbev": "ussr",
+        "worth": 160,
+        "comp": true,
+        "description": "The Union of Soviet Socialist Republics (USSR) was a socialist state in Eurasia that existed from 1922 to 1991.",
+        "mutations": {
+            "Ussr: Soviet Onion": {
+                "name": "Ussr: Soviet Onion",
+                "abbev": "ussrso",
+                "worth": 320,
+                "weight": 1,
+                "description": "The Soviet Onion, featuring the iconic onion domes of Russian architecture, symbolizes the rich cultural heritage of the USSR."
+            }
+        }
+    },
+    "Russia": {
+        "name": "Russia",
+        "rarity": 0,
+        "prev_evo": "Ussr",
+        "next_evo": null,
+        "required": 3,
+        "abbev": "rus",
+        "worth": 400,
+        "comp": true,
+        "description": "The modern nation of Russia, known for its rich history, culture, and vast landscapes."
+    },
+    "13 Colonies": {
+        "name": "13 Colonies",
+        "rarity": 20,
+        "prev_evo": null,
+        "next_evo": "Articles of Confederation",
+        "required": 5,
+        "abbev": "13c",
+        "worth": 20,
+        "comp": true,
+        "description": "The original thirteen colonies that declared independence from Britain in 1776."
+    },
+    "Articles of Confederation": {
+        "name": "Articles of Confederation",
+        "rarity": 0,
+        "prev_evo": "13 Colonies",
+        "next_evo": "Louisiana Purchase",
+        "required": 4,
+        "abbev": "aoc",
+        "worth": 60,
+        "comp": true,
+        "description": "The first constitution of the United States, ratified in 1781."
+    },
+    "Louisiana Purchase": {
+        "name": "Louisiana Purchase",
+        "rarity": 0,
+        "prev_evo": "Articles of Confederation",
+        "next_evo": "Texas Annexation",
+        "required": 3,
+        "abbev": "lp",
+        "worth": 120,
+        "comp": true,
+        "description": "A land deal in 1803 that doubled the size of the United States."
+    },
+    "Texas Annexation": {
+        "name": "Texas Annexation",
+        "rarity": 0,
+        "prev_evo": "Louisiana Purchase",
+        "next_evo": "Mexican Cession",
+        "required": 3,
+        "abbev": "ta",
+        "worth": 240,
+        "comp": true,
+        "description": "The annexation of Texas in 1845, leading to the Mexican-American War."
+    },
+    "Mexican Cession": {
+        "name": "Mexican Cession",
+        "rarity": 0,
+        "prev_evo": "Texas Annexation",
+        "next_evo": "Alaska Purchase",
+        "required": 2,
+        "abbev": "mc",
+        "worth": 500,
+        "comp": true,
+        "description": "The land ceded by Mexico to the U.S. in 1848 after the Mexican-American War."
+    },
+    "Alaska Purchase": {
+        "name": "Alaska Purchase",
+        "rarity": 0,
+        "prev_evo": "Mexican Cession",
+        "next_evo": "United States",
+        "required": 2,
+        "abbev": "ap",
+        "worth": 1000,
+        "comp": true,
+        "description": "The acquisition of Alaska from Russia in 1867."
+    },
+    "United States": {
+        "name": "United States",
+        "rarity": 0,
+        "prev_evo": "Alaska Purchase",
+        "next_evo": null,
+        "required": 0,
+        "abbev": "us",
+        "worth": 2000,
+        "comp": true,
+        "description": "The modern nation of the United States of America, known for its diversity, innovation, and global influence.",
+        "mutations": {
+            "United States: Murica": {
+                "name": "United States: Murica",
+                "abbev": "usmurica",
+                "worth": 4000,
+                "weight": 1,
+                "description": "A rare variant of the United States, symbolized by the majestic Bald Eagle, representing freedom and strength."
+            }
+        }
+    },
     "Pickaxe": {
         "name": "Pickaxe",
         "rarity": 20,
@@ -326,9 +489,46 @@
         "next_evo": "Diamond Pickaxe",
         "required": 7,
         "abbev": "p",
-        "worth": 7,
+        "worth": 14,
         "comp": true,
-        "description": "A tool for mining. Can be upgraded to a Diamond Pickaxe."
+        "description": "A tool for mining. Can be upgraded to a Diamond Pickaxe.",
+        "mutations": {
+            "Pickaxe: Unbreaking III": {
+                "name": "Pickaxe: Unbreaking III",
+                "abbev": "puiii",
+                "worth": 28,
+                "weight": 25,
+                "description": "A rare enchanted version of Pickaxe, known for its durability and efficiency."
+            },
+            "Pickaxe: Efficiency V": {
+                "name": "Pickaxe: Efficiency V",
+                "abbev": "pev",
+                "worth": 28,
+                "weight": 10,
+                "description": "A rare enchanted version of Pickaxe, known for its speed and effectiveness."
+            },
+            "Pickaxe: Fortune III": {
+                "name": "Pickaxe: Fortune III",
+                "abbev": "pfiii",
+                "worth": 28,
+                "weight": 5,
+                "description": "A rare enchanted version of Pickaxe, known for its luck and resourcefulness."
+            },
+            "Pickaxe: Mending": {
+                "name": "Pickaxe: Mending",
+                "abbev": "pm",
+                "worth": 28,
+                "weight": 1,
+                "description": "A very rare enchanted version of Pickaxe, known for its self-repairing abilities."
+            },
+            "Pickaxe: Silk Touch": {
+                "name": "Pickaxe: Silk Touch",
+                "abbev": "pst",
+                "worth": 28,
+                "weight": 1,
+                "description": "A very rare enchanted version of Pickaxe, known for its ability to collect blocks in their original form."
+            }
+        }
     },
     "Diamond Pickaxe": {
         "name": "Diamond Pickaxe",
@@ -337,11 +537,10 @@
         "next_evo": null,
         "required": 0,
         "abbev": "dp",
-        "worth": 20,
+        "worth": 40,
         "comp": true,
         "description": "A pickaxe made of diamond. Extremely durable."
     },
-
     "Paper": {
         "name": "Paper",
         "rarity": 30,
@@ -349,7 +548,7 @@
         "next_evo": "Book",
         "required": 6,
         "abbev": "pa",
-        "worth": 3,
+        "worth": 6,
         "comp": true,
         "description": "A sheet of paper. Can be used for writing."
     },
@@ -360,7 +559,7 @@
         "next_evo": "Trilogy",
         "required": 3,
         "abbev": "b",
-        "worth": 5,
+        "worth": 10,
         "comp": true,
         "description": "A book made from paper. Can contain stories."
     },
@@ -371,9 +570,18 @@
         "next_evo": "Dark",
         "required": 10,
         "abbev": "tr",
-        "worth": 12,
+        "worth": 24,
         "comp": true,
-        "description": "A set of three books. Can be evolved into something darker."
+        "description": "A set of three books. Can be evolved into something darker.",
+        "mutations": {
+            "Trilogy: Lord of the Rings": {
+                "name": "Trilogy: Lord of the Rings",
+                "abbev": "tlotr",
+                "worth": 48,
+                "weight": 1,
+                "description": "A rare special edition of the Trilogy, featuring the epic fantasy series 'The Lord of the Rings.'"
+            }
+        }
     },
     "Dark": {
         "name": "Dark",
@@ -382,11 +590,19 @@
         "next_evo": null,
         "required": 0,
         "abbev": "dr",
-        "worth": 3000,
+        "worth": 6000,
         "comp": true,
-        "description": "The first EvoSpin Playtester. A truly gifted author."
+        "description": "The first EvoSpin Playtester. A truly gifted author.",
+        "mutations": {
+            "Dark: Eternal Glitch": {
+                "name": "Dark: Eternal Glitch",
+                "abbev": "dreg",
+                "worth": 12000,
+                "weight": 1,
+                "description": "A rare glitch version of Dark, commemorating all the glitches he found."
+            }
+        }
     },
-
     "Algebra 1": {
         "name": "Algebra 1",
         "rarity": 25,
@@ -394,7 +610,7 @@
         "next_evo": "Geometry",
         "required": 5,
         "abbev": "a1",
-        "worth": 5,
+        "worth": 10,
         "comp": true,
         "description": "A basic math course covering fundamental algebraic concepts."
     },
@@ -405,7 +621,7 @@
         "next_evo": "Algebra 2",
         "required": 5,
         "abbev": "geo",
-        "worth": 15,
+        "worth": 30,
         "comp": true,
         "description": "A math course focusing on the properties and relations of points, lines, surfaces, and solids."
     },
@@ -416,7 +632,7 @@
         "next_evo": "Precalculus",
         "required": 4,
         "abbev": "a2",
-        "worth": 30,
+        "worth": 60,
         "comp": true,
         "description": "An advanced math course that builds on Algebra 1 and introduces complex numbers and functions."
     },
@@ -427,7 +643,7 @@
         "next_evo": "Calculus",
         "required": 3,
         "abbev": "prc",
-        "worth": 60,
+        "worth": 120,
         "comp": true,
         "description": "A math course that prepares students for calculus by covering topics such as functions, trigonometry, and complex numbers."
     },
@@ -438,7 +654,7 @@
         "next_evo": "Multivariable Calculus",
         "required": 3,
         "abbev": "calc",
-        "worth": 120,
+        "worth": 240,
         "comp": true,
         "description": "A branch of mathematics that studies continuous change, including concepts such as limits, derivatives, and integrals."
     },
@@ -449,7 +665,7 @@
         "next_evo": "Statistics",
         "required": 2,
         "abbev": "mcalc",
-        "worth": 250,
+        "worth": 500,
         "comp": true,
         "description": "An advanced calculus course that extends the concepts of single-variable calculus to functions of multiple variables."
     },
@@ -460,11 +676,10 @@
         "next_evo": null,
         "required": 0,
         "abbev": "stats",
-        "worth": 500,
+        "worth": 1000,
         "comp": true,
         "description": "The study of data collection, analysis, interpretation, and presentation."
     },
-
     "Holy Roman Empire": {
         "name": "Holy Roman Empire",
         "rarity": 5,
@@ -472,7 +687,7 @@
         "next_evo": "North German Confederation",
         "required": 5,
         "abbev": "hre",
-        "worth": 20,
+        "worth": 40,
         "comp": true,
         "description": "An empire in Central Europe that existed from the medieval period until its dissolution in 1806."
     },
@@ -483,7 +698,7 @@
         "next_evo": "German Empire",
         "required": 4,
         "abbev": "ngc",
-        "worth": 50,
+        "worth": 100,
         "comp": true,
         "description": "A federal state in northern Germany that existed from 1867 to 1871, preceding the German Empire."
     },
@@ -494,7 +709,7 @@
         "next_evo": "Weimar Republic",
         "required": 3,
         "abbev": "ge",
-        "worth": 100,
+        "worth": 200,
         "comp": true,
         "description": "The German Empire, also known as the Second Reich, was the unified German nation-state that existed from 1871 to 1918."
     },
@@ -505,7 +720,7 @@
         "next_evo": "Third Reich",
         "required": 3,
         "abbev": "wr",
-        "worth": 200,
+        "worth": 400,
         "comp": true,
         "description": "The Weimar Republic was the democratic government that ruled Germany from 1919 to 1933, following World War I and preceding the rise of the Third Reich."
     },
@@ -516,9 +731,18 @@
         "next_evo": "Ddr-Brd",
         "required": 3,
         "abbev": "trh",
-        "worth": 500,
+        "worth": 1000,
         "comp": true,
-        "description": "The Third Reich, also known as the Nazi regime, was the period of Nazi rule in Germany from 1933 to 1945."
+        "description": "The Third Reich, also known as the Nazi regime, was the period of Nazi rule in Germany from 1933 to 1945.",
+        "mutations": {
+            "Third Reich: Thousand Year Empire": {
+                "name": "Third Reich: Thousand Year Empire",
+                "abbev": "trhtye",
+                "worth": 2000,
+                "weight": 1,
+                "description": "A rare variant of the Third Reich, symbolizing the regime's propaganda of a 'Thousand Year Reich.'"
+            }
+        }
     },
     "Ddr-Brd": {
         "name": "Ddr-Brd",
@@ -527,7 +751,7 @@
         "next_evo": "Germany",
         "required": 2,
         "abbev": "ddbr",
-        "worth": 1000,
+        "worth": 2000,
         "comp": true,
         "description": "The period of division in Germany from 1949 to 1990, when the country was split into East Germany (DDR) and West Germany (BRD), before reunification."
     },
@@ -538,7 +762,7 @@
         "next_evo": "Reichtangle",
         "required": 2,
         "abbev": "ger",
-        "worth": 2000,
+        "worth": 4000,
         "comp": true,
         "description": "The modern nation of Germany, reunified in 1990 and known for its rich history, culture, and economic strength."
     },
@@ -549,109 +773,104 @@
         "next_evo": null,
         "required": 0,
         "abbev": "rt",
-        "worth": 5000,
+        "worth": 10000,
         "comp": true,
         "description": "The Fourth Reich. Guten Tag Poland."
     },
-
     "Equinox": {
         "name": "Equinox",
-        "rarity": 1e-9,
+        "rarity": 1e-09,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
         "abbev": "eq",
-        "worth": 6000,
+        "worth": 12000,
         "comp": true,
         "description": "A celestial being that embodies the balance of day and night. A rare and powerful entity among EvoSpinners.",
         "mutations": {
             "Equinox: Solar": {
                 "name": "Equinox: Solar",
                 "abbev": "eqs",
-                "worth": 12000,
+                "worth": 24000,
+                "weight": 9,
                 "description": "A radiant version of the Equinox, symbolizing the power of the sun."
             },
             "Equinox: Lunar": {
                 "name": "Equinox: Lunar",
                 "abbev": "eql",
-                "worth": 12000,
+                "worth": 24000,
+                "weight": 1,
                 "description": "A mystical version of the Equinox, representing the serene beauty of the moon."
-            },
-            "Equinox: Celestial": {
-                "name": "Equinox: Celestial",
-                "abbev": "eqc",
-                "worth": 12000,
-                "description": "A divine form of the Equinox, embodying the harmony of the cosmos."
             }
         }
     },
-
     "Sovereign Dragonlord": {
         "name": "Sovereign Dragonlord",
-        "rarity": 1e-8,
+        "rarity": 1e-08,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
         "abbev": "sndr",
-        "worth": 5000,
+        "worth": 10000,
         "comp": true,
         "description": "A majestic dragon of immense power and wisdom, ruling over the skies with an iron claw. A legendary figure among EvoSpinners.",
         "mutations": {
             "Sovereign Dragonlord: Ultimate Ruler": {
                 "name": "Sovereign Dragonlord: Ultimate Ruler",
                 "abbev": "sndrug",
-                "worth": 10000,
+                "worth": 20000,
+                "weight": 1,
                 "description": "A rare golden variant of the Sovereign Dragonlord, symbolizing prosperity and strength."
             }
         }
     },
-
     "Spectral Phoenix": {
         "name": "Spectral Phoenix",
-        "rarity": 5e-8,
+        "rarity": 5e-08,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
         "abbev": "ph",
-        "worth": 4000,
+        "worth": 8000,
         "comp": true,
         "description": "A mythical bird reborn from ethereal flames, the Spectral Phoenix radiates power and mystery. Its rare appearance is said to bring fortune to those who witness it.",
         "mutations": {
             "Spectral Phoenix: Astral": {
                 "name": "Spectral Phoenix: Astral",
                 "abbev": "phia",
-                "worth": 8000,
+                "worth": 16000,
+                "weight": 1,
                 "description": "A more powerful version of the Spectral Phoenix, engulfed in flames and radiating intense heat."
             }
         }
     },
-
     "Elemental Dragon": {
         "name": "Elemental Dragon",
-        "rarity": 1e-6,
+        "rarity": 1e-06,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
         "abbev": "sd",
-        "worth": 1500,
+        "worth": 3000,
         "comp": true,
         "description": "A mythical dragon that soars through the skies. A symbol of power and freedom.",
         "mutations": {
             "Elemental Dragon: Storm": {
                 "name": "Elemental Dragon: Storm",
                 "abbev": "edst",
-                "worth": 3000,
+                "worth": 6000,
+                "weight": 2,
                 "description": "A powerful dragon that embodies the forces of nature."
             },
             "Elemental Dragon: Blue-Eyes": {
                 "name": "Elemental Dragon: Blue-Eyes",
                 "abbev": "edbe",
-                "worth": 3000,
+                "worth": 6000,
+                "weight": 1,
                 "description": "A majestic dragon with piercing blue eyes."
             }
         }
     },
-    
     "Water Drop": {
         "name": "Water Drop",
         "rarity": 25,
@@ -659,7 +878,7 @@
         "next_evo": "Cloud",
         "required": 5,
         "abbev": "wd",
-        "worth": 7,
+        "worth": 14,
         "comp": true,
         "description": "A single drop of water. Can evaporate to form a Cloud."
     },
@@ -670,7 +889,7 @@
         "next_evo": "Rain",
         "required": 5,
         "abbev": "c",
-        "worth": 15,
+        "worth": 30,
         "comp": true,
         "description": "A fluffy cloud in the sky. Can condense to form Rain."
     },
@@ -681,7 +900,7 @@
         "next_evo": "Storm",
         "required": 4,
         "abbev": "r",
-        "worth": 25,
+        "worth": 50,
         "comp": true,
         "description": "Falling water droplets from the sky. Can intensify to form a Storm."
     },
@@ -692,7 +911,7 @@
         "next_evo": "Random Storm",
         "required": 10,
         "abbev": "st",
-        "worth": 50,
+        "worth": 100,
         "comp": true,
         "description": "A powerful weather event with heavy rain and strong winds. Can evolve into a Random Storm."
     },
@@ -703,11 +922,10 @@
         "next_evo": null,
         "required": 0,
         "abbev": "rs",
-        "worth": 500,
+        "worth": 1000,
         "comp": true,
         "description": "A friend of Dark, a devoted EvoSpinner."
     },
-
     "Cosmic Leviathan": {
         "name": "Cosmic Leviathan",
         "rarity": 0.001,
@@ -715,9 +933,25 @@
         "next_evo": "Leviathan Of The Eclipse",
         "required": 5,
         "abbev": "cl",
-        "worth": 3000,
+        "worth": 6000,
         "comp": true,
-        "description": "A mythical sea creature said to dwell in the depths of space. During times of Solar Eclipse, it is said to transcend to a higher form."
+        "description": "A mythical sea creature said to dwell in the depths of space. During times of Solar Eclipse, it is said to transcend to a higher form.",
+        "mutations": {
+            "Cosmic Leviathan: Astral Lord of Space and Time": {
+                "name": "Cosmic Leviathan: Celestial Lord of Space and Time",
+                "abbev": "clas",
+                "worth": 12000,
+                "weight": 1,
+                "description": "A rare astral variant of the Cosmic Leviathan, known for its mastery over space and time."
+            },
+            "Cosmic Leviathan: Blackhole Gargantuan": {
+                "name": "Cosmic Leviathan: Blackhole Gargantuan",
+                "abbev": "clbg",
+                "worth": 12000,
+                "weight": 9,
+                "description": "A rare abyssal variant of the Cosmic Leviathan, known for its deep-sea powers and mysterious aura."
+            }
+        }
     },
     "Leviathan Of The Eclipse": {
         "name": "Leviathan Of The Eclipse",
@@ -726,11 +960,10 @@
         "next_evo": null,
         "required": 10,
         "abbev": "le",
-        "worth": 10000,
+        "worth": 20000,
         "comp": true,
         "description": "An even more mythical form of the Cosmic Leviathan, said to appear only during a total Solar Eclipse. A true legend among EvoSpinners."
     },
-
     "Bluejay": {
         "name": "Bluejay",
         "rarity": 0.5,
@@ -738,7 +971,7 @@
         "next_evo": "Codebluejay",
         "required": 12,
         "abbev": "bj",
-        "worth": 750,
+        "worth": 1500,
         "comp": true,
         "description": "A vibrant blue bird known for its intelligence and complex social behavior. Can evolve into Codebluejay."
     },
@@ -749,11 +982,10 @@
         "next_evo": null,
         "required": 0,
         "abbev": "cbj",
-        "worth": 2000,
+        "worth": 4000,
         "comp": true,
         "description": "The creator of EvoSpin, a legendary EvoSpinner."
     },
-    
     "Lieand": {
         "name": "Lieand",
         "rarity": 1,
@@ -761,7 +993,7 @@
         "next_evo": "Gay",
         "required": 69,
         "abbev": "li",
-        "worth": 1000,
+        "worth": 2000,
         "comp": true,
         "description": "A notable figure in the EvoSpin community, known for his contributions and presence."
     },
@@ -772,23 +1004,30 @@
         "next_evo": null,
         "required": 0,
         "abbev": "gy",
-        "worth": 2000,
+        "worth": 4000,
         "comp": true,
         "description": "The next evolution of Lieand, representing a significant milestone."
     },
-
     "Thunder Basilisk": {
         "name": "Thunder Basilisk",
-        "rarity": 3e-7,
+        "rarity": 3e-07,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
         "abbev": "tb",
-        "worth": 1800,
+        "worth": 3600,
         "comp": true,
-        "description": "A mythical creature known for its electrifying presence and legendary status among EvoSpinners."
+        "description": "A mythical creature known for its electrifying presence and legendary status among EvoSpinners.",
+        "mutations": {
+            "Thunder Basilisk: Stormbringer": {
+                "name": "Thunder Basilisk: Stormbringer",
+                "abbev": "tbs",
+                "worth": 7200,
+                "weight": 1,
+                "description": "A rare variant of the Thunder Basilisk, known for its enhanced powers and majestic appearance."
+            }
+        }
     },
-
     "Missingsdex": {
         "name": "Missingsdex",
         "rarity": 0.0005,
@@ -796,23 +1035,27 @@
         "next_evo": null,
         "required": 20,
         "abbev": "md",
-        "worth": 500,
+        "worth": 1000,
         "comp": true,
         "description": "A Ballsdex spinoff created by asianantking8064"
     },
-
     "Thaitangle": {
         "name": "Thaitangle",
-        "rarity": 1e-9,
+        "rarity": 1e-09,
         "prev_evo": null,
         "next_evo": null,
         "required": 10,
         "abbev": "tt",
-        "worth": 8000,
+        "worth": 100000,
         "comp": true,
-        "description": "Thaitangle is the legendary rectangle representing thailand."
+        "description": "Thaitangle is the legendary rectangle representing thailand.",
+        "Thaitangle: Awakened": {
+            "name": "Thaitangle: Awakened",
+            "abbev": "tta",
+            "worth": 200000,
+            "description": "A rare awakened version of Thaitangle, symbolizing enlightenment and prosperity."
+        }
     },
-
     "George Washingmyhands": {
         "name": "George Washingmyhands",
         "rarity": 0.00075,
@@ -820,11 +1063,10 @@
         "next_evo": null,
         "required": 0,
         "abbev": "gw",
-        "worth": 4000,
+        "worth": 8000,
         "comp": true,
         "description": "A historical figure known for his leadership and hygiene."
     },
-
     "Ant": {
         "name": "Ant",
         "rarity": 0.5,
@@ -832,7 +1074,7 @@
         "next_evo": "Queen Ant",
         "required": 10,
         "abbev": "a",
-        "worth": 100,
+        "worth": 200,
         "comp": true,
         "description": "The friend of Codebluejay, a notable figure in the EvoSpin community."
     },
@@ -843,11 +1085,10 @@
         "next_evo": null,
         "required": 10,
         "abbev": "qa",
-        "worth": 500,
+        "worth": 1000,
         "comp": true,
         "description": "The ruler of the ant colony, known for her leadership and strength."
     },
-
     "Fokker Dr.1": {
         "name": "Fokker Dr.1",
         "rarity": 20,
@@ -855,9 +1096,18 @@
         "next_evo": "Bf.109",
         "required": 5,
         "abbev": "fd",
-        "worth": 20,
+        "worth": 40,
         "comp": true,
-        "description": "A World War I fighter aircraft known for its distinctive triplane design."
+        "description": "A World War I fighter aircraft known for its distinctive triplane design.",
+        "mutations": {
+            "Fokker Dr.1: Red Baron": {
+                "name": "Fokker Dr.1: Red Baron",
+                "abbev": "fdrb",
+                "worth": 80,
+                "weight": 1,
+                "description": "A rare variant of the Fokker Dr.1, famously flown by the Red Baron."
+            }
+        }
     },
     "Bf.109": {
         "name": "Bf.109",
@@ -866,7 +1116,7 @@
         "next_evo": "Ju87 Stuka",
         "required": 4,
         "abbev": "bf",
-        "worth": 50,
+        "worth": 100,
         "comp": true,
         "description": "A German fighter aircraft that was one of the most advanced of its time."
     },
@@ -877,7 +1127,7 @@
         "next_evo": "Me262",
         "required": 3,
         "abbev": "ju",
-        "worth": 100,
+        "worth": 200,
         "comp": true,
         "description": "A German dive bomber and ground-attack aircraft used during World War II."
     },
@@ -888,7 +1138,7 @@
         "next_evo": "Panavia Tornado",
         "required": 3,
         "abbev": "me",
-        "worth": 250,
+        "worth": 500,
         "comp": true,
         "description": "The world's first operational jet-powered fighter aircraft, used by Germany during World War II."
     },
@@ -899,7 +1149,7 @@
         "next_evo": "Eurofighter Typhoon",
         "required": 2,
         "abbev": "pt",
-        "worth": 2000,
+        "worth": 4000,
         "comp": true,
         "description": "A multirole combat aircraft developed and used by several European nations."
     },
@@ -910,11 +1160,10 @@
         "next_evo": null,
         "required": 0,
         "abbev": "et",
-        "worth": 5000,
+        "worth": 10000,
         "comp": true,
         "description": "A highly advanced multirole fighter aircraft used by several European air forces."
     },
-
     "P51 Mustang": {
         "name": "P51 Mustang",
         "rarity": 15,
@@ -922,7 +1171,7 @@
         "next_evo": "F86 Sabre",
         "required": 5,
         "abbev": "p51",
-        "worth": 40,
+        "worth": 80,
         "comp": true,
         "description": "An American long-range, single-seat fighter and fighter-bomber used during World War II and the Korean War."
     },
@@ -933,7 +1182,7 @@
         "next_evo": "F4 Phantom",
         "required": 4,
         "abbev": "f86",
-        "worth": 200,
+        "worth": 400,
         "comp": true,
         "description": "A transonic jet fighter aircraft developed by North American Aviation. It was the United States' first swept-wing fighter."
     },
@@ -944,7 +1193,7 @@
         "next_evo": "F15 Eagle",
         "required": 3,
         "abbev": "f4",
-        "worth": 700,
+        "worth": 1400,
         "comp": true,
         "description": "A tandem two-seat, twin-engine, long-range supersonic jet interceptor and fighter-bomber originally developed by McDonnell Aircraft for the United States Navy."
     },
@@ -955,7 +1204,7 @@
         "next_evo": "F22 Raptor",
         "required": 2,
         "abbev": "f15",
-        "worth": 1500,
+        "worth": 3000,
         "comp": true,
         "description": "An American twin-engine, all-weather tactical fighter aircraft designed by McDonnell Douglas to gain and maintain air supremacy in aerial combat."
     },
@@ -966,11 +1215,10 @@
         "next_evo": null,
         "required": 0,
         "abbev": "f22",
-        "worth": 3500,
+        "worth": 7000,
         "comp": true,
         "description": "A fifth-generation, single-seat, twin-engine, all-weather stealth tactical fighter aircraft developed for the United States Air Force."
     },
-
     "Dragon With Eyes Of Blue": {
         "name": "Dragon With Eyes Of Blue",
         "rarity": 0.05,
@@ -978,19 +1226,19 @@
         "next_evo": null,
         "required": 0,
         "abbev": "dw",
-        "worth": 5000,
+        "worth": 10000,
         "comp": true,
         "description": "A mythical dragon known for its piercing blue eyes and legendary status among EvoSpinners.",
         "mutations": {
             "Dragon With Eyes Of Blue: Neo Ultimate": {
                 "name": "Dragon With Eyes Of Blue: Neo Ultimate",
                 "abbev": "udw",
-                "worth": 10000,
+                "worth": 20000,
+                "weight": 1,
                 "description": "An even more powerful version of the Dragon With Eyes Of Blue, known for its unparalleled strength and mystical abilities."
             }
         }
     },
-
     "Strike Gundam": {
         "name": "Strike Gundam",
         "rarity": 2,
@@ -998,7 +1246,7 @@
         "next_evo": "Freedom Gundam",
         "required": 8,
         "abbev": "sg",
-        "worth": 300,
+        "worth": 600,
         "comp": true,
         "description": "A versatile mobile suit from the Gundam SEED series, known for its adaptability in various combat situations."
     },
@@ -1009,7 +1257,7 @@
         "next_evo": "Strike Freedom Gundam",
         "required": 6,
         "abbev": "fg",
-        "worth": 500,
+        "worth": 1000,
         "comp": true,
         "description": "A powerful mobile suit from the Gundam SEED series, known for its advanced technology and combat capabilities."
     },
@@ -1020,7 +1268,7 @@
         "next_evo": "Rising Freedom Gundam",
         "required": 4,
         "abbev": "sfg",
-        "worth": 1000,
+        "worth": 2000,
         "comp": true,
         "description": "An upgraded version of the Freedom Gundam, featuring enhanced weaponry and mobility."
     },
@@ -1031,7 +1279,7 @@
         "next_evo": "Strike Freedom Gundam Type 2",
         "required": 3,
         "abbev": "rfg",
-        "worth": 2000,
+        "worth": 4000,
         "comp": true,
         "description": "A further enhanced version of the Strike Freedom Gundam, boasting superior firepower and agility."
     },
@@ -1042,7 +1290,7 @@
         "next_evo": "Mighty Strike Freedom Gundam",
         "required": 2,
         "abbev": "sfgt2",
-        "worth": 4000,
+        "worth": 8000,
         "comp": true,
         "description": "The ultimate evolution of the Strike Freedom Gundam, equipped with cutting-edge technology and unparalleled combat prowess."
     },
@@ -1053,11 +1301,10 @@
         "next_evo": null,
         "required": 0,
         "abbev": "msfg",
-        "worth": 8000,
+        "worth": 16000,
         "comp": true,
         "description": "The pinnacle of mobile suit evolution, the Mighty Strike Freedom Gundam represents the zenith of engineering and combat capability."
     },
-
     "Carrot": {
         "name": "Carrot",
         "rarity": 75,
@@ -1065,9 +1312,18 @@
         "next_evo": "Strawberry",
         "required": 2,
         "abbev": "car",
-        "worth": 2,
+        "worth": 1,
         "comp": true,
-        "description": "A crunchy vegetable. Can be evolved into a Strawberry."
+        "description": "A crunchy vegetable. Can be evolved into a Strawberry.",
+        "mutations": {
+            "Carrot: Rainbow Voidtouched Dawnbound HarmonisedFoxFireChakra Galactic Paradisal": {
+                "name": "Carrot: Rainbow Voidtouched Dawnbound HarmonisedFoxFireChakra Galactic Paradisal",
+                "abbev": "gcar",
+                "worth": 20,
+                "weight": 1,
+                "description": "A rainbow-hued carrot infused with the essence of the Void and the Dawn."
+            }
+        }
     },
     "Strawberry": {
         "name": "Strawberry",
@@ -1076,7 +1332,7 @@
         "next_evo": "Blueberry",
         "required": 2,
         "abbev": "str",
-        "worth": 5,
+        "worth": 2,
         "comp": true,
         "description": "A sweet fruit. Can be evolved into a Blueberry."
     },
@@ -1087,7 +1343,7 @@
         "next_evo": "Orange Tulip",
         "required": 2,
         "abbev": "blu",
-        "worth": 8,
+        "worth": 3,
         "comp": true,
         "description": "A sweet fruit. Can be evolved into Orange Tulip."
     },
@@ -1098,7 +1354,7 @@
         "next_evo": "Tomato",
         "required": 2,
         "abbev": "ot",
-        "worth": 12,
+        "worth": 5,
         "comp": true,
         "description": "A beautiful flower. Can be evolved into a Tomato."
     },
@@ -1109,7 +1365,7 @@
         "next_evo": "Daffodil",
         "required": 2,
         "abbev": "tom",
-        "worth": 18,
+        "worth": 8,
         "comp": true,
         "description": "A juicy fruit. Can be evolved into a Daffodil."
     },
@@ -1120,7 +1376,7 @@
         "next_evo": "Corn",
         "required": 2,
         "abbev": "daf",
-        "worth": 27,
+        "worth": 13,
         "comp": true,
         "description": "A beautiful flower. Can be evolved into Corn."
     },
@@ -1131,7 +1387,7 @@
         "next_evo": "Watermelon",
         "required": 2,
         "abbev": "cor",
-        "worth": 40,
+        "worth": 21,
         "comp": true,
         "description": "A staple crop. Can be evolved into Watermelon."
     },
@@ -1142,7 +1398,7 @@
         "next_evo": "Pumpkin",
         "required": 2,
         "abbev": "wm",
-        "worth": 60,
+        "worth": 34,
         "comp": true,
         "description": "A refreshing fruit. Can be evolved into Pumpkin."
     },
@@ -1153,7 +1409,7 @@
         "next_evo": "Apple",
         "required": 2,
         "abbev": "pum",
-        "worth": 90,
+        "worth": 55,
         "comp": true,
         "description": "A large fruit often associated with autumn and Halloween. Can be evolved into Apple."
     },
@@ -1164,7 +1420,7 @@
         "next_evo": "Bamboo",
         "required": 2,
         "abbev": "app",
-        "worth": 140,
+        "worth": 89,
         "comp": true,
         "description": "A popular fruit known for its crisp texture and sweet flavor. Can be evolved into Bamboo."
     },
@@ -1175,7 +1431,7 @@
         "next_evo": "Coconut",
         "required": 2,
         "abbev": "bam",
-        "worth": 200,
+        "worth": 144,
         "comp": true,
         "description": "A fast-growing plant known for its strength and versatility. Can be evolved into Coconut."
     },
@@ -1186,7 +1442,7 @@
         "next_evo": "Cactus",
         "required": 2,
         "abbev": "coc",
-        "worth": 300,
+        "worth": 233,
         "comp": true,
         "description": "A tropical fruit known for its hard shell and refreshing water. Can be evolved into Cactus."
     },
@@ -1197,7 +1453,7 @@
         "next_evo": "Dragon Fruit",
         "required": 2,
         "abbev": "cac",
-        "worth": 450,
+        "worth": 377,
         "comp": true,
         "description": "A resilient plant adapted to arid environments. Can be evolved into Dragon Fruit."
     },
@@ -1208,7 +1464,7 @@
         "next_evo": "Mango",
         "required": 2,
         "abbev": "df",
-        "worth": 700,
+        "worth": 610,
         "comp": true,
         "description": "A vibrant fruit known for its unique appearance and sweet taste. Can be evolved into Mango."
     },
@@ -1219,7 +1475,7 @@
         "next_evo": "Mushroom",
         "required": 2,
         "abbev": "mang",
-        "worth": 1000,
+        "worth": 987,
         "comp": true,
         "description": "A tropical fruit celebrated for its juicy flesh and rich flavor. Can be evolved into Mushroom."
     },
@@ -1230,7 +1486,7 @@
         "next_evo": "Grape",
         "required": 2,
         "abbev": "msh",
-        "worth": 1500,
+        "worth": 1597,
         "comp": true,
         "description": "A fungi known for its culinary and medicinal uses. Can be evolved into Grape."
     },
@@ -1241,7 +1497,7 @@
         "next_evo": "Pepper",
         "required": 2,
         "abbev": "grap",
-        "worth": 1500,
+        "worth": 2584,
         "comp": true,
         "description": "A small fruit often used to make wine. Can be evolved into Pepper."
     },
@@ -1252,7 +1508,7 @@
         "next_evo": "Cacao",
         "required": 2,
         "abbev": "pep",
-        "worth": 2200,
+        "worth": 4181,
         "comp": true,
         "description": "A spice known for its pungent flavor. Can be evolved into Cacao."
     },
@@ -1263,7 +1519,7 @@
         "next_evo": "Beanstalk",
         "required": 2,
         "abbev": "cacoa",
-        "worth": 3200,
+        "worth": 6765,
         "comp": true,
         "description": "The seed from which chocolate is made. Can be evolved into Beanstalk."
     },
@@ -1274,7 +1530,7 @@
         "next_evo": "Ember Lily",
         "required": 2,
         "abbev": "bs",
-        "worth": 4500,
+        "worth": 10946,
         "comp": true,
         "description": "A giant plant that reaches the sky. Can be evolved into Ember Lily."
     },
@@ -1285,7 +1541,7 @@
         "next_evo": "Sugar Apple",
         "required": 2,
         "abbev": "el",
-        "worth": 6500,
+        "worth": 17711,
         "comp": true,
         "description": "A fiery flower that blooms with intense heat. Can be evolved into Sugar Apple."
     },
@@ -1296,7 +1552,7 @@
         "next_evo": "Elder Strawberry",
         "required": 2,
         "abbev": "sa",
-        "worth": 9000,
+        "worth": 28657,
         "comp": true,
         "description": "A sweet fruit known for its creamy texture. Can be evolved into Crimson Thorn."
     },
@@ -1307,7 +1563,7 @@
         "next_evo": "Romanesco",
         "required": 2,
         "abbev": "es",
-        "worth": 13000,
+        "worth": 46368,
         "comp": true,
         "description": "A rare and ancient variety of strawberry, known for its exceptional flavor and longevity."
     },
@@ -1318,7 +1574,7 @@
         "next_evo": "Crimson Thorn",
         "required": 2,
         "abbev": "rom",
-        "worth": 18000,
+        "worth": 75025,
         "comp": true,
         "description": "A unique vegetable known for its fractal-like appearance and vibrant green color. Can be evolved into Crimson Thorn."
     },
@@ -1329,47 +1585,52 @@
         "next_evo": null,
         "required": 0,
         "abbev": "ct",
-        "worth": 24000,
+        "worth": 121393,
         "comp": true,
         "description": "The final evolution in the food chain, representing the pinnacle of growth and transformation."
     },
-
     "Cool Anteater": {
         "name": "Cool Anteater",
-        "rarity": 1e-5,
+        "rarity": 1e-05,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
         "abbev": "ca",
-        "worth": 32000,
+        "worth": 64000,
         "comp": true,
         "description": "An anteater with a cool demeanor and style. A rare find among EvoSpinners."
     },
-
     "Samsung Galaxy S25 Ultra": {
         "name": "Samsung Galaxy S25 Ultra",
-        "rarity": 5e-8,
+        "rarity": 5e-08,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
         "abbev": "s25u",
-        "worth": 1800,
+        "worth": 3600,
         "comp": true,
-        "description": "The latest and greatest smartphone from Samsung, featuring cutting-edge technology and design."
+        "description": "The latest and greatest smartphone from Samsung, featuring cutting-edge technology and design.",
+        "mutations": {
+            "Samsung Galaxy S25 Ultra: Android 21 1TB 12GB Ram ": {
+                "name": "Samsung Galaxy S25 Ultra: Android 21 1TB 12GB Ram",
+                "abbev": "s25uc",
+                "worth": 7200,
+                "weight": 1,
+                "description": "A special edition of the Samsung Galaxy S25 Ultra, featuring a cosmic-themed design and exclusive features."
+            }
+        }
     },
-
     "Ultra Frog": {
         "name": "Ultra Frog",
-        "rarity": 5e-4,
+        "rarity": 0.0005,
         "prev_evo": null,
         "next_evo": null,
         "required": 0,
         "abbev": "uf",
-        "worth": 900,
+        "worth": 1800,
         "comp": true,
         "description": "A legendary frog with extraordinary abilities. A true rarity among EvoSpinners."
     },
-
     "Minecrack": {
         "name": "Minecrack",
         "rarity": 0.024,
@@ -1377,7 +1638,7 @@
         "next_evo": "Minceraft",
         "required": 10,
         "abbev": "mc",
-        "worth": 3000,
+        "worth": 6000,
         "comp": true,
         "description": "Minecraft but not really: Episode 1"
     },
@@ -1388,11 +1649,30 @@
         "next_evo": null,
         "required": 0,
         "abbev": "mct",
-        "worth": 6000,
+        "worth": 12000,
         "comp": true,
         "description": "Minecraft but not really: Episode 2"
     },
-
+    "Aethernova": {
+        "name": "Aethernova",
+        "rarity": 1e-10,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "an",
+        "worth": 500000,
+        "comp": true,
+        "description": "A mythical creature that embodies the essence of the cosmos. A rare and powerful entity among EvoSpinners.",
+        "mutations": {
+            "Aethernova: Seraphic Transcendence": {
+                "name": "Aethernova: Seraphic Transcendence",
+                "abbev": "anc",
+                "worth": 500000,
+                "weight": 1,
+                "description": "A rare seraphic and transcendent variant of the Aethernova, known for its ethereal beauty and cosmic powers."
+            }
+        }
+    },
     "The Admin": {
         "name": "The Admin",
         "rarity": 0,
@@ -1401,7 +1681,7 @@
         "required": 0,
         "abbev": "ta",
         "comp": false,
-        "worth": 100000,
+        "worth": 200000,
         "description": "The exclusive Admin Only item."
     }
 }

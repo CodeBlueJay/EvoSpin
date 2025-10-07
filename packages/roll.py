@@ -85,20 +85,22 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
     mutations = things.get(spun, {}).get("mutations")
     if mutations and random.randint(1, 100) <= mutation_chance:
         if isinstance(mutations, dict):
-            mut_name = random.choice(list(mutations.keys()))
+            names = list(mutations.keys())
+            weights = [
+                float(mutations[k].get("weight", 1)) if isinstance(mutations[k], dict) else 1.0
+                for k in names
+            ]
+            total_w = sum(w if w > 0 else 0 for w in weights)
+            mut_name = (
+                random.choices(names, weights=[max(0, w) for w in weights], k=1)[0]
+                if total_w > 0 else random.choice(names)
+            )
             spun = mut_name
             spun_name = mut_name
             mutated = True
-        elif isinstance(mutations, list):
-            choice = random.choice(mutations)
-            if isinstance(choice, str):
-                spun = choice.split(": ", 1)[0] if ": " in choice else choice
-                spun_name = choice
-            else:
-                spun = str(choice)
-                spun_name = spun
-            mutated = True
     if mutated:
+        await add_mutated(spun, user_id)
+    elif ":" in spun:
         await add_mutated(spun, user_id)
     else:
         await add_to_inventory(spun, user_id)

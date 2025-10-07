@@ -159,8 +159,11 @@ async def drop_cmd(interaction: discord.Interaction, item: str, amount: int=1):
     )
     embed.add_field(name="Item", value=item.title())
     embed.add_field(name="Amount", value=str(amount))
-    total = sum([things[i]["rarity"] for i in things if things[i]["rarity"] > 0])
-    embed.add_field(name="Rarity", value=f"1 in {'{:,}'.format(round((total / things[item.title()]['rarity'])))}")
+    if things[item.title()]["rarity"] > 0:
+        total = sum([things[i]["rarity"] for i in things if things[i]["rarity"] > 0])
+        embed.add_field(name="Rarity", value=f"1 in {'{:,}'.format(round((total / things[item.title()]['rarity'])))}")
+    else:
+        embed.add_field(name="Rarity", value="Evolution")
     embed.add_field(name="Value", value=str(things[item.title()]["worth"]))
     await interaction.followup.send(embed=embed, view=DropView(interaction.user.id, item.title(), amount))
 
@@ -224,3 +227,11 @@ async def add_mutated_cmd(interaction: discord.Interaction, user: discord.User, 
     for i in range(amount):
         await add_mutated(item.title(), user.id)
     await interaction.response.send_message(f"Gave **{amount}** **{item.title()}** to {user.mention}!")
+
+@admin_group.command(name="clear_mutated", description="Clear a user's mutated items")
+async def clear_mutated_cmd(interaction: discord.Interaction, user: discord.User):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    await clear_mutated(user.id)
+    await interaction.response.send_message(f"Cleared {user.mention}'s mutated items!")

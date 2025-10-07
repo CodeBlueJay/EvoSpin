@@ -426,3 +426,13 @@ async def remove_mutated(mutated, user_id):
         WHERE UserID = {user_id};
         """)
         await db.commit()
+
+async def clear_mutated(user_id):
+    await check_user_exist(user_id)
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"""
+        UPDATE Users
+        SET Mutated = ''
+        WHERE UserID = {user_id};
+        """)
+        await db.commit()
