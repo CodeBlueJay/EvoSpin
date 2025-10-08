@@ -215,4 +215,4 @@ async def begin(interaction: discord.Interaction, member: discord.Member):
     
     embed = view.update_embed(interaction)
 
-    await interaction.followup.send(f"<@{user_id}> wants to trade with you\n\n<@{target_id}>", view=view, embed=embed)
+    await interaction.followup.send(f"<@{user_id}> wants to trade with you\ <@{target_id}>", view=view, embed=embed)
