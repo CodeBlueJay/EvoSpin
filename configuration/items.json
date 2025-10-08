@@ -63,7 +63,30 @@
         "abbev": "sap",
         "worth": 16,
         "comp": true,
-        "description": "A young tree. Full of potential."
+        "description": "A young tree. Full of potential.",
+        "mutations": {
+            "Sapling: Oak": {
+                "name": "Sapling: Oak",
+                "abbev": "sapo",
+                "worth": 32,
+                "weight": 10,
+                "description": "A rare oak variant of Sapling, known for its strength and longevity."
+            },
+            "Sapling: Dark Oak": {
+                "name": "Sapling: Dark Oak",
+                "abbev": "sapdo",
+                "worth": 32,
+                "weight": 2,
+                "description": "A rare dark oak variant of Sapling, known for its rich color and durability."
+            },
+            "Sapling: Jungle": {
+                "name": "Sapling: Jungle",
+                "abbev": "sapj",
+                "worth": 32,
+                "weight": 1,
+                "description": "A rare jungle variant of Sapling, known for its exotic appearance and rapid growth."
+            }
+        }
     },
     "Tree": {
         "name": "Tree",
@@ -111,12 +134,23 @@
         "name": "Feather",
         "rarity": 28,
         "prev_evo": null,
-        "next_evo": null,
+        "next_evo": "Quill",
         "required": 5,
         "abbev": "fth",
         "worth": 8,
         "comp": true,
         "description": "Light and soft. Can be fashioned into a Quill."
+    },
+    "Quill": {
+        "name": "Quill",
+        "rarity": 0,
+        "prev_evo": "Feather",
+        "next_evo": null,
+        "required": 5,
+        "abbev": "q",
+        "worth": 20,
+        "comp": true,
+        "description": "A writing tool made from a feather."
     },
     "Clay": {
         "name": "Clay",
