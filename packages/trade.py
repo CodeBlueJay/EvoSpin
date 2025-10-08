@@ -9,6 +9,18 @@ with open("configuration/items.json", "r") as f:
 
 trade_group = discord.app_commands.Group(name="trade", description="Trading commands")
 
+class TradeView(discord.ui.View):
+    def __init__(self, user_id, target_id):
+        super().__init__(timeout=60)
+        self.user_id = user_id
+        self.target_id = target_id
+        self.user_offer = []
+        self.target_offer = []
+
+    @discord.ui.button(label="Accept", style=discord.ButtonStyle.green)
+    async def accept(self, interaction: discord.Interaction, button: discord.ui.Button):
+        
+
 class GiveView(discord.ui.View):
     def __init__(self, user_id, target_id, item, amount):
         super().__init__(timeout=60)
@@ -75,3 +87,6 @@ async def give(interaction: discord.Interaction, member: discord.Member, item: s
         return
 
     await interaction.response.send_message(f"<@{user_id}> is giving you **{amount} {item}(s)**\n\n<@{target_id}>", view=GiveView(user_id, target_id, item, amount))
+
+@trade_group.command(name="begin", description="Begin a trade with another user")
+async def begin(interaction: discord.Interaction, member: discord.Member):
