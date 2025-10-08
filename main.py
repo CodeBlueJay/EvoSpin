@@ -15,6 +15,7 @@ intents.message_content = True
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
+DEV_TOKEN = os.getenv("DEV_TOKEN")
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
@@ -47,4 +48,9 @@ async def on_ready():
     print(f"{bot.user} connected")
     await load_commands()
 
-bot.run(TOKEN)
+dev_mode = True
+
+if not dev_mode:
+    bot.run(TOKEN)
+else:
+    bot.run(DEV_TOKEN)
