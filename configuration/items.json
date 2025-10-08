@@ -462,7 +462,7 @@
         "prev_evo": "Louisiana Purchase",
         "next_evo": "Mexican Cession",
         "required": 3,
-        "abbev": "ta",
+        "abbev": "txa",
         "worth": 240,
         "comp": true,
         "description": "The annexation of Texas in 1845, leading to the Mexican-American War."
@@ -473,7 +473,7 @@
         "prev_evo": "Texas Annexation",
         "next_evo": "Alaska Purchase",
         "required": 2,
-        "abbev": "mc",
+        "abbev": "mxc",
         "worth": 500,
         "comp": true,
         "description": "The land ceded by Mexico to the U.S. in 1848 after the Mexican-American War."
