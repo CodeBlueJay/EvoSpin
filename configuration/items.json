@@ -1113,28 +1113,28 @@
                 "name": "Thaitangle: Royal",
                 "abbev": "ttr",
                 "worth": 200000,
-                "weight": 1,
+                "weight": 0.5,
                 "description": "A rare royal version of Thaitangle, symbolizing the rich culture and heritage of Thailand."
             },
             "Thaitangle: Mystic": {
                 "name": "Thaitangle: Mystic",
                 "abbev": "ttm",
                 "worth": 200000,
-                "weight": 5,
+                "weight": 7,
                 "description": "A mystical version of Thaitangle, representing the spiritual essence of Thailand."
             },
             "Thaitangle: Golden": {
                 "name": "Thaitangle: Golden",
                 "abbev": "ttg",
                 "worth": 200000,
-                "weight": 3,
+                "weight": 4,
                 "description": "A golden variant of Thaitangle, symbolizing prosperity and wealth."
             },
             "Thaitangle: Enlightened": {
                 "name": "Thaitangle: Enlightened",
                 "abbev": "tte",
                 "worth": 200000,
-                "weight": 1,
+                "weight": 0.5,
                 "description": "A rare enlightened version of Thaitangle, symbolizing enlightenment and prosperity."
             }
         }

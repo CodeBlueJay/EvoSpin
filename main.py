@@ -48,7 +48,7 @@ async def on_ready():
     print(f"{bot.user} connected")
     await load_commands()
 
-dev_mode = True
+dev_mode = False
 
 if not dev_mode:
     bot.run(TOKEN)
