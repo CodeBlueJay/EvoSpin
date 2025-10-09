@@ -236,11 +236,50 @@ async def clear_mutated_cmd(interaction: discord.Interaction, user: discord.User
     await clear_mutated(user.id)
     await interaction.response.send_message(f"Cleared {user.mention}'s mutated items!")
 
+class FalseButton(discord.ui.Button):
+    def __init__(self, y: int):
+        super().__init__(label="\u200b", style=discord.ButtonStyle.secondary, row=y)
+
+    async def callback(self, interaction: discord.Interaction):
+        self.style = discord.ButtonStyle.danger
+        self.disabled = True
+        await interaction.response.edit_message(view=self.view)
+
+class CorrectButton(discord.ui.Button):
+    def __init__(self, y: int, item: str):
+        super().__init__(label="\u200b", style=discord.ButtonStyle.secondary, row=y)
+        self.item = item
+
+    async def callback(self, interaction: discord.Interaction):
+        self.style = discord.ButtonStyle.success
+        self.disabled = True
+        self.view.claimed = True
+        await interaction.response.edit_message(view=self.view)
+        await interaction.followup.send(f"{interaction.user.mention} pressed the correct button!", ephemeral=True)
+        await add_to_inventory(self.item, interaction.user.id)
+        self.view.stop()
+
+class ItemBoard(discord.ui.View):
+    def __init__(self, item, height, width):
+        super().__init__(timeout=120)
+        self.item = item
+        self.claimed = False
+        self.height = height
+        self.width = width
+
+        correctX = random.randint(0, self.width - 1)
+        correctY = random.randint(0, self.height - 1)
+        for y in range(self.height):
+            for x in range(self.width):
+                if (x, y) == (correctX, correctY):
+                    self.add_item(CorrectButton(y), self.item)
+                else:
+                    self.add_item(FalseButton(y))
+
 @admin_group.command(name="item_board", description="Press the correct button and get an item")
-async def create_item_board(interaction: discord.Interaction):
+async def create_item_board(interaction: discord.Interaction, amount: int, item: str, height: int=3, width: int=3):
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
-
-
-    message = await interaction.response.send_message(embed=embed, view=view)
+    view = ItemBoard(item, height, width)
+    await interaction.response.send_message(f"First person to click the correct button gets **{amount} {item}(s)**", view=view)
