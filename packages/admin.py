@@ -246,40 +246,44 @@ class FalseButton(discord.ui.Button):
         await interaction.response.edit_message(view=self.view)
 
 class CorrectButton(discord.ui.Button):
-    def __init__(self, y: int, item: str):
+    def __init__(self, y: int, item: str, amount: int=1):
         super().__init__(label="\u200b", style=discord.ButtonStyle.secondary, row=y)
         self.item = item
+        self.amount = amount
 
     async def callback(self, interaction: discord.Interaction):
         self.style = discord.ButtonStyle.success
         self.disabled = True
         self.view.claimed = True
         await interaction.response.edit_message(view=self.view)
-        await interaction.followup.send(f"{interaction.user.mention} pressed the correct button!", ephemeral=True)
+        await interaction.followup.send(f"{interaction.user.mention} pressed the correct button!")
         await add_to_inventory(self.item, interaction.user.id)
+        await interaction.followup.send(f"{interaction.user.mention} received **{str(self.amount)} {self.item}**!")
         self.view.stop()
 
 class ItemBoard(discord.ui.View):
-    def __init__(self, item, height, width):
+    def __init__(self, item, height, width, amount):
         super().__init__(timeout=120)
         self.item = item
         self.claimed = False
         self.height = height
         self.width = width
+        self.amount = amount
 
         correctX = random.randint(0, self.width - 1)
         correctY = random.randint(0, self.height - 1)
         for y in range(self.height):
             for x in range(self.width):
                 if (x, y) == (correctX, correctY):
-                    self.add_item(CorrectButton(y), self.item)
+                    self.add_item(CorrectButton(y, self.item, self.amount))
                 else:
                     self.add_item(FalseButton(y))
 
 @admin_group.command(name="item_board", description="Press the correct button and get an item")
 async def create_item_board(interaction: discord.Interaction, amount: int, item: str, height: int=3, width: int=3):
+    item = item.title()
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
-    view = ItemBoard(item, height, width)
+    view = ItemBoard(item, height, width, amount)
     await interaction.response.send_message(f"First person to click the correct button gets **{amount} {item}(s)**", view=view)
