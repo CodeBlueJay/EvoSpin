@@ -235,3 +235,12 @@ async def clear_mutated_cmd(interaction: discord.Interaction, user: discord.User
         return
     await clear_mutated(user.id)
     await interaction.response.send_message(f"Cleared {user.mention}'s mutated items!")
+
+@admin_group.command(name="item_board", description="Press the correct button and get an item")
+async def create_item_board(interaction: discord.Interaction):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+
+
+    message = await interaction.response.send_message(embed=embed, view=view)
