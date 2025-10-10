@@ -24,6 +24,22 @@ class QuickTradeView(discord.ui.View):
         if interaction.user.id != self.target_id:
             await interaction.response.send_message("This trade is not for you", ephemeral=True)
             return
+        user_inven = await decrypt_inventory(await get_inventory(self.user_id))
+        target_inven = await decrypt_inventory(await get_inventory(self.target_id))
+        if int(user_inven.get(self.your_item, 0)) < self.your_amount:
+            await interaction.response.send_message(f"Trade failed. <@{self.user_id}> no longer has enough {self.your_item}(s).")
+            for i in self.children:
+                i.disabled = True
+            await interaction.message.edit(view=self)
+            self.stop()
+            return
+        if int(target_inven.get(self.their_item, 0)) < self.their_amount:
+            await interaction.response.send_message(f"Trade failed. <@{self.target_id}> no longer has enough {self.their_item}(s).")
+            for i in self.children:
+                i.disabled = True
+            await interaction.message.edit(view=self)
+            self.stop()
+            return
 
         for i in range(self.your_amount):
             await remove_from_inventory(self.your_item, self.user_id)
@@ -64,7 +80,7 @@ class QuickTradeView(discord.ui.View):
 
 class TradeView(discord.ui.View):
     def __init__(self, user_id, target_id, target_name=None):
-        super().__init__(timeout=60)
+        super().__init__(timeout=180)
         self.user_id = user_id
         self.target_id = target_id
         self.target_name = target_name
@@ -106,12 +122,30 @@ class TradeView(discord.ui.View):
             await interaction.message.edit(embed=self.update_embed(interaction), view=self)
 
         if self.user_accepted and self.target_accepted:
-            for item in self.user_offer:
-                await remove_from_inventory(item, self.user_id)
-                await add_to_inventory(item, self.target_id)
-            for item in self.target_offer:
-                await remove_from_inventory(item, self.target_id)
-                await add_to_inventory(item, self.user_id)
+            user_inven = await decrypt_inventory(await get_inventory(self.user_id))
+            target_inven = await decrypt_inventory(await get_inventory(self.target_id))
+            for item, amount in self.user_offer.items():
+                if int(user_inven.get(item, 0)) < int(amount):
+                    self.user_accepted = False
+                    self.target_accepted = False
+                    await interaction.followup.send(f"Trade failed. <@{self.user_id}> no longer has enough {item}(s).")
+                    await interaction.message.edit(embed=self.update_embed(interaction), view=self)
+                    return
+            for item, amount in self.target_offer.items():
+                if int(target_inven.get(item, 0)) < int(amount):
+                    self.user_accepted = False
+                    self.target_accepted = False
+                    await interaction.followup.send(f"Trade failed. <@{self.target_id}> no longer has enough {item}(s).")
+                    await interaction.message.edit(embed=self.update_embed(interaction), view=self)
+                    return
+            for item, amount in self.user_offer.items():
+                for _ in range(amount):
+                    await remove_from_inventory(item, self.user_id)
+                    await add_to_inventory(item, self.target_id)
+            for item, amount in self.target_offer.items():
+                for _ in range(amount):
+                    await remove_from_inventory(item, self.target_id)
+                    await add_to_inventory(item, self.user_id)
 
             await interaction.followup.send("Trade completed!")
             for i in self.children:
@@ -207,6 +241,14 @@ class GiveView(discord.ui.View):
         if interaction.user.id != self.target_id:
             await interaction.response.send_message("This gift is not for you", ephemeral=True)
             return
+        giver_inven = await decrypt_inventory(await get_inventory(self.user_id))
+        if int(giver_inven.get(self.item, 0)) < self.amount:
+            await interaction.response.send_message(f"Gift failed. <@{self.user_id}> no longer has enough {self.item}(s).")
+            for i in self.children:
+                i.disabled = True
+            await interaction.message.edit(view=self)
+            self.stop()
+            return
 
         for i in range(self.amount):
             await remove_from_inventory(self.item, self.user_id)
@@ -251,11 +293,14 @@ async def give(interaction: discord.Interaction, member: discord.Member, item: s
     if user_id == target_id:
         await interaction.response.send_message("You cannot give yourself items")
         return
+    if amount <= 0:
+        await interaction.response.send_message("Amount must be greater than 0")
+        return
     
     if not(item in things):
         await interaction.response.send_message("That item does not exist")
         return
-    if int(user_inven[item]) < amount:
+    if int(user_inven.get(item, 0)) < amount:
         await interaction.response.send_message("You do not have enough " + item + "(s) to give")
         return
 
@@ -294,16 +339,23 @@ async def quick_trade(interaction: discord.Interaction, member: discord.Member, 
     user_inven = await decrypt_inventory(await get_inventory(user_id))
     target_inven = await decrypt_inventory(await get_inventory(target_id))
     
+    if user_id == target_id:
+        await interaction.response.send_message("You cannot trade with yourself")
+        return
+    if your_amount <= 0 or their_amount <= 0:
+        await interaction.response.send_message("Amounts must be greater than 0")
+        return
     if not(your_item in things):
-        await interaction.response.send_message("You do not have that item")
+        await interaction.response.send_message("That item does not exist")
         return
     if not(their_item in things):
-        await interaction.response.send_message("They do not have that item")
+        await interaction.response.send_message("That item does not exist")
         return
-    if int(user_inven[your_item]) < your_amount:
+    if int(user_inven.get(your_item, 0)) < your_amount:
         await interaction.response.send_message("You do not have enough " + your_item + "(s) to trade")
         return
-    if int(target_inven[their_item]) < their_amount:
+    print(target_inven.get(their_item, 0))
+    if int(target_inven.get(their_item, 0)) < their_amount:
         await interaction.response.send_message(f"{member.name} does not have enough " + their_item + "(s) to trade")
         return
 
