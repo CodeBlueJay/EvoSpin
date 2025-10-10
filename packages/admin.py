@@ -1,10 +1,10 @@
-import discord, json, random
+import discord, json, random, asyncio
 from discord import app_commands
 from discord.ui import Button, View
 from discord.ext import commands
 
 from database import *
-from packages.roll import spin
+import packages.roll as roll
 
 with open("configuration/items.json", "r") as items:
     things = json.load(items)
@@ -48,7 +48,7 @@ async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str
     temp = ""
     await interaction.response.send_message(f"Admin: Rolling `{amount}` times")
     for i in range(amount):
-        spun = await spin(interaction.user.id, item, potion_strength=potion_strength, transmutate_amount=transmutate_amount, mutation_chance=mutation_chance)
+        spun = await roll.spin(interaction.user.id, item, potion_strength=potion_strength, transmutate_amount=transmutate_amount, mutation_chance=mutation_chance)
         temp += spun + "\n"
         if seperate:
             await interaction.followup.send(spun)
@@ -287,3 +287,67 @@ async def create_item_board(interaction: discord.Interaction, amount: int, item:
         return
     view = ItemBoard(item, height, width, amount)
     await interaction.response.send_message(f"First person to click the correct button gets **{amount} {item}(s)**", view=view)
+
+@admin_group.command(name="lucky_8", description="Toggle the lucky 8 event for 60 seconds")
+async def toggle_lucky_8(interaction: discord.Interaction):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    roll.lucky8 = True
+    await interaction.response.send_message(f"Lucky 8 event has started! All rolls are multiplied by 8 for the next 60 seconds! This effect stacks with potions.")
+    await asyncio.sleep(60)
+    roll.lucky8 = False
+    await interaction.followup.send("Lucky 8 event has ended.")
+
+class GroupGiveawayView(discord.ui.View):
+    def __init__(self, admin_id, item):
+        super().__init__(timeout=60)
+        self.admin_id = admin_id
+        self.item = item
+        self.claimed = False
+        self.users = []
+        self.message = None
+
+    async def on_timeout(self):
+        unique_users = list(set(self.users))
+        for i in unique_users:
+            await add_to_inventory(self.item, i)
+        if self.message:
+            for child in self.children:
+                child.disabled = True
+            await self.message.edit(view=self)
+            await self.message.channel.send(f"{str(len(unique_users))} users claimed their **{self.item}**!")
+
+    @discord.ui.button(label="I want one", style=discord.ButtonStyle.green)
+    async def claim_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.defer(ephemeral=True)
+        if interaction.user.id in self.users:
+            await interaction.followup.send("You are already in this giveaway!", ephemeral=True)
+            return
+        self.users.append(interaction.user.id)
+        await interaction.followup.send(f"You have been added to the giveaway for **{self.item}**!", ephemeral=True)
+
+@admin_group.command(name="group_giveaway", description="Give everyone who clicks the button an item")
+async def group_giveaway(interaction: discord.Interaction, item: str):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    if not(item.title() in things):
+        await interaction.response.send_message("That item does not exist")
+        return
+    await interaction.response.send_message(f"Started a group giveaway for **{item.title()}(s)**!")
+    embed = discord.Embed(
+        title=f"Group Giveaway!",
+        description=f"Click the button below to claim **{item.title()}(s)**!\nEnds in 60 seconds!",
+        color=discord.Color.purple()
+    )
+    embed.add_field(name="Item", value=item.title())
+    if things[item.title()]["rarity"] > 0:
+        total = sum([things[i]["rarity"] for i in things if things[i]["rarity"] > 0])
+        embed.add_field(name="Rarity", value=f"1 in {'{:,}'.format(round((total / things[item.title()]['rarity'])))}")
+    else:
+        embed.add_field(name="Rarity", value="Evolution")
+    embed.add_field(name="Value", value=str(things[item.title()]["worth"]))
+    view = GroupGiveawayView(interaction.user.id, item.title())
+    message = await interaction.followup.send(embed=embed, view=view)
+    view.message = message
