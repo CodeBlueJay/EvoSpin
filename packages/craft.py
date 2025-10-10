@@ -14,11 +14,14 @@ craft_group = discord.app_commands.Group(name="craft", description="Crafting com
 async def craft(interaction: discord.Interaction, item: str, amount: int=1):
     user_inven = await decrypt_inventory(await get_inventory(interaction.user.id))
     item = item.title()
+    if amount <= 0:
+        await interaction.response.send_message("Amount must be greater than 0")
+        return
     if item not in craftables:
         await interaction.response.send_message(f"**{item}** is not a craftable item!")
         return
     for i in craftables[item]["components"]:
-        if int(user_inven[i]) < craftables[item]["components"][i] * amount:
+        if int(user_inven.get(i, 0)) < craftables[item]["components"][i] * amount:
             await interaction.response.send_message(f"You need at least **{craftables[item]['components'][i] * amount} {i}** to craft **{amount} {item}**!")
             return
     for i in craftables[item]["components"]:

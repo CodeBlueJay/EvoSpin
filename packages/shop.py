@@ -54,11 +54,11 @@ async def sell_item(interaction: discord.Interaction, item: str, amount: int=1):
     user_inven = await decrypt_inventory(await get_inventory(interaction.user.id))
     crafting_inven = await decrypt_inventory(await get_craftables(interaction.user.id))
     if base == things:
-        if int(user_inven[item]) < amount:
+        if int(user_inven.get(item, 0)) < amount:
             await interaction.response.send_message(f"You do not have enough **{item}** to sell!")
             return
     elif base == crafting_items:
-        if int(crafting_inven[item]) < amount:
+        if int(crafting_inven.get(item, 0)) < amount:
             await interaction.response.send_message(f"You do not have enough **{item}** to sell!")
             return
     item_worth = base[item]["worth"]
