@@ -1,5 +1,5 @@
 {
-    "cooldown": 2,
+    "cooldown": 5,
     "admins": [908954867962380298],
     "xp_scale": 25000,
     "max_luck_strength": 0.25,
