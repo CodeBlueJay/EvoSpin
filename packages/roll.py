@@ -1,7 +1,6 @@
 import discord, json, random, math
 from discord import app_commands
 from discord.ext import commands
-
 from database import *
 import packages.potioneffects as potioneffects
 
@@ -12,16 +11,33 @@ with open("configuration/settings.json", "r") as settings:
 with open("configuration/crafting.json", "r") as craftables:
     craft = json.load(craftables)
 
+lucky3 = False
+lucky2x = False
+
 totalsum = 0
 roundTo = 1
 small_value = 0.000000000000000000001 # Because .uniform method is exclusive of the last character
 
 roll_group = discord.app_commands.Group(name="roll", description="Roll commands")
 
+catch_multiplier = 1
+
 @roll_group.command(name="random", description="Roll a random item")
 @app_commands.checks.cooldown(1, settings["cooldown"], key=lambda i: i.user.id)
-async def rand_roll(interaction: discord.Interaction):
-    await interaction.response.send_message(await spin(interaction.user.id))
+async def rand_roll(interaction: discord.Interaction, catch_multiplier: int=catch_multiplier):
+    global lucky3, lucky2x
+    if lucky3:
+        catch_multiplier = 3
+    else:
+        catch_multiplier = 1
+    if lucky2x:
+        luck = 2.0
+    else:
+        luck = 1.0
+    temp = ""
+    for _ in range(catch_multiplier, potion_strength=luck):
+        temp += await spin(interaction.user.id) + "\n"
+    await interaction.response.send_message(temp)
 
 @rand_roll.error
 async def rand_roll_error(interaction: discord.Interaction, error):
@@ -49,7 +65,7 @@ async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
                 await interaction.response.send_message(f"You need at least **{things[item.title()]['required'] * amount}** **{item.title()}** to evolve it!")
                 return
 
-async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_strength: float=0.0, mutation_chance: int=1):
+async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_strength: float=0.0, mutation_chance: int=1, catch_multiplier=catch_multiplier):
     spun = ""
     spun_name = ""
     temp = ""
