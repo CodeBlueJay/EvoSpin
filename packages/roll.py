@@ -11,7 +11,8 @@ with open("configuration/settings.json", "r") as settings:
 with open("configuration/crafting.json", "r") as craftables:
     craft = json.load(craftables)
 
-lucky8 = False
+lucky3 = False
+lucky2x = False
 
 totalsum = 0
 roundTo = 1
@@ -24,13 +25,17 @@ catch_multiplier = 1
 @roll_group.command(name="random", description="Roll a random item")
 @app_commands.checks.cooldown(1, settings["cooldown"], key=lambda i: i.user.id)
 async def rand_roll(interaction: discord.Interaction, catch_multiplier: int=catch_multiplier):
-    global lucky8
-    if lucky8:
-        catch_multiplier = 8
+    global lucky3, lucky2x
+    if lucky3:
+        catch_multiplier = 3
     else:
         catch_multiplier = 1
+    if lucky2x:
+        luck = 2.0
+    else:
+        luck = 1.0
     temp = ""
-    for _ in range(catch_multiplier):
+    for _ in range(catch_multiplier, potion_strength=luck):
         temp += await spin(interaction.user.id) + "\n"
     await interaction.response.send_message(temp)
 

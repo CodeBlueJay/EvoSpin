@@ -288,16 +288,27 @@ async def create_item_board(interaction: discord.Interaction, amount: int, item:
     view = ItemBoard(item, height, width, amount)
     await interaction.response.send_message(f"First person to click the correct button gets **{amount} {item}(s)**", view=view)
 
-@admin_group.command(name="lucky_8", description="Toggle the lucky 8 event for 60 seconds")
-async def toggle_lucky_8(interaction: discord.Interaction):
+@admin_group.command(name="lucky_3", description="Toggle the Triple Spin event for 60 seconds")
+async def toggle_lucky_3(interaction: discord.Interaction):
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
-    roll.lucky8 = True
-    await interaction.response.send_message(f"Lucky 8 event has started! All rolls are multiplied by 8 for the next 60 seconds! This effect stacks with potions.")
+    roll.lucky3 = True
+    await interaction.response.send_message(f"Triple Spin event has started! All rolls are multiplied by 3 for the next 60 seconds! This effect stacks with potions.")
     await asyncio.sleep(60)
-    roll.lucky8 = False
-    await interaction.followup.send("Lucky 8 event has ended.")
+    roll.lucky3 = False
+    await interaction.followup.send("Triple Spin event has ended.")
+
+@admin_group.command(name="lucky_2x", description="Toggle the 2x Luck event for 60 seconds")
+async def toggle_lucky_2x(interaction: discord.Interaction):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    roll.lucky2x = True
+    await interaction.response.send_message(f"2x Luck event has started! All rolls have double the luck for the next 60 seconds! This effect stacks with potions.")
+    await asyncio.sleep(60)
+    roll.lucky2x = False
+    await interaction.followup.send("2x Luck event has ended.")
 
 class GroupGiveawayView(discord.ui.View):
     def __init__(self, admin_id, item):
