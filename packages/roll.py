@@ -24,19 +24,17 @@ catch_multiplier = 1
 
 @roll_group.command(name="random", description="Roll a random item")
 @app_commands.checks.cooldown(1, settings["cooldown"], key=lambda i: i.user.id)
-async def rand_roll(interaction: discord.Interaction, catch_multiplier: int=catch_multiplier):
+async def rand_roll(interaction: discord.Interaction):
     global lucky3, lucky2x
     if lucky3:
-        catch_multiplier = 3
+        current_multiplier = 3
     else:
-        catch_multiplier = 1
-    if lucky2x:
-        luck = 2.0
-    else:
-        luck = 1.0
+        current_multiplier = 1
+    luck = 2.0 if lucky2x else 1.0
+
     temp = ""
-    for _ in range(catch_multiplier, potion_strength=luck):
-        temp += await spin(interaction.user.id) + "\n"
+    for _ in range(current_multiplier):
+        temp += await spin(interaction.user.id, potion_strength=luck) + "\n"
     await interaction.response.send_message(temp)
 
 @rand_roll.error
