@@ -59,7 +59,7 @@
         "rarity": 0,
         "prev_evo": "Sprout",
         "next_evo": "Tree",
-        "required": 0,
+        "required": 10,
         "abbev": "sap",
         "worth": 16,
         "comp": true,
@@ -461,15 +461,15 @@
         "name": "13 Colonies",
         "rarity": 20,
         "prev_evo": null,
-        "next_evo": "Articles of Confederation",
+        "next_evo": "Articles Of Confederation",
         "required": 5,
         "abbev": "13c",
         "worth": 20,
         "comp": true,
         "description": "The original thirteen colonies that declared independence from Britain in 1776."
     },
-    "Articles of Confederation": {
-        "name": "Articles of Confederation",
+    "Articles Of Confederation": {
+        "name": "Articles Of Confederation",
         "rarity": 0,
         "prev_evo": "13 Colonies",
         "next_evo": "Louisiana Purchase",
@@ -482,7 +482,7 @@
     "Louisiana Purchase": {
         "name": "Louisiana Purchase",
         "rarity": 0,
-        "prev_evo": "Articles of Confederation",
+        "prev_evo": "Articles Of Confederation",
         "next_evo": "Texas Annexation",
         "required": 3,
         "abbev": "lp",

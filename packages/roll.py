@@ -44,24 +44,34 @@ async def rand_roll_error(interaction: discord.Interaction, error):
 
 @roll_group.command(name="evolve", description="Evolve an item")
 async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
+    await interaction.response.defer()
     user_inven = await decrypt_inventory(await get_inventory(interaction.user.id))
-    if things[item.title()]["next_evo"] == None:
-        await interaction.response.send_message(f"**{item.title()}** cannot be evolved!")
+    item_name = item.title()
+    if item_name not in things:
+        await interaction.followup.send("That item does not exist!")
         return
-    else:
-        if item.title() in user_inven:
-            if int(user_inven[item.title()]) >= things[item.title()]["required"] * amount:
-                user_inven[item.title()] = str(int(user_inven[item.title()]) - things[item.title()]["required"] * amount)
-                if user_inven[item.title()] == "0":
-                    user_inven.pop(item.title())
-                for i in range(amount):
-                    await add_to_inventory(things[item.title()]["next_evo"], interaction.user.id)
-                await interaction.response.send_message(f"You evolved **{things[item.title()]['required'] * amount} {item.title()}** into **{amount} {things[item.title()]['next_evo']}**!")
-                for i in range(things[item.title()]["required"] * amount):
-                    await remove_from_inventory(item.title(), interaction.user.id)
-            else:
-                await interaction.response.send_message(f"You need at least **{things[item.title()]['required'] * amount}** **{item.title()}** to evolve it!")
-                return
+    if things[item_name].get("next_evo") is None:
+        await interaction.followup.send(f"**{item_name}** cannot be evolved!")
+        return
+    if item_name not in user_inven:
+        await interaction.followup.send(f"You don't have any **{item_name}** to evolve!")
+        return
+    required_total = things[item_name]["required"] * amount
+    try:
+        user_count = int(user_inven[item_name])
+    except Exception:
+        user_count = 0
+    if user_count < required_total:
+        await interaction.followup.send(f"You need at least **{required_total} {item_name}** to evolve it!")
+        return
+    user_inven[item_name] = str(user_count - required_total)
+    if user_inven[item_name] == "0":
+        user_inven.pop(item_name)
+    for _ in range(amount):
+        await add_to_inventory(things[item_name]["next_evo"], interaction.user.id)
+    await interaction.followup.send(f"You evolved **{required_total} {item_name}** into **{amount} {things[item_name]['next_evo']}**!")
+    for _ in range(required_total):
+        await remove_from_inventory(item_name, interaction.user.id)
 
 async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_strength: float=0.0, mutation_chance: int=1, catch_multiplier=catch_multiplier):
     spun = ""
