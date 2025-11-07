@@ -10,9 +10,16 @@ with open("configuration/settings.json", "r") as settings:
     settings = json.load(settings)
 with open("configuration/crafting.json", "r") as craftables:
     craft = json.load(craftables)
+with open("configuration/shop.json", "r") as shopf:
+    potions_list = json.load(shopf)
 
 lucky3 = False
 lucky2x = False
+active_event = None
+event_messages = {
+    "Galaxy": "\n✨ This item is from the Galaxy event! ✨",
+    "Winter Wonderland": "\n❄️ You rolled a Winter Wonderland exclusive! ❄️",
+}
 
 totalsum = 0
 roundTo = 1
@@ -26,15 +33,11 @@ catch_multiplier = 1
 @app_commands.checks.cooldown(1, settings["cooldown"], key=lambda i: i.user.id)
 async def rand_roll(interaction: discord.Interaction):
     global lucky3, lucky2x
-    if lucky3:
-        current_multiplier = 3
-    else:
-        current_multiplier = 1
-    luck = 2.0 if lucky2x else 1.0
+    current_multiplier = 3 if lucky3 else 1
 
     temp = ""
     for _ in range(current_multiplier):
-        temp += await spin(interaction.user.id, potion_strength=luck) + "\n"
+        temp += await spin(interaction.user.id, potion_strength=0.0) + "\n"
     await interaction.response.send_message(temp)
 
 @rand_roll.error
@@ -86,11 +89,24 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
     progress = 1 - math.exp(-xp / xp_scale)
     luck_strength = progress * max_luck_strength
     exponent_base = 1 - luck_strength
-    exponent_final = exponent_base * (1 - potion_strength * potion_exponent_factor)
+    if potion_strength and potion_strength > 0:
+        effective_potion_strength = potion_strength
+    else:
+        effective_potion_strength = 1.0
+
+    if lucky2x:
+        effective_potion_strength = effective_potion_strength * 2.0
+
+    exponent_final = exponent_base * (1 - effective_potion_strength * potion_exponent_factor)
     if exponent_final < 0.1:
         exponent_final = 0.1
-    population = [things[i]["name"] for i in things if things[i]["rarity"] > 0]
-    weights = [things[i]["rarity"] for i in things if things[i]["rarity"] > 0]
+    population = []
+    weights = []
+    for k, v in things.items():
+        item_event = v.get("event")
+        if v.get("rarity", 0) > 0 and (item_event is None or item_event == active_event):
+            population.append(v["name"])
+            weights.append(v["rarity"])
     transformed_weights = [w ** exponent_final for w in weights]
     spun = random.choices(population, weights=transformed_weights, k=1)[0]
     spun_name = things[spun]["name"]
@@ -129,17 +145,66 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
     else:
         await add_to_inventory(spun, user_id)
     await add_xp(1, user_id)
+    result = None
     try:
         base_w = things[spun].get("rarity", 0)
         if base_w and base_w > 0:
             base_total = sum(weights) or 0
             base_p = (base_w / base_total) if base_total > 0 else 0
             base_1in = round(1 / base_p) if base_p > 0 else 0
-            return f"You got a **{spun_name}** (*1 in {base_1in:,}*)"
+            result = f"You got a **{spun_name}** (*1 in {base_1in:,}*)"
         else:
-            return f"You got a **{spun_name}** (*Evolution*)!"
-    except:
-        return f"You got a **{spun_name}** (*Mutation*)!"
+            result = f"You got a **{spun_name}** (*Evolution*)!"
+    except Exception:
+        result = f"You got a **{spun_name}** (*Mutation*)!"
+    try:
+        item_meta = things.get(spun, {})
+        item_event = item_meta.get("event")
+        if item_event and item_event == active_event:
+            msg = event_messages.get(item_event)
+            if msg:
+                result += msg
+    except Exception:
+        pass
+
+    return result
+
+
+async def items_autocomplete(interaction: discord.Interaction, current: str):
+    choices = []
+    q = current.lower()
+    for name in things.keys():
+        if q in name.lower():
+            choices.append(app_commands.Choice(name=name, value=name))
+    if not choices and q == "":
+        for name in list(things.keys())[:25]:
+            choices.append(app_commands.Choice(name=name, value=name))
+    return choices[:25]
+
+
+async def potions_autocomplete(interaction: discord.Interaction, current: str):
+    choices = []
+    q = current.lower()
+    for name in potions_list.keys():
+        if q in name.lower():
+            choices.append(app_commands.Choice(name=name, value=name))
+    if not choices and q == "":
+        for name in list(potions_list.keys())[:25]:
+            choices.append(app_commands.Choice(name=name, value=name))
+    return choices[:25]
+
+
+async def events_autocomplete(interaction: discord.Interaction, current: str):
+    events = sorted({v.get("event") for v in things.values() if v.get("event")})
+    choices = []
+    q = current.lower()
+    for name in events:
+        if q in name.lower():
+            choices.append(app_commands.Choice(name=name, value=name))
+    if not choices and q == "":
+        for name in events[:25]:
+            choices.append(app_commands.Choice(name=name, value=name))
+    return choices[:25]
 
 @roll_group.command(name="use_potion", description="Use a potion to increase your chances")
 async def use_potion(interaction: discord.Interaction, potion: str, amount: int=1):
@@ -344,3 +409,7 @@ async def calculate_rarities():
         if len(str(things[i]["rarity"]))-2 > roundTo:
             roundTo = len(str(things[i]["rarity"]))-2
     totalsum = round(totalsum, roundTo)
+
+evolve.autocomplete('item')(items_autocomplete)
+item_info.autocomplete('item')(items_autocomplete)
+use_potion.autocomplete('potion')(potions_autocomplete)

@@ -1790,6 +1790,54 @@
             }
         }
     },
+    "Star Shard": {
+        "name": "Star Shard",
+        "rarity": 5,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "ss",
+        "worth": 250,
+        "comp": true,
+        "event": "Galaxy",
+        "description": "A shard of condensed starlight from the Galaxy event. Glittering and rare."
+    },
+    "Nebula Core": {
+        "name": "Nebula Core",
+        "rarity": 2,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "nc",
+        "worth": 600,
+        "comp": true,
+        "event": "Galaxy",
+        "description": "A glowing core harvested from a nebula during the Galaxy event. Very valuable."
+    },
+    "Snow Globe": {
+        "name": "Snow Globe",
+        "rarity": 6,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "sgl",
+        "worth": 120,
+        "comp": true,
+        "event": "Winter Wonderland",
+        "description": "A festive snow globe only available during the Winter Wonderland event."
+    },
+    "Frostflake": {
+        "name": "Frostflake",
+        "rarity": 8,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "ff",
+        "worth": 80,
+        "comp": true,
+        "event": "Winter Wonderland",
+        "description": "A crystalline frostflake collected from the Winter Wonderland. Delicate and rare."
+    },
     "The Admin": {
         "name": "The Admin",
         "rarity": 0,

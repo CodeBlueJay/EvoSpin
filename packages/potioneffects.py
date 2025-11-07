@@ -5,7 +5,10 @@ from discord.ext import commands
 from database import *
 
 async def msi(spinfn, user_id: int):
-    return [await spinfn(user_id) for i in range(3)]
+    from packages import roll
+    mult = 3 if getattr(roll, 'lucky3', False) else 1
+    total = 3 * mult
+    return [await spinfn(user_id) for i in range(total)]
 
 async def transmutate1(spinfn, user_id: int):
     result = await spinfn(user_id, transmutate_amount=1)
@@ -29,10 +32,16 @@ async def l3(spinfn, user_id: int):
     return [await spinfn(user_id, potion_strength=5)]
 
 async def msii(spinfn, user_id: int):
-    return [await spinfn(user_id) for i in range(5)]
+    from packages import roll
+    mult = 3 if getattr(roll, 'lucky3', False) else 1
+    total = 5 * mult
+    return [await spinfn(user_id) for i in range(total)]
 
 async def msiii(spinfn, user_id: int):
-    return [await spinfn(user_id) for i in range(10)]
+    from packages import roll
+    mult = 3 if getattr(roll, 'lucky3', False) else 1
+    total = 10 * mult
+    return [await spinfn(user_id) for i in range(total)]
 
 async def xpbottle(xpfn, user_id: int):
     await xpfn(300, user_id)
