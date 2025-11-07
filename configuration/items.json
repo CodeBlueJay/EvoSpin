@@ -943,6 +943,14 @@
                 "worth": 6000,
                 "weight": 1,
                 "description": "A radiant dragon that shines with an inner light."
+            },
+            "Elemental Dragon: Frost": {
+                "name": "Elemental Dragon: Frost",
+                "abbev": "edf",
+                "worth": 6000,
+                "weight": 2,
+                "event": "Winter Wonderland",
+                "description": "A chilling dragon infused with the essence of winter."
             }
         }
     },
@@ -1836,7 +1844,29 @@
         "worth": 80,
         "comp": true,
         "event": "Winter Wonderland",
+        "mutations": {
+            "Frostflake: Frostbite": {
+                "name": "Frostflake: Frostbite",
+                "abbev": "ffb",
+                "worth": 160,
+                "weight": 5,
+                "event": "Winter Wonderland",
+                "description": "A Frostflake that has developed a biting chill—handle with care."
+            }
+        },
         "description": "A crystalline frostflake collected from the Winter Wonderland. Delicate and rare."
+    },
+    "Blizzard": {
+        "name": "Blizzard",
+        "rarity": 3,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "bz",
+        "worth": 300,
+        "comp": true,
+        "event": "Winter Wonderland",
+        "description": "A powerful blizzard conjured during the Winter Wonderland event. Fierce and valuable."
     },
     "The Admin": {
         "name": "The Admin",

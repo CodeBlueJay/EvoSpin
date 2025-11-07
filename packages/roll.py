@@ -123,18 +123,46 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
     spun_name = spun
     mutated = False
     mutations = things.get(spun, {}).get("mutations")
+    # Support event-specific mutations by filtering candidates by their 'event' metadata
     if mutations and random.randint(1, 100) <= mutation_chance:
+        candidates = []
+        cand_weights = []
+        # Mutations can be a dict {name: {weight, event, ...}} or a list of names/dicts
         if isinstance(mutations, dict):
-            names = list(mutations.keys())
-            weights = [
-                float(mutations[k].get("weight", 1)) if isinstance(mutations[k], dict) else 1.0
-                for k in names
-            ]
-            total_w = sum(w if w > 0 else 0 for w in weights)
-            mut_name = (
-                random.choices(names, weights=[max(0, w) for w in weights], k=1)[0]
-                if total_w > 0 else random.choice(names)
-            )
+            for name, spec in mutations.items():
+                if isinstance(spec, dict):
+                    mut_event = spec.get("event")
+                    # If a mutation specifies an event, only allow it when active
+                    if mut_event and mut_event != active_event:
+                        continue
+                    w = float(spec.get("weight", 1))
+                else:
+                    # Backward compatibility: plain value treated as weight=1, no event gate
+                    w = 1.0
+                candidates.append(name)
+                cand_weights.append(max(0.0, w))
+        elif isinstance(mutations, list):
+            for entry in mutations:
+                if isinstance(entry, dict):
+                    name = entry.get("name")
+                    if not name:
+                        continue
+                    mut_event = entry.get("event")
+                    if mut_event and mut_event != active_event:
+                        continue
+                    w = float(entry.get("weight", 1))
+                    candidates.append(name)
+                    cand_weights.append(max(0.0, w))
+                elif isinstance(entry, str):
+                    candidates.append(entry)
+                    cand_weights.append(1.0)
+        # Choose a mutation only if any candidate remains after filtering
+        if candidates:
+            total_w = sum(cand_weights)
+            if total_w > 0:
+                mut_name = random.choices(candidates, weights=cand_weights, k=1)[0]
+            else:
+                mut_name = random.choice(candidates)
             spun = mut_name
             spun_name = mut_name
             mutated = True
@@ -368,15 +396,30 @@ async def item_info(interaction: discord.Interaction, item: str):
     else:
         embed.add_field(name="Previous Evolution", value="None", inline=True)
     if data.get("mutations", None) != None:
+        # Render mutations and show event-gating when present
         if isinstance(data["mutations"], dict):
-            mutation_list = [f"{key}" for key, value in data["mutations"].items()]
+            mutation_list = []
+            for key, value in data["mutations"].items():
+                if isinstance(value, dict) and value.get("event"):
+                    mutation_list.append(f"{key} (Event: {value['event']})")
+                else:
+                    mutation_list.append(f"{key}")
             embed.add_field(name="Mutations", value="\n".join(mutation_list), inline=False)
         elif isinstance(data["mutations"], list):
             mutation_list = []
             for mutation in data["mutations"]:
-                if isinstance(mutation, str):
+                if isinstance(mutation, dict):
+                    name = mutation.get("name")
+                    if not name:
+                        continue
+                    if mutation.get("event"):
+                        mutation_list.append(f"{name} (Event: {mutation['event']})")
+                    else:
+                        mutation_list.append(name)
+                elif isinstance(mutation, str):
                     mutation_list.append(mutation)
-            embed.add_field(name="Mutations", value="\n".join(mutation_list), inline=False)
+            if mutation_list:
+                embed.add_field(name="Mutations", value="\n".join(mutation_list), inline=False)
     if data.get("description", None) != None:
         embed.add_field(name="Description", value=data["description"], inline=False)
     await interaction.response.defer(thinking=True)
