@@ -41,14 +41,59 @@ class DropView(discord.ui.View):
 admin_group = discord.app_commands.Group(name="admin", description="Admin commands")
 
 @admin_group.command(name="roll", description="Admin type command :fire:")
-async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str=None, potion_strength: float=0.0, transmutate_amount: int=0, seperate: bool=False, mutation_chance: int=1):
+async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str=None, mutation: str=None, potion_strength: float=0.0, transmutate_amount: int=0, seperate: bool=False, mutation_chance: int=1):
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
-    # Defer immediately to avoid Unknown interaction if this takes too long
     await interaction.response.defer(thinking=True)
     temp = ""
     await interaction.followup.send(f"Admin: Rolling `{amount}` times")
+    if mutation:
+        base_name = (item or "").title()
+        mut_name = mutation
+        if not base_name or base_name not in things:
+            await interaction.followup.send("To roll a mutation, please also select a valid base item.", ephemeral=True)
+            return
+        muts = things.get(base_name, {}).get("mutations")
+        candidates = []
+        cand_events = {}
+        if isinstance(muts, dict):
+            for n, spec in muts.items():
+                candidates.append(n)
+                if isinstance(spec, dict) and spec.get("event"):
+                    cand_events[n] = spec.get("event")
+        elif isinstance(muts, list):
+            for entry in muts:
+                if isinstance(entry, dict):
+                    nm = entry.get("name")
+                    if nm:
+                        candidates.append(nm)
+                        if entry.get("event"):
+                            cand_events[nm] = entry.get("event")
+                elif isinstance(entry, str):
+                    candidates.append(entry)
+        if mut_name not in candidates:
+            await interaction.followup.send(f"`{mut_name}` is not a mutation of `{base_name}`.", ephemeral=True)
+            return
+        for i in range(amount):
+            await add_mutated(mut_name, interaction.user.id)
+            await add_xp(1, interaction.user.id)
+            result = f"You got a **{mut_name}** (*Mutation*)!"
+            mut_event = cand_events.get(mut_name)
+            if mut_event:
+                msg = roll.event_messages.get(mut_event)
+                if msg and msg not in result:
+                    result += msg
+            if seperate:
+                await interaction.followup.send(result)
+            else:
+                temp += result + "\n"
+        if not seperate and temp:
+            try:
+                await interaction.followup.send(temp)
+            except Exception:
+                await interaction.followup.send("Complete (result too large to show in message)")
+        return
     for i in range(amount):
         spun = await roll.spin(interaction.user.id, item, potion_strength=potion_strength, transmutate_amount=transmutate_amount, mutation_chance=mutation_chance)
         temp += spun + "\n"
@@ -573,3 +618,36 @@ async def admin_events_autocomplete(interaction: discord.Interaction, current: s
     return choices[:25]
 
 preview.autocomplete('admin_event')(admin_events_autocomplete)
+
+async def mutation_autocomplete(interaction: discord.Interaction, current: str):
+    choices = []
+    q = (current or "").lower()
+    try:
+        ns = interaction.namespace
+        item_name = getattr(ns, 'item', None)
+    except Exception:
+        item_name = None
+    if not item_name:
+        return choices
+    base = item_name.title()
+    if base not in things:
+        return choices
+    muts = things.get(base, {}).get('mutations')
+    names = []
+    if isinstance(muts, dict):
+        names = list(muts.keys())
+    elif isinstance(muts, list):
+        for entry in muts:
+            if isinstance(entry, dict) and entry.get('name'):
+                names.append(entry['name'])
+            elif isinstance(entry, str):
+                names.append(entry)
+    for name in names:
+        if q in name.lower():
+            choices.append(app_commands.Choice(name=name, value=name))
+    if not choices:
+        for name in names[:25]:
+            choices.append(app_commands.Choice(name=name, value=name))
+    return choices[:25]
+
+roll_amount.autocomplete('mutation')(mutation_autocomplete)

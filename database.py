@@ -47,6 +47,25 @@ async def init_db():
         );
         """)
         await db.commit()
+    # Ensure any additional columns used by features exist
+    await ensure_user_columns({
+        "Craftables": "varchar(255)",
+        "Mutated": "varchar(255)",
+        "PityCount": "int",
+        "Achievements": "text",
+        "Quests": "text",
+        "GuildName": "text",
+    })
+
+async def ensure_user_columns(columns: dict):
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute("PRAGMA table_info(Users);")
+        cols = await cursor.fetchall()
+        existing = {row[1] for row in cols}  # name is index 1
+        for name, col_type in columns.items():
+            if name not in existing:
+                await db.execute(f"ALTER TABLE Users ADD COLUMN {name} {col_type};")
+        await db.commit()
 
 async def encrypt_inventory(inventory, translations=translations):
     string = ""
@@ -105,6 +124,9 @@ async def add_user(user_id):
         VALUES ({user_id}, 0, '', 0, '');
         """)
         await db.commit()
+
+    # initialize defaults for extra columns if present
+    await set_pity(user_id, 0)
 
 async def add_to_inventory(item, user_id):
     await check_user_exist(user_id)
@@ -435,4 +457,71 @@ async def clear_mutated(user_id):
         SET Mutated = ''
         WHERE UserID = {user_id};
         """)
+        await db.commit()
+
+# -------------------- Pity meter helpers --------------------
+async def get_pity(user_id) -> int:
+    await check_user_exist(user_id)
+    # Ensure column exists
+    await ensure_user_columns({"PityCount": "int"})
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"SELECT PityCount FROM Users WHERE UserID = {user_id};")
+        row = await cursor.fetchone()
+        return int(row[0]) if row and row[0] is not None else 0
+
+async def set_pity(user_id, value: int):
+    await check_user_exist(user_id)
+    await ensure_user_columns({"PityCount": "int"})
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute(f"UPDATE Users SET PityCount = {int(value)} WHERE UserID = {user_id};")
+        await db.commit()
+
+async def inc_pity(user_id, delta: int = 1):
+    current = await get_pity(user_id)
+    await set_pity(user_id, max(0, current + delta))
+
+# -------------------- Achievements/Quests/Guild helpers --------------------
+async def get_achievements(user_id) -> str:
+    await check_user_exist(user_id)
+    await ensure_user_columns({"Achievements": "text"})
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"SELECT Achievements FROM Users WHERE UserID = {user_id};")
+        row = await cursor.fetchone()
+        return row[0] if row and row[0] is not None else ""
+
+async def set_achievements(user_id, data: str):
+    await check_user_exist(user_id)
+    await ensure_user_columns({"Achievements": "text"})
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute("UPDATE Users SET Achievements = ? WHERE UserID = ?;", (data, user_id))
+        await db.commit()
+
+async def get_quests(user_id) -> str:
+    await check_user_exist(user_id)
+    await ensure_user_columns({"Quests": "text"})
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"SELECT Quests FROM Users WHERE UserID = {user_id};")
+        row = await cursor.fetchone()
+        return row[0] if row and row[0] is not None else ""
+
+async def set_quests(user_id, data: str):
+    await check_user_exist(user_id)
+    await ensure_user_columns({"Quests": "text"})
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute("UPDATE Users SET Quests = ? WHERE UserID = ?;", (data, user_id))
+        await db.commit()
+
+async def get_guild(user_id) -> str:
+    await check_user_exist(user_id)
+    await ensure_user_columns({"GuildName": "text"})
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute(f"SELECT GuildName FROM Users WHERE UserID = {user_id};")
+        row = await cursor.fetchone()
+        return row[0] if row and row[0] is not None else ""
+
+async def set_guild(user_id, name: str):
+    await check_user_exist(user_id)
+    await ensure_user_columns({"GuildName": "text"})
+    async with aiosqlite.connect(DB_URL) as db:
+        await db.execute("UPDATE Users SET GuildName = ? WHERE UserID = ?;", (name, user_id))
         await db.commit()
