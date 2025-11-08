@@ -45,8 +45,10 @@ async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
+    # Defer immediately to avoid Unknown interaction if this takes too long
+    await interaction.response.defer(thinking=True)
     temp = ""
-    await interaction.response.send_message(f"Admin: Rolling `{amount}` times")
+    await interaction.followup.send(f"Admin: Rolling `{amount}` times")
     for i in range(amount):
         spun = await roll.spin(interaction.user.id, item, potion_strength=potion_strength, transmutate_amount=transmutate_amount, mutation_chance=mutation_chance)
         temp += spun + "\n"

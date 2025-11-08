@@ -1868,6 +1868,103 @@
         "event": "Winter Wonderland",
         "description": "A powerful blizzard conjured during the Winter Wonderland event. Fierce and valuable."
     },
+    "Demon Core": {
+        "name": "Demon Core",
+        "rarity": 0.0002,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "dc",
+        "worth": 25000,
+        "comp": true,
+        "description": "A notorious plutonium core from history. Extremely rare and unsettling to behold."
+    },
+    "Bismuth-209": {
+        "name": "Bismuth-209",
+        "rarity": 12,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "bi209",
+        "worth": 80,
+        "comp": true,
+        "description": "A dense, iridescent metal isotope famed for its stability and beauty."
+    },
+    "Green Rod Of Tritium": {
+        "name": "Green Rod Of Tritium",
+        "rarity": 3,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "grt",
+        "worth": 1200,
+        "comp": true,
+        "description": "A softly glowing rod filled with tritium gas—luminescent and rare."
+    },
+    "Diethylmercury": {
+        "name": "Diethylmercury",
+        "rarity": 0.02,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "dem",
+        "worth": 5000,
+        "comp": true,
+        "description": "A notoriously hazardous organomercury compound. Handle in fiction only."
+    },
+    "Singularity": {
+        "name": "Singularity",
+        "rarity": 1e-10,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "sing",
+        "worth": 750000,
+        "comp": true,
+        "description": "An impossibly dense point where the usual rules break down. Beyond legendary."
+    },
+    "Unobtainium": {
+        "name": "Unobtainium",
+        "rarity": 1e-08,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "unob",
+        "worth": 200000,
+        "comp": true,
+        "description": "A mythical material prized for its perfect properties and legendary scarcity."
+    },
+    "Backshot Banana": {
+        "name": "Backshot Banana",
+        "rarity": 0.0001,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "bbana",
+        "worth": 15000,
+        "comp": true,
+        "description": "A rare banana known for its unique backshot pattern. A prized item among collectors."
+    },
+    "Baby": {
+        "name": "Baby",
+        "rarity": 0.00001,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "bab",
+        "worth": 50000,
+        "comp": true,
+        "description": "A controversial and rare item, known for its dark history and rarity among collectors.",
+        "mutations": {
+            "Baby: Dead Baby": {
+                "name": "Baby: Dead Baby",
+                "abbev": "dbd",
+                "worth": 100000,
+                "weight": 1,
+                "description": "A grown-up version of the Baby item, symbolizing maturity and growth."
+            }
+        }
+    },
     "The Admin": {
         "name": "The Admin",
         "rarity": 0,

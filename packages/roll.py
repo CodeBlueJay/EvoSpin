@@ -122,25 +122,27 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
                 spun = temp
     spun_name = spun
     mutated = False
+    mutation_event_applied = None  # Track if the chosen mutation is event-gated
     mutations = things.get(spun, {}).get("mutations")
-    # Support event-specific mutations by filtering candidates by their 'event' metadata
     if mutations and random.randint(1, 100) <= mutation_chance:
         candidates = []
         cand_weights = []
-        # Mutations can be a dict {name: {weight, event, ...}} or a list of names/dicts
+        cand_events = []  # parallel list storing event name (or None) for each candidate
         if isinstance(mutations, dict):
             for name, spec in mutations.items():
                 if isinstance(spec, dict):
                     mut_event = spec.get("event")
-                    # If a mutation specifies an event, only allow it when active
                     if mut_event and mut_event != active_event:
                         continue
                     w = float(spec.get("weight", 1))
+                    candidates.append(name)
+                    cand_weights.append(max(0.0, w))
+                    cand_events.append(mut_event)
                 else:
-                    # Backward compatibility: plain value treated as weight=1, no event gate
                     w = 1.0
-                candidates.append(name)
-                cand_weights.append(max(0.0, w))
+                    candidates.append(name)
+                    cand_weights.append(max(0.0, w))
+                    cand_events.append(None)
         elif isinstance(mutations, list):
             for entry in mutations:
                 if isinstance(entry, dict):
@@ -153,19 +155,22 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
                     w = float(entry.get("weight", 1))
                     candidates.append(name)
                     cand_weights.append(max(0.0, w))
+                    cand_events.append(mut_event)
                 elif isinstance(entry, str):
                     candidates.append(entry)
                     cand_weights.append(1.0)
-        # Choose a mutation only if any candidate remains after filtering
+                    cand_events.append(None)
         if candidates:
             total_w = sum(cand_weights)
             if total_w > 0:
-                mut_name = random.choices(candidates, weights=cand_weights, k=1)[0]
+                chosen_index = random.choices(range(len(candidates)), weights=cand_weights, k=1)[0]
             else:
-                mut_name = random.choice(candidates)
+                chosen_index = random.randrange(len(candidates))
+            mut_name = candidates[chosen_index]
             spun = mut_name
             spun_name = mut_name
             mutated = True
+            mutation_event_applied = cand_events[chosen_index]
     if mutated:
         await add_mutated(spun, user_id)
     elif ":" in spun:
@@ -188,9 +193,11 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
     try:
         item_meta = things.get(spun, {})
         item_event = item_meta.get("event")
-        if item_event and item_event == active_event:
-            msg = event_messages.get(item_event)
-            if msg:
+        # Prefer the item's own event tag, otherwise fall back to the mutation's event gate
+        announce_event = item_event if item_event else mutation_event_applied
+        if announce_event and announce_event == active_event:
+            msg = event_messages.get(announce_event)
+            if msg and msg not in result:
                 result += msg
     except Exception:
         pass
@@ -396,7 +403,6 @@ async def item_info(interaction: discord.Interaction, item: str):
     else:
         embed.add_field(name="Previous Evolution", value="None", inline=True)
     if data.get("mutations", None) != None:
-        # Render mutations and show event-gating when present
         if isinstance(data["mutations"], dict):
             mutation_list = []
             for key, value in data["mutations"].items():
