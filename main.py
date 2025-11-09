@@ -24,8 +24,7 @@ cogs = [
     module["admin"].admin_group,
     module["shop"].shop_group,
     module["craft"].craft_group,
-    module["trade"].trade_group,
-    module["mutations"].mutated_group
+    module["trade"].trade_group
 ]
 
 async def get_user(user_id):
@@ -48,7 +47,7 @@ async def on_ready():
     print(f"{bot.user} connected")
     await load_commands()
 
-dev_mode = True
+dev_mode = False
 
 if not dev_mode:
     bot.run(TOKEN)

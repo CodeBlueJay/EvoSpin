@@ -115,20 +115,14 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
             weights.append(v["rarity"])
     transformed_weights = [w ** exponent_final for w in weights]
 
-    # ---------------- Pity meter logic ----------------
-    # Define rare cutoff as base rarity < 1 (treat ultra-small fractional rarities as rare)
     RARE_CUTOFF = 1
-    PITY_THRESHOLD = 50  # guarantee rare after 50 non-rare spins
-    pity = await get_pity(user_id)
-    # Build list of indices of rare items
+    PITY_THRESHOLD = 50
     rare_indices = [i for i, w in enumerate(weights) if w < RARE_CUTOFF and w > 0]
     force_rare = pity >= PITY_THRESHOLD and rare_indices
     pity_triggered = False
     if force_rare:
-        # pick using weights among rare items only (use transformed weights to respect luck/potion)
         rare_population = [population[i] for i in rare_indices]
         rare_weights_transformed = [transformed_weights[i] for i in rare_indices]
-        # fallback to base weights if something goes wrong
         if sum(rare_weights_transformed) <= 0:
             rare_weights_transformed = [weights[i] for i in rare_indices]
         spun = random.choices(rare_population, weights=rare_weights_transformed, k=1)[0]
@@ -136,13 +130,11 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
     else:
         spun = random.choices(population, weights=transformed_weights, k=1)[0]
 
-    # Determine if spun item is rare for pity tracking
     try:
         base_rarity = things[spun].get("rarity", 0)
         is_rare = base_rarity > 0 and base_rarity < RARE_CUTOFF
     except Exception:
         is_rare = False
-    # Pity behavior fix: only reset when pity actually triggers; natural rare does not reset or increment
     if pity_triggered:
         await set_pity(user_id, 0)
     else:
@@ -161,12 +153,12 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
                 spun = temp
     spun_name = spun
     mutated = False
-    mutation_event_applied = None  # Track if the chosen mutation is event-gated
+    mutation_event_applied = None
     mutations = things.get(spun, {}).get("mutations")
     if mutations and random.randint(1, 100) <= mutation_chance:
         candidates = []
         cand_weights = []
-        cand_events = []  # parallel list storing event name (or None) for each candidate
+        cand_events = []
         if isinstance(mutations, dict):
             for name, spec in mutations.items():
                 if isinstance(spec, dict):
@@ -224,7 +216,6 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
             base_total = sum(weights) or 0
             base_p = (base_w / base_total) if base_total > 0 else 0
             base_1in = round(1 / base_p) if base_p > 0 else 0
-            # Build concise pity display: [ current/50 ] and mark guaranteed rare when triggered
             current_pity = await get_pity(user_id)
             if pity_triggered:
                 pity_suffix = f" [{current_pity}/{PITY_THRESHOLD} | Guaranteed Rare]"
@@ -232,10 +223,8 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
                 pity_suffix = f" [{current_pity}/{PITY_THRESHOLD}]"
             result = f"You got a **{spun_name}** (*1 in {base_1in:,}*){pity_suffix}"
         else:
-            # Evolution/craftable (rarity == 0 treated earlier)
             result = f"You got a **{spun_name}** (*Evolution*)!"
     except Exception:
-        # If spun isn't a normal item record (e.g., mutation only key), show Mutation
         current_pity = await get_pity(user_id)
         pity_suffix = (
             f" [{current_pity}/{PITY_THRESHOLD} | Guaranteed Rare]" if pity_triggered
@@ -245,7 +234,6 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
     try:
         item_meta = things.get(spun, {})
         item_event = item_meta.get("event")
-        # Prefer the item's own event tag, otherwise fall back to the mutation's event gate
         announce_event = item_event if item_event else mutation_event_applied
         if announce_event and announce_event == active_event:
             msg = event_messages.get(announce_event)
@@ -331,92 +319,168 @@ async def use_potion(interaction: discord.Interaction, potion: str, amount: int=
 @roll_group.command(name="inventory", description="Show your inventory")
 async def inventory(interaction: discord.Interaction, user: discord.User=None):
     await interaction.response.defer()
-    user_inven = await decrypt_inventory(await get_inventory(user.id if user else interaction.user.id))
-    potion_inven = await decrypt_inventory(await get_potions(user.id if user else interaction.user.id))
-    craftables = await decrypt_inventory(await get_craftables(user.id if user else interaction.user.id))
-    potion_string = ""
-    self = True
-    if user == None:
-        user = interaction.user
-    else:
-        self = False
-    user_inven = await decrypt_inventory(await get_inventory(user.id if user else interaction.user.id))
-    number_of_comp = 0
-    for key in things:
-        if things[key]["comp"]:
-            number_of_comp += 1
-    embed = discord.Embed(
-        title=f"{user.name}'s Inventory",
-        description=f"Completion: `{len(user_inven)}/{number_of_comp}` (`{round(len(user_inven)/number_of_comp * 100, 2)}%`)\nXP: `{await get_xp(user.id if user else interaction.user.id)}`",
-        color=discord.Color.purple()
-    )
-    embed.set_author(name=user.name, icon_url=user.display_avatar.url)
-    temp = ""
-    embed.add_field(name="Coins", value=f"`{await get_coins(user.id)}`", inline=False)
-    if False:
-        embed.add_field(name="Info", value="You have no items in your inventory!" if self == True else f"{user.name} has no items in their inventory!", inline=False)
-        await interaction.response.send_message(embed=embed)
-        return
-    else:
+    viewer = user or interaction.user
+    uid = viewer.id
+    user_inven = await decrypt_inventory(await get_inventory(uid))
+    potion_inven = await decrypt_inventory(await get_potions(uid))
+    craftables = await decrypt_inventory(await get_craftables(uid))
+    mutated = await decrypt_inventory(await get_mutated(uid))
+
+    number_of_comp = sum(1 for k in things if things[k]["comp"])
+    completion_pct = round((len(user_inven) / number_of_comp * 100), 2) if number_of_comp else 0
+
+    def build_evolution_lines():
         temp_things = things.copy()
         evolution_chains = []
-        keys = list(temp_things.keys())
-        for key in keys:
-            data = temp_things[key]
-            if data["comp"]:
-                if data["next_evo"] != None and data["prev_evo"] == None:
-                    temp_list = []
-                    while data["next_evo"] != None:
-                        temp_list.append(data["name"])
-                        data = temp_things[data["next_evo"]]
-                    temp_list.append(data["name"])
-                    evolution_chains.append(temp_list)
+        for key, data in temp_things.items():
+            if not data.get("comp"):
+                continue
+            if data.get("prev_evo") is None:
+                chain = []
+                cur = data
+                chain.append(cur["name"])
+                while cur.get("next_evo") is not None:
+                    cur = temp_things[cur["next_evo"]]
+                    chain.append(cur["name"])
+                evolution_chains.append(chain)
+        lines = []
+        for chain in evolution_chains:
+            parts = []
+            for item_name in chain:
+                if item_name in user_inven:
+                    parts.append(f"**({user_inven[item_name]}) {item_name}**")
                 else:
-                    if data["prev_evo"] == None:
-                        evolution_chains.append([temp_things[key]["name"]])
-        for i in evolution_chains:
-            for j in i:
-                if j in user_inven:
-                    temp += f"**({user_inven[j]}) {j}**"
-                else:
-                    temp += j
-                if not j == i[-1]:
-                    temp += " > "
-            temp += "\n"
-    def add_chunked_fields(embed_obj: discord.Embed, base_name: str, text: str, inline=False):
-        text = text.rstrip('\n')
-        if len(text) <= 1024:
-            embed_obj.add_field(name=base_name, value=text if text else "(Empty)", inline=inline)
-            return
-        lines = text.split('\n')
+                    parts.append(item_name)
+            lines.append(" > ".join(parts))
+        return lines
+
+    def chunk_lines(lines, max_chars=1024):
+        pages = []
         current = ""
-        idx = 1
         for line in lines:
-            projected = (len(current) + (1 if current else 0) + len(line))
-            if projected > 1024:
-                embed_obj.add_field(name=f"{base_name}", value=current or "(Empty)", inline=inline)
-                current = line
-                idx += 1
+            if not current:
+                tentative = line
             else:
-                current = line if not current else current + "\n" + line
+                tentative = current + "\n" + line
+            if len(tentative) > max_chars:
+                pages.append(current)
+                current = line
+            else:
+                current = tentative
         if current:
-            embed_obj.add_field(name=f"{base_name}", value=current, inline=inline)
-    add_chunked_fields(embed, "Inventory", temp or "(Empty)", inline=False)
-    craft_string = "".join(f"**({craftables[key]}) {key}**\n" for key in craftables)
-    if craft_string == "":
-        craft_string = "You have no craftable items!" if self == True else f"{user.name} has no craftable items!"
-    add_chunked_fields(embed, "Craftables", craft_string, inline=False)
-    for key, value in potion_inven.items():
-        potion_string += f"**({value}) {key}**\n"
-    if potion_string == "":
-        potion_string = "You have no potions!" if self == True else f"{user.name} has no potions!"
-    add_chunked_fields(embed, "Potions", potion_string, inline=False)
-    if len(embed.fields) > 25:
-        full_text = "INVENTORY\n" + (temp or "(Empty)") + "\n\nCRAFTABLES\n" + craft_string + "\n\nPOTIONS\n" + potion_string
-        file = discord.File(fp=discord.utils._BytesIO(full_text.encode('utf-8')), filename="inventory.txt")
-        await interaction.followup.send(content="Inventory too large, sent as file instead.", file=file)
-    else:
-        await interaction.followup.send(embed=embed)
+            pages.append(current)
+        return pages or ["(Empty)"]
+
+    inventory_pages = chunk_lines(build_evolution_lines())
+
+    class InventoryView(discord.ui.View):
+        def __init__(self):
+            super().__init__(timeout=180)
+            self.page = "Overview"
+            self.inventory_index = 0
+
+        async def render(self, itx: discord.Interaction):
+            title = f"{viewer.name}'s Inventory"
+            embed = discord.Embed(title=title, color=discord.Color.purple())
+            embed.set_author(name=viewer.name, icon_url=viewer.display_avatar.url)
+            if self.page == "Overview":
+                embed.description = f"Completion: `{len(user_inven)}/{number_of_comp}` (`{completion_pct}%`)\nXP: `{await get_xp(uid)}`"
+                embed.add_field(name="Coins", value=f"`{await get_coins(uid)}`", inline=False)
+                embed.add_field(name="Counts", value=f"Items: `{len(user_inven)}` | Craftables: `{len(craftables)}` | Potions: `{len(potion_inven)}` | Mutations: `{len(mutated)}`", inline=False)
+            elif self.page == "Inventory":
+                total = len(inventory_pages)
+                content = inventory_pages[self.inventory_index] if total else "(Empty)"
+                embed.add_field(name=f"Inventory ({self.inventory_index+1}/{total})", value=content or "(Empty)", inline=False)
+            elif self.page == "Craftables":
+                craft_lines = [f"**({craftables[k]}) {k}**" for k in craftables]
+                for idx, block in enumerate(chunk_lines(craft_lines)):
+                    name = "Craftables" if idx == 0 else f"Craftables (cont. {idx+1})"
+                    embed.add_field(name=name, value=block or "You have no craftable items!", inline=False)
+            elif self.page == "Mutations":
+                mut_lines = [f"**({v}) {k}**" for k, v in mutated.items()]
+                for idx, block in enumerate(chunk_lines(mut_lines)):
+                    name = "Mutations" if idx == 0 else f"Mutations (cont. {idx+1})"
+                    embed.add_field(name=name, value=block or "You have no mutations!", inline=False)
+            elif self.page == "Potions":
+                pot_lines = [f"**({v}) {k}**" for k, v in potion_inven.items()]
+                for idx, block in enumerate(chunk_lines(pot_lines)):
+                    name = "Potions" if idx == 0 else f"Potions (cont. {idx+1})"
+                    embed.add_field(name=name, value=block or "You have no potions!", inline=False)
+
+            for child in self.children:
+                if isinstance(child, discord.ui.Button) and child.custom_id in {"prev","next"}:
+                    child.disabled = not (self.page == "Inventory" and len(inventory_pages) > 1)
+            if not itx.response.is_done():
+                await itx.response.edit_message(embed=embed, view=self)
+            else:
+                await itx.message.edit(embed=embed, view=self)
+
+        @discord.ui.button(label="Overview", style=discord.ButtonStyle.secondary)
+        async def btn_overview(self, itx: discord.Interaction, button: discord.ui.Button):
+            if itx.user.id != interaction.user.id:
+                await itx.response.send_message("Only the command invoker can use these controls.", ephemeral=True)
+                return
+            self.page = "Overview"
+            self.inventory_index = 0
+            await self.render(itx)
+
+        @discord.ui.button(label="Inventory", style=discord.ButtonStyle.secondary)
+        async def btn_inventory(self, itx: discord.Interaction, button: discord.ui.Button):
+            if itx.user.id != interaction.user.id:
+                await itx.response.send_message("Only the command invoker can use these controls.", ephemeral=True)
+                return
+            self.page = "Inventory"
+            await self.render(itx)
+
+        @discord.ui.button(label="Craftables", style=discord.ButtonStyle.secondary)
+        async def btn_craft(self, itx: discord.Interaction, button: discord.ui.Button):
+            if itx.user.id != interaction.user.id:
+                await itx.response.send_message("Only the command invoker can use these controls.", ephemeral=True)
+                return
+            self.page = "Craftables"
+            await self.render(itx)
+
+        @discord.ui.button(label="Mutations", style=discord.ButtonStyle.secondary)
+        async def btn_mut(self, itx: discord.Interaction, button: discord.ui.Button):
+            if itx.user.id != interaction.user.id:
+                await itx.response.send_message("Only the command invoker can use these controls.", ephemeral=True)
+                return
+            self.page = "Mutations"
+            await self.render(itx)
+
+        @discord.ui.button(label="Potions", style=discord.ButtonStyle.secondary)
+        async def btn_pot(self, itx: discord.Interaction, button: discord.ui.Button):
+            if itx.user.id != interaction.user.id:
+                await itx.response.send_message("Only the command invoker can use these controls.", ephemeral=True)
+                return
+            self.page = "Potions"
+            await self.render(itx)
+
+        @discord.ui.button(emoji="⬅️", style=discord.ButtonStyle.primary, custom_id="prev")
+        async def btn_prev(self, itx: discord.Interaction, button: discord.ui.Button):
+            if itx.user.id != interaction.user.id:
+                await itx.response.send_message("Only the command invoker can use these controls.", ephemeral=True)
+                return
+            if self.page == "Inventory" and len(inventory_pages) > 1:
+                self.inventory_index = (self.inventory_index - 1) % len(inventory_pages)
+            await self.render(itx)
+
+        @discord.ui.button(emoji="➡️", style=discord.ButtonStyle.primary, custom_id="next")
+        async def btn_next(self, itx: discord.Interaction, button: discord.ui.Button):
+            if itx.user.id != interaction.user.id:
+                await itx.response.send_message("Only the command invoker can use these controls.", ephemeral=True)
+                return
+            if self.page == "Inventory" and len(inventory_pages) > 1:
+                self.inventory_index = (self.inventory_index + 1) % len(inventory_pages)
+            await self.render(itx)
+
+    view = InventoryView()
+    init_embed = discord.Embed(title=f"{viewer.name}'s Inventory", color=discord.Color.purple())
+    init_embed.set_author(name=viewer.name, icon_url=viewer.display_avatar.url)
+    init_embed.description = f"Completion: `{len(user_inven)}/{number_of_comp}` (`{completion_pct}%`)\nXP: `{await get_xp(uid)}`"
+    init_embed.add_field(name="Coins", value=f"`{await get_coins(uid)}`", inline=False)
+    init_embed.add_field(name="Counts", value=f"Items: `{len(user_inven)}` | Craftables: `{len(craftables)}` | Potions: `{len(potion_inven)}` | Mutations: `{len(mutated)}`", inline=False)
+    await interaction.followup.send(embed=init_embed, view=view)
 
 @roll_group.command(name="info", description="Show an item's info")
 async def item_info(interaction: discord.Interaction, item: str):
@@ -513,8 +577,8 @@ async def achievements_cmd(interaction: discord.Interaction, user: discord.User=
     weekly_evolve_goal = 25
     daily_mutation_goal = 1
     weekly_event_goal = 5
-    evolve_count = 0  # placeholder until tracked
-    mutation_count = 0  # placeholder until tracked
+    evolve_count = 0
+    mutation_count = 0
     daily_event_items = len(event_items_owned)
     embed = discord.Embed(title="Achievements & Quests", color=discord.Color.blurple())
     if unlocked:
@@ -570,5 +634,3 @@ async def calculate_rarities():
 evolve.autocomplete('item')(items_autocomplete)
 item_info.autocomplete('item')(items_autocomplete)
 use_potion.autocomplete('potion')(potions_autocomplete)
-
-# Removed inventory filter autocomplete per revert to simple inventory

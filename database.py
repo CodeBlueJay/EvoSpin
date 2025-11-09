@@ -47,7 +47,6 @@ async def init_db():
         );
         """)
         await db.commit()
-    # Ensure any additional columns used by features exist
     await ensure_user_columns({
         "Craftables": "varchar(255)",
         "Mutated": "varchar(255)",
@@ -61,7 +60,7 @@ async def ensure_user_columns(columns: dict):
     async with aiosqlite.connect(DB_URL) as db:
         cursor = await db.execute("PRAGMA table_info(Users);")
         cols = await cursor.fetchall()
-        existing = {row[1] for row in cols}  # name is index 1
+        existing = {row[1] for row in cols}
         for name, col_type in columns.items():
             if name not in existing:
                 await db.execute(f"ALTER TABLE Users ADD COLUMN {name} {col_type};")
@@ -125,7 +124,6 @@ async def add_user(user_id):
         """)
         await db.commit()
 
-    # initialize defaults for extra columns if present
     await set_pity(user_id, 0)
 
 async def add_to_inventory(item, user_id):
@@ -459,10 +457,8 @@ async def clear_mutated(user_id):
         """)
         await db.commit()
 
-# -------------------- Pity meter helpers --------------------
 async def get_pity(user_id) -> int:
     await check_user_exist(user_id)
-    # Ensure column exists
     await ensure_user_columns({"PityCount": "int"})
     async with aiosqlite.connect(DB_URL) as db:
         cursor = await db.execute(f"SELECT PityCount FROM Users WHERE UserID = {user_id};")
@@ -480,7 +476,6 @@ async def inc_pity(user_id, delta: int = 1):
     current = await get_pity(user_id)
     await set_pity(user_id, max(0, current + delta))
 
-# -------------------- Achievements/Quests/Guild helpers --------------------
 async def get_achievements(user_id) -> str:
     await check_user_exist(user_id)
     await ensure_user_columns({"Achievements": "text"})
