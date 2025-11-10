@@ -1,4 +1,4 @@
-import discord, json, random, math
+import discord, json, random, math, aiosqlite, io
 from discord import app_commands
 from discord.ext import commands
 from database import *
@@ -117,6 +117,7 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
 
     RARE_CUTOFF = 1
     PITY_THRESHOLD = 50
+    pity = await get_pity(user_id)
     rare_indices = [i for i, w in enumerate(weights) if w < RARE_CUTOFF and w > 0]
     force_rare = pity >= PITY_THRESHOLD and rare_indices
     pity_triggered = False
@@ -378,6 +379,7 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
             super().__init__(timeout=180)
             self.page = "Overview"
             self.inventory_index = 0
+            self.codex_index = 0
 
         async def render(self, itx: discord.Interaction):
             title = f"{viewer.name}'s Inventory"
@@ -397,10 +399,39 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
                     name = "Craftables" if idx == 0 else f"Craftables (cont. {idx+1})"
                     embed.add_field(name=name, value=block or "You have no craftable items!", inline=False)
             elif self.page == "Mutations":
-                mut_lines = [f"**({v}) {k}**" for k, v in mutated.items()]
-                for idx, block in enumerate(chunk_lines(mut_lines)):
-                    name = "Mutations" if idx == 0 else f"Mutations (cont. {idx+1})"
-                    embed.add_field(name=name, value=block or "You have no mutations!", inline=False)
+                codex_sections = []
+                for base_name, data in things.items():
+                    muts = data.get("mutations")
+                    if not muts:
+                        continue
+                    all_mut_names = []
+                    if isinstance(muts, dict):
+                        all_mut_names.extend(list(muts.keys()))
+                    elif isinstance(muts, list):
+                        for entry in muts:
+                            if isinstance(entry, dict):
+                                n = entry.get("name")
+                                if n:
+                                    all_mut_names.append(n)
+                            elif isinstance(entry, str):
+                                all_mut_names.append(entry)
+                    if not all_mut_names:
+                        continue
+                    discovered = [m for m in all_mut_names if m in mutated]
+                    undiscovered = [m for m in all_mut_names if m not in mutated]
+                    section = (
+                        f"**{base_name}** — Discovered {len(discovered)}/{len(all_mut_names)}\n"
+                        + "Discovered: "
+                        + (", ".join(f"`{d}`" for d in discovered) if discovered else "(None)")
+                        + "\nUndiscovered: "
+                        + (", ".join(f"`{u}`" for u in undiscovered) if undiscovered else "(None)")
+                    )
+                    codex_sections.append(section)
+                codex_sections = codex_sections or ["No mutations exist."]
+                codex_pages = chunk_lines(codex_sections)
+                if self.codex_index >= len(codex_pages):
+                    self.codex_index = 0
+                embed.add_field(name=f"Mutations Codex ({self.codex_index+1}/{len(codex_pages)})", value=codex_pages[self.codex_index], inline=False)
             elif self.page == "Potions":
                 pot_lines = [f"**({v}) {k}**" for k, v in potion_inven.items()]
                 for idx, block in enumerate(chunk_lines(pot_lines)):
@@ -409,7 +440,19 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
 
             for child in self.children:
                 if isinstance(child, discord.ui.Button) and child.custom_id in {"prev","next"}:
-                    child.disabled = not (self.page == "Inventory" and len(inventory_pages) > 1)
+                    if self.page == "Inventory":
+                        child.disabled = not (len(inventory_pages) > 1)
+                    elif self.page == "Mutations":
+                        # Recompute pages count for enabling navigation
+                        test_sections = []
+                        for base_name, data in things.items():
+                            muts = data.get("mutations")
+                            if not muts:
+                                continue
+                            test_sections.append("x")
+                        child.disabled = False  # will be validated in handler
+                    else:
+                        child.disabled = True
             if not itx.response.is_done():
                 await itx.response.edit_message(embed=embed, view=self)
             else:
@@ -446,6 +489,7 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
                 await itx.response.send_message("Only the command invoker can use these controls.", ephemeral=True)
                 return
             self.page = "Mutations"
+            self.codex_index = 0
             await self.render(itx)
 
         @discord.ui.button(label="Potions", style=discord.ButtonStyle.secondary)
@@ -463,6 +507,40 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
                 return
             if self.page == "Inventory" and len(inventory_pages) > 1:
                 self.inventory_index = (self.inventory_index - 1) % len(inventory_pages)
+            elif self.page == "Mutations":
+                # Rebuild codex pages to navigate
+                codex_sections = []
+                for base_name, data in things.items():
+                    muts = data.get("mutations")
+                    if not muts:
+                        continue
+                    all_mut_names = []
+                    if isinstance(muts, dict):
+                        all_mut_names.extend(list(muts.keys()))
+                    elif isinstance(muts, list):
+                        for entry in muts:
+                            if isinstance(entry, dict):
+                                n = entry.get("name")
+                                if n:
+                                    all_mut_names.append(n)
+                            elif isinstance(entry, str):
+                                all_mut_names.append(entry)
+                    if not all_mut_names:
+                        continue
+                    discovered = [m for m in all_mut_names if m in mutated]
+                    undiscovered = [m for m in all_mut_names if m not in mutated]
+                    section = (
+                        f"**{base_name}** — Discovered {len(discovered)}/{len(all_mut_names)}\n"
+                        + "Discovered: "
+                        + (", ".join(f"`{d}`" for d in discovered) if discovered else "(None)")
+                        + "\nUndiscovered: "
+                        + (", ".join(f"`{u}`" for u in undiscovered) if undiscovered else "(None)")
+                    )
+                    codex_sections.append(section)
+                codex_sections = codex_sections or ["No mutations exist."]
+                codex_pages = chunk_lines(codex_sections)
+                if len(codex_pages) > 1:
+                    self.codex_index = (self.codex_index - 1) % len(codex_pages)
             await self.render(itx)
 
         @discord.ui.button(emoji="➡️", style=discord.ButtonStyle.primary, custom_id="next")
@@ -472,6 +550,39 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
                 return
             if self.page == "Inventory" and len(inventory_pages) > 1:
                 self.inventory_index = (self.inventory_index + 1) % len(inventory_pages)
+            elif self.page == "Mutations":
+                codex_sections = []
+                for base_name, data in things.items():
+                    muts = data.get("mutations")
+                    if not muts:
+                        continue
+                    all_mut_names = []
+                    if isinstance(muts, dict):
+                        all_mut_names.extend(list(muts.keys()))
+                    elif isinstance(muts, list):
+                        for entry in muts:
+                            if isinstance(entry, dict):
+                                n = entry.get("name")
+                                if n:
+                                    all_mut_names.append(n)
+                            elif isinstance(entry, str):
+                                all_mut_names.append(entry)
+                    if not all_mut_names:
+                        continue
+                    discovered = [m for m in all_mut_names if m in mutated]
+                    undiscovered = [m for m in all_mut_names if m not in mutated]
+                    section = (
+                        f"**{base_name}** — Discovered {len(discovered)}/{len(all_mut_names)}\n"
+                        + "Discovered: "
+                        + (", ".join(f"`{d}`" for d in discovered) if discovered else "(None)")
+                        + "\nUndiscovered: "
+                        + (", ".join(f"`{u}`" for u in undiscovered) if undiscovered else "(None)")
+                    )
+                    codex_sections.append(section)
+                codex_sections = codex_sections or ["No mutations exist."]
+                codex_pages = chunk_lines(codex_sections)
+                if len(codex_pages) > 1:
+                    self.codex_index = (self.codex_index + 1) % len(codex_pages)
             await self.render(itx)
 
     view = InventoryView()
@@ -612,6 +723,145 @@ async def rarity_list(interaction: discord.Interaction):
         if sorted_things[i]["rarity"] > 0 and sorted_things[i]["rarity"] != None:
             temp += f"**{i}** - 1 in {'{:,}'.format(round((totalsum / sorted_things[i]['rarity'])))}\n"
     await interaction.followup.send(f"**Naturally Spawning Items Rarity List:**\n{temp}")
+
+@roll_group.command(name="mutation_codex", description="Show discovered vs undiscovered mutations")
+async def mutation_codex(interaction: discord.Interaction, user: discord.User=None):
+    await interaction.response.defer()
+    viewer = user or interaction.user
+    uid = viewer.id
+    mutated_owned = await decrypt_inventory(await get_mutated(uid))
+    lines = []
+    for base_name, data in things.items():
+        muts = data.get("mutations")
+        if not muts:
+            continue
+        all_mut_names = []
+        if isinstance(muts, dict):
+            for k in muts.keys():
+                all_mut_names.append(k)
+        elif isinstance(muts, list):
+            for entry in muts:
+                if isinstance(entry, dict):
+                    n = entry.get("name")
+                    if n:
+                        all_mut_names.append(n)
+                elif isinstance(entry, str):
+                    all_mut_names.append(entry)
+        discovered = []
+        undiscovered = []
+        for m in all_mut_names:
+            if m in mutated_owned:
+                discovered.append(f"**{m}**")
+            else:
+                undiscovered.append(m)
+        lines.append(f"{base_name}: Discovered {len(discovered)}/{len(all_mut_names)}\n" + ("Discovered: " + (", ".join(discovered) if discovered else "(None)") + "\nUndiscovered: " + (", ".join(undiscovered) if undiscovered else "(None)") ))
+    content = "\n\n".join(lines) or "No mutations exist."
+    if len(content) > 1900:
+        file = discord.File(fp=io.BytesIO(content.encode('utf-8')), filename="mutation_codex.txt")
+        await interaction.followup.send(content="Codex too large, sent as file.", file=file)
+    else:
+        embed = discord.Embed(title=f"Mutation Codex - {viewer.name}", color=discord.Color.dark_gold())
+        embed.description = content
+        await interaction.followup.send(embed=embed)
+
+@roll_group.command(name="craft_advisor", description="Suggest craftables close to completion")
+async def craft_advisor(interaction: discord.Interaction, user: discord.User=None):
+    await interaction.response.defer()
+    viewer = user or interaction.user
+    uid = viewer.id
+    inven = await decrypt_inventory(await get_inventory(uid))
+    suggestions = []
+    for craft_name, cdata in craft.items():
+        comps = cdata.get("components", {})
+        missing_total = 0
+        missing_parts = []
+        for comp_name, required_amt in comps.items():
+            have = int(inven.get(comp_name, 0))
+            if have < required_amt:
+                need = required_amt - have
+                missing_total += need
+                missing_parts.append(f"{need} {comp_name}")
+        if missing_total == 0:
+            suggestions.append((0, craft_name, "Ready: all components satisfied"))
+        else:
+            suggestions.append((missing_total, craft_name, "Missing: " + ", ".join(missing_parts)))
+    suggestions.sort(key=lambda x: x[0])
+    lines = []
+    for miss, name, msg in suggestions[:25]:
+        lines.append(f"{name}: {msg}")
+    body = "\n".join(lines) or "No craftables defined."
+    embed = discord.Embed(title=f"Craft Advisor - {viewer.name}", description=body, color=discord.Color.green())
+    await interaction.followup.send(embed=embed)
+
+@roll_group.command(name="global_counts", description="Show total counts of every item in existence")
+async def global_counts(interaction: discord.Interaction):
+    await interaction.response.defer()
+    aggregates = {}
+    async with aiosqlite.connect(DB_URL) as db:
+        cursor = await db.execute("SELECT Inventory, Potions, Craftables, Mutated FROM Users;")
+        rows = await cursor.fetchall()
+    for inv_str, pot_str, craft_str, mut_str in rows:
+        for source, trans in [
+            (inv_str, decrypt_inventory),
+            (pot_str, decrypt_inventory),
+            (craft_str, decrypt_inventory),
+            (mut_str, decrypt_inventory),
+        ]:
+            if source is None or source == "":
+                continue
+            data = await trans(source)
+            for k, v in data.items():
+                try:
+                    aggregates[k] = aggregates.get(k, 0) + int(v)
+                except:
+                    pass
+    entries = [f"`{name}`: **{aggregates[name]}**" for name in sorted(aggregates.keys())] or ["No items exist."]
+    def build_pages(lines, max_chars=1024):
+        pages = []
+        cur = ""
+        for line in lines:
+            tentative = line if not cur else cur + "\n" + line
+            if len(tentative) > max_chars:
+                pages.append(cur)
+                cur = line
+            else:
+                cur = tentative
+        if cur:
+            pages.append(cur)
+        return pages or ["(Empty)"]
+    pages = build_pages(entries)
+    class CountsView(discord.ui.View):
+        def __init__(self):
+            super().__init__(timeout=120)
+            self.index = 0
+        async def render(self, itx: discord.Interaction):
+            total = len(pages)
+            embed = discord.Embed(title="Global Item Counts", color=discord.Color.blue())
+            embed.description = f"Page {self.index+1}/{total}\n\n" + pages[self.index]
+            if not itx.response.is_done():
+                await itx.response.edit_message(embed=embed, view=self)
+            else:
+                await itx.message.edit(embed=embed, view=self)
+        @discord.ui.button(emoji="⬅️", style=discord.ButtonStyle.secondary)
+        async def prev(self, itx: discord.Interaction, button: discord.ui.Button):
+            if itx.user.id != interaction.user.id:
+                await itx.response.send_message("Only the command invoker can use these controls.", ephemeral=True)
+                return
+            if len(pages) > 1:
+                self.index = (self.index - 1) % len(pages)
+            await self.render(itx)
+        @discord.ui.button(emoji="➡️", style=discord.ButtonStyle.secondary)
+        async def next(self, itx: discord.Interaction, button: discord.ui.Button):
+            if itx.user.id != interaction.user.id:
+                await itx.response.send_message("Only the command invoker can use these controls.", ephemeral=True)
+                return
+            if len(pages) > 1:
+                self.index = (self.index + 1) % len(pages)
+            await self.render(itx)
+    view = CountsView()
+    init_embed = discord.Embed(title="Global Item Counts", color=discord.Color.blue())
+    init_embed.description = f"Page 1/{len(pages)}\n\n" + pages[0]
+    await interaction.followup.send(embed=init_embed, view=view)
 
 '''
 @roll_group.command(name="values", description="Check the values of items")

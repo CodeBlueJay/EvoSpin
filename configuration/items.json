@@ -174,6 +174,17 @@
         "comp": true,
         "description": "A solid building block from fired clay."
     },
+    "Royal Pookie": {
+        "name": "Royal Pookie",
+        "rarity": 33,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "rp",
+        "worth": 4,
+        "comp": true,
+        "description": "The majestic Royal Pookie, a rare and elusive creature known for its regal appearance and enchanting presence among EvoSpinners."
+    },
     "Stickman": {
         "name": "Stickman",
         "rarity": 30,

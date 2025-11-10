@@ -68,3 +68,33 @@ async def concoct(interaction: discord.Interaction, luck: float=0.0, multi_spin:
         temp += spun + "\n"
     await interaction.response.send_message(f"Concocted a potion with **{luck}** luck, **{multi_spin}** spin(s), and **{transmutate}** transmutation\nCost: `{total_cost}` XP")
     await interaction.followup.send(temp)
+
+@craft_group.command(name="advisor", description="Suggest craftables close to completion")
+async def craft_advisor_cmd(interaction: discord.Interaction, user: discord.User=None):
+    await interaction.response.defer()
+    viewer = user or interaction.user
+    uid = viewer.id
+    inven = await decrypt_inventory(await get_inventory(uid))
+    suggestions = []
+    for craft_name, cdata in craftables.items():
+        comps = cdata.get("components", {})
+        missing_total = 0
+        missing_parts = []
+        for comp_name, required_amt in comps.items():
+            have = int(inven.get(comp_name, 0))
+            if have < required_amt:
+                need = required_amt - have
+                missing_total += need
+                missing_parts.append(f"`{need} {comp_name}`")
+        if missing_total == 0:
+            suggestions.append((0, craft_name, "Ready: **all components satisfied**"))
+        else:
+            suggestions.append((missing_total, craft_name, "Missing: " + ", ".join(missing_parts)))
+    suggestions.sort(key=lambda x: x[0])
+    lines = []
+    for miss, name, msg in suggestions[:25]:
+        prefix = "✅" if miss == 0 else "⏳"
+        lines.append(f"{prefix} **{name}** — {msg}")
+    body = "\n".join(lines) or "No craftables defined."
+    embed = discord.Embed(title=f"Craft Advisor — {viewer.name}", description=body, color=discord.Color.green())
+    await interaction.followup.send(embed=embed)
