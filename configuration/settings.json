@@ -4,4 +4,10 @@
     "xp_scale": 25000,
     "max_luck_strength": 0.25,
     "potion_exponent_factor": 0.06
+    ,
+    "weather_events": [],
+    "weather_event_min_interval_minutes": 30,
+    "weather_event_max_interval_minutes": 60,
+    "weather_event_duration_minutes": 15,
+    "announcement_channel": null
 }

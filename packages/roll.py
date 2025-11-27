@@ -4,6 +4,8 @@ from discord.ext import commands
 from database import *
 from database import get_pity, inc_pity, set_pity
 import packages.potioneffects as potioneffects
+import packages.weatherstate as weatherstate
+from datetime import datetime, timezone
 
 with open("configuration/items.json", "r") as items:
     things = json.load(items)
@@ -256,6 +258,65 @@ async def items_autocomplete(interaction: discord.Interaction, current: str):
         for name in list(things.keys())[:25]:
             choices.append(app_commands.Choice(name=name, value=name))
     return choices[:25]
+
+
+@roll_group.command(name="next_weather", description="Show the next scheduled weather event and the current active weather (UTC)")
+async def next_weather(interaction: discord.Interaction):
+    def fmt_delta(td_seconds: int) -> str:
+        if td_seconds <= 0:
+            return "0s"
+        parts = []
+        days, rem = divmod(td_seconds, 86400)
+        hours, rem = divmod(rem, 3600)
+        minutes, seconds = divmod(rem, 60)
+        if days:
+            parts.append(f"{days}d")
+        if hours:
+            parts.append(f"{hours}h")
+        if minutes:
+            parts.append(f"{minutes}m")
+        if seconds and not parts:
+            parts.append(f"{seconds}s")
+        return " ".join(parts)
+
+    try:
+        state = weatherstate.get_state()
+    except Exception:
+        state = {}
+
+    next_time = state.get("next_event_time")
+    next_name = state.get("next_event_name")
+    current_end = state.get("current_event_end_time")
+    current_name = state.get("current_event_name")
+    now = datetime.now(timezone.utc)
+
+    embed = discord.Embed(title="Weather Scheduler", color=discord.Color.blue())
+    embed.set_footer(text="Times shown in UTC")
+    embed.timestamp = now
+
+    if next_time and next_name:
+        delta = next_time - now
+        secs = int(delta.total_seconds())
+        rel = fmt_delta(max(0, secs))
+        timestr = next_time.strftime("%Y-%m-%d %H:%M UTC")
+        val = f"**{next_name}**\nStarts: `{timestr}`\nStarts in: **{rel}**"
+    else:
+        val = "No next weather event scheduled."
+    embed.add_field(name="Next Scheduled Event", value=val, inline=False)
+
+    if current_name and current_end:
+        delta2 = current_end - now
+        secs2 = int(delta2.total_seconds())
+        rel2 = fmt_delta(max(0, secs2))
+        endstr = current_end.strftime("%Y-%m-%d %H:%M UTC")
+        cur_val = f"**{current_name}**\nEnds: `{endstr}`\nTime remaining: **{rel2}**"
+    elif active_event:
+        cur_val = f"**{active_event}** — Active (end time unknown)"
+    else:
+        cur_val = "No weather event is currently active."
+    embed.add_field(name="Current Event", value=cur_val, inline=False)
+
+    await interaction.response.send_message(embed=embed)
 
 
 async def potions_autocomplete(interaction: discord.Interaction, current: str):

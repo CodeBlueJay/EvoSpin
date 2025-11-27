@@ -962,6 +962,14 @@
                 "weight": 2,
                 "event": "Winter Wonderland",
                 "description": "A chilling dragon infused with the essence of winter."
+            },
+            "Elemental Dragon: Cosmos": {
+                "name": "Elemental Dragon: Cosmos",
+                "abbev": "edc",
+                "worth": 6000,
+                "weight": 1,
+                "event": "Galaxy",
+                "description": "A dragon that embodies the cosmos and the stars."
             }
         }
     },
@@ -1821,6 +1829,136 @@
         "event": "Galaxy",
         "description": "A shard of condensed starlight from the Galaxy event. Glittering and rare."
     },
+    "Stellar Cluster": {
+        "name": "Stellar Cluster",
+        "rarity": 4,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "sc",
+        "worth": 800,
+        "comp": true,
+        "event": "Galaxy",
+        "description": "A newly bound cluster of starlight shards beginning to coalesce under gravity."
+    },
+    "Proto-Star": {
+        "name": "Proto-Star",
+        "rarity": 3,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "ps",
+        "worth": 1200,
+        "comp": true,
+        "event": "Galaxy",
+        "description": "A protostar heating up as fusion approaches."
+    },
+    "Young Star": {
+        "name": "Young Star",
+        "rarity": 3,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "yst",
+        "worth": 2500,
+        "comp": true,
+        "event": "Galaxy",
+        "description": "A newly ignited star shining steadily in the void.",
+        "mutations": {
+            "Young Star: Pulsar": {
+                "name": "Young Star: Pulsar",
+                "abbev": "ystp",
+                "worth": 5000,
+                "weight": 5,
+                "event": "Galaxy",
+                "description": "A rapidly rotating stellar core emitting intense beams of radiation."
+            }
+        }
+    },
+    "Mature Star": {
+        "name": "Mature Star",
+        "rarity": 2,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "mst",
+        "worth": 5000,
+        "comp": true,
+        "event": "Galaxy",
+        "description": "A stable star at peak luminosity, nearing the end of its life cycle.",
+        "mutations": {
+            "Mature Star: Red Giant": {
+                "name": "Mature Star: Red Giant",
+                "abbev": "mstrg",
+                "worth": 7500,
+                "weight": 4,
+                "event": "Galaxy",
+                "description": "An expanded aging star glowing with deep crimson hues."
+            },
+            "Mature Star: Neutron Core": {
+                "name": "Mature Star: Neutron Core",
+                "abbev": "mstnc",
+                "worth": 9000,
+                "weight": 2,
+                "event": "Galaxy",
+                "description": "A compacted stellar remnant forming an ultra-dense core."
+            }
+        }
+    },
+    "Supernova Remnant": {
+        "name": "Supernova Remnant",
+        "rarity": 1,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "snr",
+        "worth": 10000,
+        "comp": true,
+        "event": "Galaxy",
+        "description": "Expanding filaments of energized gas after a colossal stellar explosion.",
+        "mutations": {
+            "Supernova Remnant: Black Hole": {
+                "name": "Supernova Remnant: Black Hole",
+                "abbev": "snrbh",
+                "worth": 30000,
+                "weight": 1,
+                "event": "Galaxy",
+                "description": "A gravitational abyss from which not even light escapes."
+            },
+            "Supernova Remnant: Magnetar": {
+                "name": "Supernova Remnant: Magnetar",
+                "abbev": "snrmag",
+                "worth": 18000,
+                "weight": 2,
+                "event": "Galaxy",
+                "description": "A neutron star with an unimaginably powerful magnetic field."
+            }
+        }
+    },
+    "Dark Matter Pebble": {
+        "name": "Dark Matter Pebble",
+        "rarity": 4,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "dmp",
+        "worth": 700,
+        "comp": true,
+        "event": "Galaxy",
+        "description": "A faintly warping pebble of suspected dark matter—its mass feels wrong."
+    },
+    "Quasar Crystal": {
+        "name": "Quasar Crystal",
+        "rarity": 1,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "qc",
+        "worth": 2000,
+        "comp": true,
+        "event": "Galaxy",
+        "description": "A blinding crystal saturated with quasar jets—unstable radiance trapped in solid form."
+    },
     "Nebula Core": {
         "name": "Nebula Core",
         "rarity": 2,
@@ -1831,7 +1969,25 @@
         "worth": 600,
         "comp": true,
         "event": "Galaxy",
-        "description": "A glowing core harvested from a nebula during the Galaxy event. Very valuable."
+        "description": "A glowing core harvested from a nebula during the Galaxy event. Very valuable.",
+        "mutations": {
+            "Nebula Core: Collapsing": {
+                "name": "Nebula Core: Collapsing",
+                "abbev": "ncc",
+                "worth": 1200,
+                "weight": 3,
+                "event": "Galaxy",
+                "description": "A core undergoing gravitational collapse—its glow intensifies."
+            },
+            "Nebula Core: Radiant": {
+                "name": "Nebula Core: Radiant",
+                "abbev": "ncr",
+                "worth": 1800,
+                "weight": 1,
+                "event": "Galaxy",
+                "description": "A brilliantly energized core pulsing with colorful plasma waves."
+            }
+        }
     },
     "Snow Globe": {
         "name": "Snow Globe",
@@ -1972,9 +2128,45 @@
                 "abbev": "dbd",
                 "worth": 100000,
                 "weight": 1,
-                "description": "A grown-up version of the Baby item, symbolizing maturity and growth."
+                "description": "A dead version of the Baby item, symbolizing the end of a cycle."
             }
         }
+    },
+    "Starsteel Ingot": {
+        "name": "Starsteel Ingot",
+        "rarity": 8,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "ssi",
+        "worth": 7500,
+        "comp": true,
+        "event": "Shop",
+        "description": "A refined ingot forged under stellar heat. Its density and luster make it highly coveted for late-game crafting." 
+    },
+    "Ember Core": {
+        "name": "Ember Core",
+        "rarity": 3,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "ecore",
+        "worth": 20000,
+        "comp": true,
+        "event": "Shop",
+        "description": "A pulsing heart of condensed flame. Emits a steady heat shimmer—an elite component for legendary fusions." 
+    },
+    "Spectral Compass": {
+        "name": "Spectral Compass",
+        "rarity": 1,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "spc",
+        "worth": 60000,
+        "comp": true,
+        "event": "Shop",
+        "description": "An arcane instrument that resonates near mythical items. Collectors prize it as the pinnacle of Special Shop wares." 
     },
     "The Admin": {
         "name": "The Admin",

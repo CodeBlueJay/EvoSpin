@@ -5,6 +5,7 @@ from discord.ext import commands
 
 from database import *
 import packages.roll as roll
+import packages.shop as shop  # for special admin-shop activation
 
 with open("configuration/items.json", "r") as items:
     things = json.load(items)
@@ -106,14 +107,44 @@ async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str
     except:
         await interaction.followup.send("Complete (result too large to show in message)")
 
-@admin_group.command(name="give_item", description="Give an item to a user")
-async def give(interaction: discord.Interaction, user: discord.User, item: str, amount: int=1):
+@admin_group.command(name="give", description="Give an item/potion/craftable/mutated to a user")
+async def admin_give(interaction: discord.Interaction, target: str, user: discord.User, name: str, amount: int=1):
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
-    for i in range(amount):
-        await add_to_inventory(item.title(), user.id)
-    await interaction.response.send_message(f"Gave **{amount}** **{item.title()}** to {user.mention}!")
+    t = (target or "").lower()
+    item_name = name.title()
+    if t in ("item", "items"):
+        if item_name not in things:
+            await interaction.response.send_message("That item does not exist!", ephemeral=True)
+            return
+        for _ in range(amount):
+            await add_to_inventory(item_name, user.id)
+        await interaction.response.send_message(f"Gave **{amount}** **{item_name}** to {user.mention}!")
+    elif t in ("potion", "potions"):
+        if item_name not in potion_data:
+            await interaction.response.send_message("That potion does not exist!", ephemeral=True)
+            return
+        for _ in range(amount):
+            await add_potion(item_name, user.id)
+        await interaction.response.send_message(f"Gave **{amount}** **{item_name}** to {user.mention}!")
+    elif t in ("craftable", "craftables"):
+        if item_name not in crafting_data:
+            await interaction.response.send_message("That craftable does not exist!", ephemeral=True)
+            return
+        for _ in range(amount):
+            await add_craftable(item_name, user.id)
+        await interaction.response.send_message(f"Gave **{amount}** **{item_name}** to {user.mention}!")
+    elif t in ("mutated", "mutation", "mutations"):
+        # Allow giving any name; validate against things or known mutated names (use items for now)
+        if item_name not in things and ":" not in item_name:
+            await interaction.response.send_message("That mutated item is not recognized!", ephemeral=True)
+            return
+        for _ in range(amount):
+            await add_mutated(item_name, user.id)
+        await interaction.response.send_message(f"Gave **{amount}** **{item_name}** to {user.mention}!")
+    else:
+        await interaction.response.send_message("Invalid target. Use one of: item, potion, craftable, mutated.", ephemeral=True)
 
 @admin_group.command(name="give_coins", description="Give coins to a user")
 async def give_coins(interaction: discord.Interaction, user: discord.User, amount: int):
@@ -132,64 +163,60 @@ async def empty_db_cmd(interaction: discord.Interaction):
     await init_db()
     await interaction.response.send_message("Reset the database!")
 
-@admin_group.command(name="clear_inventory", description="Clear a user's inventory")
-async def clear_inventory_cmd(interaction: discord.Interaction, user: discord.User):
+@admin_group.command(name="clear", description="Clear a user's inventory/potions/mutated")
+async def admin_clear(interaction: discord.Interaction, target: str, user: discord.User):
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
-    await clear_inventory(user.id)
-    await interaction.response.send_message(f"Cleared {user.mention}'s inventory!")
+    t = (target or "").lower()
+    if t in ("inventory", "items"):
+        await clear_inventory(user.id)
+        await interaction.response.send_message(f"Cleared {user.mention}'s inventory!")
+    elif t in ("potions", "potion"):
+        await clear_potions(user.id)
+        await interaction.response.send_message(f"Cleared {user.mention}'s potions!")
+    elif t in ("mutated", "mutations"):
+        await clear_mutated(user.id)
+        await interaction.response.send_message(f"Cleared {user.mention}'s mutated items!")
+    else:
+        await interaction.response.send_message("Invalid target. Use inventory, potions, or mutated.", ephemeral=True)
 
-@admin_group.command(name="give_potion", description="Give a potion to a user")
-async def give_potion(interaction: discord.Interaction, user: discord.User, potion: str, amount: int=1 ):
-    if interaction.user.id not in settings["admins"]:
-        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
-        return
-    await interaction.response.defer(thinking=True)
-    for i in range(amount):
-        await add_potion(potion.title(), user.id)
-    await interaction.followup.send(f"Gave **{amount}** **{potion.title()}** to {user.mention}!")
+## removed dedicated give_potion in favor of /admin give
 
-@admin_group.command(name="clear_potions", description="Clear a user's potions")
-async def clear_user_potions(interaction: discord.Interaction, user: discord.User):
-    if interaction.user.id not in settings["admins"]:
-        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
-        return
-    await clear_potions(user.id)
-    await interaction.response.send_message(f"Cleared {user.mention}'s potions!")
+## removed dedicated clear_potions in favor of /admin clear
 
-@admin_group.command(name="add_xp", description="Add XP to a user")
-async def add_xp_cmd(interaction: discord.Interaction, user: discord.User, amount: int):
+@admin_group.command(name="xp", description="Add or remove XP from a user (action: add/remove)")
+async def admin_xp(interaction: discord.Interaction, action: str, user: discord.User, amount: int):
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
-    await add_xp(amount, user.id)
-    await interaction.response.send_message(f"Added **{amount}** XP to {user.mention}!")
+    act = (action or "").lower()
+    if act == "add":
+        await add_xp(amount, user.id)
+        await interaction.response.send_message(f"Added **{amount}** XP to {user.mention}!")
+    elif act == "remove":
+        await remove_xp(amount, user.id)
+        await interaction.response.send_message(f"Removed **{amount}** XP from {user.mention}!")
+    else:
+        await interaction.response.send_message("Invalid action. Use 'add' or 'remove'.", ephemeral=True)
 
-@admin_group.command(name="remove_xp", description="Remove XP from a user")
-async def remove_xp_cmd(interaction: discord.Interaction, user: discord.User, amount: int):
+## Consolidated column management command replacing separate add/remove to reduce child command count
+@admin_group.command(name="column", description="Add or remove a database column (action: add/remove)")
+async def manage_column(interaction: discord.Interaction, action: str, column_name: str, data_type: str=""):
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
-    await remove_xp(amount, user.id)
-    await interaction.response.send_message(f"Removed **{amount}** XP from {user.mention}!")
+    act = action.lower()
+    if act == "add":
+        await add_column(column_name, data_type)
+        await interaction.response.send_message(f"Added column **{column_name}** to the database!")
+    elif act == "remove":
+        await remove_column(column_name)
+        await interaction.response.send_message(f"Removed column **{column_name}** from the database!")
+    else:
+        await interaction.response.send_message("Invalid action. Use 'add' or 'remove'.", ephemeral=True)
 
-@admin_group.command(name="add_column", description="Add a column to the database")
-async def add_column_cmd(interaction: discord.Interaction, column_name: str, data_type: str=""):
-    if interaction.user.id not in settings["admins"]:
-        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
-        return
-    await add_column(column_name, data_type)
-    await interaction.response.send_message(f"Added column **{column_name}** to the database!")
-
-@admin_group.command(name="add_craftable", description="Add a craftable item to a user")
-async def add_craftable_cmd(interaction: discord.Interaction, user: discord.User, item: str, amount: int=1):
-    if interaction.user.id not in settings["admins"]:
-        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
-        return
-    for i in range(amount):
-        await add_craftable(item.title(), user.id)
-    await interaction.response.send_message(f"Gave **{amount}** **{item.title()}** to {user.mention}!")
+## removed dedicated add_craftable in favor of /admin give
 
 @admin_group.command(name="drop", description="Create a drop giveaway")
 async def drop_cmd(interaction: discord.Interaction, item: str, amount: int=1):
@@ -259,31 +286,6 @@ async def check_dupes_cmd(interaction: discord.Interaction):
     else:
         await interaction.followup.send("No abbreviation conflicts found.")
 
-@admin_group.command(name="remove_column", description="Remove a column from the database")
-async def remove_column_cmd(interaction: discord.Interaction, column_name: str):
-    if interaction.user.id not in settings["admins"]:
-        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
-        return
-    await remove_column(column_name)
-    await interaction.response.send_message(f"Removed column **{column_name}** from the database!")
-
-@admin_group.command(name="add_mutated", description="Add a mutated item to a user")
-async def add_mutated_cmd(interaction: discord.Interaction, user: discord.User, item: str, amount: int=1):
-    if interaction.user.id not in settings["admins"]:
-        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
-        return
-    for i in range(amount):
-        await add_mutated(item.title(), user.id)
-    await interaction.response.send_message(f"Gave **{amount}** **{item.title()}** to {user.mention}!")
-
-@admin_group.command(name="clear_mutated", description="Clear a user's mutated items")
-async def clear_mutated_cmd(interaction: discord.Interaction, user: discord.User):
-    if interaction.user.id not in settings["admins"]:
-        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
-        return
-    await clear_mutated(user.id)
-    await interaction.response.send_message(f"Cleared {user.mention}'s mutated items!")
-
 class FalseButton(discord.ui.Button):
     def __init__(self, y: int):
         super().__init__(label="\u200b", style=discord.ButtonStyle.secondary, row=y)
@@ -336,27 +338,40 @@ async def create_item_board(interaction: discord.Interaction, amount: int, item:
     view = ItemBoard(item, height, width, amount)
     await interaction.response.send_message(f"First person to click the correct button gets **{amount} {item}(s)**", view=view)
 
-@admin_group.command(name="lucky_3", description="Toggle the Triple Spin event for 60 seconds")
-async def toggle_lucky_3(interaction: discord.Interaction):
-    if interaction.user.id not in settings["admins"]:
-        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
-        return
-    roll.lucky3 = True
-    await interaction.response.send_message(f"Triple Spin event has started! All rolls are multiplied by 3 for the next 60 seconds! This effect stacks with potions.")
-    await asyncio.sleep(60)
-    roll.lucky3 = False
-    await interaction.followup.send("Triple Spin event has ended.")
+@admin_group.command(name="activate_lucky", description="Activate a Lucky event (2x luck or 3x spins) for a duration, like activate_event")
+async def activate_lucky(interaction: discord.Interaction, boost: str, duration: int=60):
+    """Activate a consolidated Lucky event.
 
-@admin_group.command(name="lucky_2x", description="Toggle the 2x Luck event for 60 seconds")
-async def toggle_lucky_2x(interaction: discord.Interaction):
+    boost: one of "Lucky 2x", "Lucky 3", "2x", "3x"
+    duration: seconds to keep the boost active
+    """
     if interaction.user.id not in settings["admins"]:
         await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
         return
-    roll.lucky2x = True
-    await interaction.response.send_message(f"2x Luck event has started! All rolls have double the luck for the next 60 seconds! This effect stacks with potions.")
-    await asyncio.sleep(60)
-    roll.lucky2x = False
-    await interaction.followup.send("2x Luck event has ended.")
+
+    key = boost.strip().lower()
+    # Ensure mutual exclusivity
+    if key in ("lucky 2x", "2x", "double", "lucky2x"):
+        # turn off triple if on
+        roll.lucky3 = False
+        roll.lucky2x = True
+        await interaction.response.send_message(f"Lucky 2x event has started for {duration} seconds! Rolls have double luck. This stacks with potions.")
+        try:
+            await asyncio.sleep(max(1, duration))
+        finally:
+            roll.lucky2x = False
+            await interaction.followup.send("Lucky 2x event has ended.")
+    elif key in ("lucky 3", "3x", "triple", "lucky3"):
+        roll.lucky2x = False
+        roll.lucky3 = True
+        await interaction.response.send_message(f"Lucky 3 event has started for {duration} seconds! All rolls are spun 3 times. This stacks with potions.")
+        try:
+            await asyncio.sleep(max(1, duration))
+        finally:
+            roll.lucky3 = False
+            await interaction.followup.send("Lucky 3 event has ended.")
+    else:
+        await interaction.response.send_message("Invalid boost. Use one of: Lucky 2x, 2x, Lucky 3, 3x", ephemeral=True)
 
 @admin_group.command(name="activate_event", description="Activate a special event (e.g. Galaxy, Winter Wonderland)")
 async def activate_event(interaction: discord.Interaction, event: str, duration: int=60):
@@ -450,6 +465,50 @@ async def group_giveaway(interaction: discord.Interaction, item: str):
     view = GroupGiveawayView(interaction.user.id, item.title())
     message = await interaction.followup.send(embed=embed, view=view)
     view.message = message
+
+@admin_group.command(name="activate_shop", description="Activate the special admin-only shop for a duration")
+async def activate_shop(interaction: discord.Interaction, duration: int=300):
+    """Activate the special shop containing items tagged with event 'Shop' in items.json.
+
+    duration: seconds the shop stays open (default 300 = 5 minutes)
+    While active, users can view and purchase those special items via /shop view and /shop buy.
+    """
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    if getattr(shop, 'special_shop_active', False):
+        await interaction.response.send_message("Special shop already active.", ephemeral=True)
+        return
+    shop.special_shop_active = True
+    await interaction.response.send_message(f"Special Shop activated for {duration} seconds! Use /shop view to see limited items.")
+    async def end_after():
+        try:
+            await asyncio.sleep(max(1, duration))
+        except asyncio.CancelledError:
+            return
+        if shop.special_shop_active:
+            shop.special_shop_active = False
+            try:
+                await interaction.followup.send("Special Shop event has ended.")
+            except Exception:
+                pass
+    if getattr(shop, 'special_shop_task', None):
+        shop.special_shop_task.cancel()
+    shop.special_shop_task = asyncio.create_task(end_after())
+
+@admin_group.command(name="deactivate_shop", description="Deactivate the special admin-only shop early")
+async def deactivate_shop(interaction: discord.Interaction):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    if not getattr(shop, 'special_shop_active', False):
+        await interaction.response.send_message("Special Shop is not active.", ephemeral=True)
+        return
+    shop.special_shop_active = False
+    if getattr(shop, 'special_shop_task', None):
+        shop.special_shop_task.cancel()
+        shop.special_shop_task = None
+    await interaction.response.send_message("Special Shop has been deactivated.")
 
 @admin_group.command(name="preview", description="Preview spawn odds and effects (events, potions, admin events)")
 async def preview(interaction: discord.Interaction, event: str=None, potion: str=None, admin_event: str=None, xp: int=None, item: str=None):
@@ -595,12 +654,9 @@ async def preview(interaction: discord.Interaction, event: str=None, potion: str
     await interaction.response.send_message(embed=embed)
 
 roll_amount.autocomplete('item')(roll.items_autocomplete)
-give.autocomplete('item')(roll.items_autocomplete)
 drop_cmd.autocomplete('item')(roll.items_autocomplete)
 group_giveaway.autocomplete('item')(roll.items_autocomplete)
 create_item_board.autocomplete('item')(roll.items_autocomplete)
-add_mutated_cmd.autocomplete('item')(roll.items_autocomplete)
-give_potion.autocomplete('potion')(roll.potions_autocomplete)
 activate_event.autocomplete('event')(roll.events_autocomplete)
 preview.autocomplete('event')(roll.events_autocomplete)
 preview.autocomplete('potion')(roll.potions_autocomplete)
@@ -618,6 +674,20 @@ async def admin_events_autocomplete(interaction: discord.Interaction, current: s
     return choices[:25]
 
 preview.autocomplete('admin_event')(admin_events_autocomplete)
+
+async def lucky_boost_autocomplete(interaction: discord.Interaction, current: str):
+    options = ["Lucky 2x", "Lucky 3"]
+    q = (current or "").lower()
+    choices = []
+    for name in options:
+        if q in name.lower():
+            choices.append(app_commands.Choice(name=name, value=name))
+    if not choices:
+        for name in options:
+            choices.append(app_commands.Choice(name=name, value=name))
+    return choices[:25]
+
+activate_lucky.autocomplete('boost')(lucky_boost_autocomplete)
 
 async def mutation_autocomplete(interaction: discord.Interaction, current: str):
     choices = []
@@ -651,3 +721,30 @@ async def mutation_autocomplete(interaction: discord.Interaction, current: str):
     return choices[:25]
 
 roll_amount.autocomplete('mutation')(mutation_autocomplete)
+
+async def admin_give_name_autocomplete(interaction: discord.Interaction, current: str):
+    q = (current or "").lower()
+    try:
+        target = getattr(interaction.namespace, 'target', None)
+    except Exception:
+        target = None
+    choices = []
+    t = (target or "").lower()
+    source = []
+    if t in ("potion", "potions"):
+        source = list(potion_data.keys())
+    elif t in ("craftable", "craftables"):
+        source = list(crafting_data.keys())
+    else:
+        source = list(things.keys())
+    for name in source:
+        if q in name.lower():
+            choices.append(app_commands.Choice(name=name, value=name))
+            if len(choices) >= 25:
+                break
+    if not choices:
+        for name in source[:25]:
+            choices.append(app_commands.Choice(name=name, value=name))
+    return choices[:25]
+
+admin_give.autocomplete('name')(admin_give_name_autocomplete)
