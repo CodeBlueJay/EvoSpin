@@ -22,6 +22,7 @@ active_event = None
 event_messages = {
     "Galaxy": "\n✨ This item is from the Galaxy event! ✨",
     "Winter Wonderland": "\n❄️ You rolled a Winter Wonderland exclusive! ❄️",
+    "Halloween": "\n🎃 Spooky! You found a Halloween event item! 🎃",
 }
 
 totalsum = 0

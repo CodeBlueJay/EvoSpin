@@ -25,6 +25,7 @@ cogs = [
     module["roll"].roll_group,
     module["admin"].admin_group,
     module["shop"].shop_group,
+    #module["battle"].battle_group,
     module["craft"].craft_group,
     module["trade"].trade_group
 ]
@@ -46,7 +47,9 @@ async def weather_scheduler(bot: commands.Bot):
     max_i = int(cfg.get("weather_event_max_interval_minutes", 60))
     duration_m = int(cfg.get("weather_event_duration_minutes", 15))
     configured = cfg.get("weather_events", []) or []
-    ann_channel = cfg.get("announcement_channel")
+    ann_channels = cfg.get("announcement_channel")
+    if isinstance(ann_channels, (int, str)):
+        ann_channels = [ann_channels]
 
     def build_event_pool():
         if configured:
@@ -72,13 +75,11 @@ async def weather_scheduler(bot: commands.Bot):
     while True:
         wait_minutes = random.randint(min_i, max_i)
 
-        # choose the event now so we can record which event will start next
         if pool:
             event_name = random.choice(pool)
         else:
             event_name = None
 
-        # record next event start time and name
         try:
             if event_name:
                 next_time = datetime.now(timezone.utc) + timedelta(minutes=wait_minutes)
@@ -86,49 +87,45 @@ async def weather_scheduler(bot: commands.Bot):
         except Exception:
             pass
 
-        # wait until the scheduled time
         await asyncio.sleep(wait_minutes * 60)
 
-        # start event (if we had a choice)
         if event_name:
-            # clear the scheduled-next marker and set the active event
             try:
                 weatherstate.clear_next_event()
             except Exception:
                 pass
-            # use module['roll'] to access active_event variable
             try:
                 module["roll"].active_event = event_name
             except Exception:
                 pass
 
-            # record when this event will end
             try:
                 end_time = datetime.now(timezone.utc) + timedelta(minutes=duration_m)
                 weatherstate.set_current_event_end(end_time, event_name)
             except Exception:
                 pass
 
-            # announce start
             msg = f"A {event_name} event has started! It will last {duration_m} minutes."
             try:
-                if ann_channel:
-                    ch = bot.get_channel(int(ann_channel))
-                    if ch:
-                        await ch.send(msg)
+                if ann_channels:
+                    for cid in ann_channels:
+                        try:
+                            ch = bot.get_channel(int(cid))
+                            if ch and isinstance(ch, discord.TextChannel):
+                                if ch.permissions_for(ch.guild.me).send_messages:
+                                    await ch.send(msg)
+                        except Exception:
+                            pass
                 else:
-                    # fallback: try guild system channels
                     for g in bot.guilds:
                         if g.system_channel and g.system_channel.permissions_for(g.me).send_messages:
                             await g.system_channel.send(msg)
             except Exception:
                 pass
 
-            # keep event active for duration_m minutes
             try:
                 await asyncio.sleep(duration_m * 60)
             except asyncio.CancelledError:
-                # if scheduler cancelled, clear event and exit
                 try:
                     module["roll"].active_event = None
                 except Exception:
@@ -139,7 +136,6 @@ async def weather_scheduler(bot: commands.Bot):
                     pass
                 return
 
-            # end event
             try:
                 if module["roll"].active_event == event_name:
                     module["roll"].active_event = None
@@ -151,10 +147,15 @@ async def weather_scheduler(bot: commands.Bot):
                 pass
             end_msg = f"The {event_name} event has ended."
             try:
-                if ann_channel:
-                    ch = bot.get_channel(int(ann_channel))
-                    if ch:
-                        await ch.send(end_msg)
+                if ann_channels:
+                    for cid in ann_channels:
+                        try:
+                            ch = bot.get_channel(int(cid))
+                            if ch and isinstance(ch, discord.TextChannel):
+                                if ch.permissions_for(ch.guild.me).send_messages:
+                                    await ch.send(end_msg)
+                        except Exception:
+                            pass
                 else:
                     for g in bot.guilds:
                         if g.system_channel and g.system_channel.permissions_for(g.me).send_messages:
@@ -162,7 +163,6 @@ async def weather_scheduler(bot: commands.Bot):
             except Exception:
                 pass
         else:
-            # nothing to start; loop again
             continue
 
 async def load_commands():
@@ -175,7 +175,6 @@ async def load_commands():
 
 @bot.event
 async def on_ready():
-    # await test_db()
     await init_db()
     await module["roll"].calculate_rarities()
     print(f"{bot.user} connected")

@@ -66,4 +66,29 @@
         "next_evo": null,
         "prev_evo": null
     }
+    ,
+    "Wooden Shield": {
+        "components": {
+            "Wooden Stickman": 2,
+            "Cloth": 1
+        },
+        "description": "A simple wooden shield used for training and light defense.",
+        "abbev": "wsh",
+        "worth": 45,
+        "rarity": -1,
+        "comp": "Craftable",
+        "next_evo": null,
+        "prev_evo": null,
+        "health": 120,
+        "abilities": [
+            {
+                "id": "block",
+                "name": "Block",
+                "type": "shield",
+                "value": 25,
+                "cooldown": 8,
+                "description": "Raise the shield to absorb incoming damage."
+            }
+        ]
+    }
 }

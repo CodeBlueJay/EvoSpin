@@ -970,6 +970,14 @@
                 "weight": 1,
                 "event": "Galaxy",
                 "description": "A dragon that embodies the cosmos and the stars."
+            },
+            "Elemental Dragon: Nightmare": {
+                "name": "Elemental Dragon: Nightmare",
+                "abbev": "edn",
+                "worth": 6000,
+                "weight": 1,
+                "event": "Halloween",
+                "description": "A fearsome dragon that haunts the night."
             }
         }
     },
@@ -2132,6 +2140,154 @@
             }
         }
     },
+    "Headless Horseman": {
+        "name": "Headless Horseman",
+        "rarity": 0.001,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "hh",
+        "worth": 12000,
+        "comp": true,
+        "event": "Halloween",
+        "description": "A spooky figure from legend, known for its headless appearance and eerie presence.",
+        "mutations": {
+            "Headless Horseman: With Head": {
+                "name": "Headless Horseman: With Head",
+                "abbev": "hhwh",
+                "worth": 24000,
+                "weight": 1,
+                "event": "Halloween",
+                "description": "A rare variant of the Headless Horseman, depicted with its head restored."
+            }
+        }
+    },
+    "Jack O Lantern": {
+        "name": "Jack O Lantern",
+        "rarity": 5,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "jol",
+        "worth": 300,
+        "comp": true,
+        "event": "Halloween",
+        "description": "A carved pumpkin lantern, glowing with an eerie light. A festive item for Halloween."
+    },
+    "Ghost": {
+        "name": "Ghost",
+        "rarity": 5,
+        "prev_evo": null,
+        "next_evo": "Ghoul",
+        "required": 3,
+        "abbev": "gho",
+        "worth": 150,
+        "comp": true,
+        "event": "Halloween",
+        "description": "A spectral apparition, fleeting and elusive. A rare find during the Halloween event."
+    },
+    "Ghoul": {
+        "name": "Ghoul",
+        "rarity": 0,
+        "prev_evo": "Ghost",
+        "next_evo": "Specter",
+        "required": 3,
+        "abbev": "ghul",
+        "worth": 800,
+        "comp": true,
+        "event": "Halloween",
+        "description": "A reanimated corpse, wandering in search of sustenance. A chilling item for Halloween collectors."
+    },
+    "Specter": {
+        "name": "Specter",
+        "rarity": 0,
+        "prev_evo": "Ghoul",
+        "next_evo": "Phantom",
+        "required": 3,
+        "abbev": "spec",
+        "worth": 2500,
+        "comp": true,
+        "event": "Halloween",
+        "description": "A haunting spirit, bound to the mortal realm. The pinnacle of Halloween collectibles."
+    },
+    "Phantom": {
+        "name": "Phantom",
+        "rarity": 0,
+        "prev_evo": "Specter",
+        "next_evo": null,
+        "required": 3,
+        "abbev": "phan",
+        "worth": 10000,
+        "comp": true,
+        "event": "Halloween",
+        "description": "An ethereal being of immense power, rarely seen by mortal eyes. The ultimate Halloween treasure."
+    },
+    "Vampire Fang": {
+        "name": "Vampire Fang",
+        "rarity": 0.5,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "vf",
+        "worth": 500,
+        "comp": true,
+        "event": "Halloween",
+        "description": "A sharp fang from a vampire, rumored to possess dark powers. A coveted item during Halloween."
+    },
+    "Zombie": {
+        "name": "Zombie",
+        "rarity": 6,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "zom",
+        "worth": 700,
+        "comp": true,
+        "event": "Halloween",
+        "description": "A reanimated corpse, slow but relentless. A staple of Halloween lore and collectibles."
+    },
+    "Frankenstein Monster": {
+        "name": "Frankenstein Monster",
+        "rarity": 0.001,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "fm",
+        "worth": 1500,
+        "comp": true,
+        "event": "Halloween",
+        "description": "A patchwork creature brought to life by science. A classic figure in Halloween mythology."
+    },
+    "Witch": {
+        "name": "Witch",
+        "rarity": 2,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "wit",
+        "worth": 2500,
+        "comp": true,
+        "event": "Halloween",
+        "description": "A spellcasting figure of folklore, known for brewing potions and casting curses. A mystical Halloween item.",
+        "mutations": {
+            "Witch: Good Witch": {
+                "name": "Witch: Good Witch",
+                "abbev": "witg",
+                "worth": 5000,
+                "weight": 1,
+                "event": "Halloween",
+                "description": "A benevolent witch who uses her powers for good. A rare and cherished Halloween variant."
+            },
+            "Witch: Evil Witch": {
+                "name": "Witch: Evil Witch",
+                "abbev": "wite",
+                "worth": 7500,
+                "weight": 1,
+                "event": "Halloween",
+                "description": "A malevolent witch who revels in dark magic. A feared and infamous Halloween variant."
+            }
+        }
+    },
     "Starsteel Ingot": {
         "name": "Starsteel Ingot",
         "rarity": 8,
@@ -2178,5 +2334,57 @@
         "comp": false,
         "worth": 200000,
         "description": "The exclusive Admin Only item."
+    },
+    "Training Sword": {
+        "name": "Training Sword",
+        "rarity": 45,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "tsw",
+        "worth": 30,
+        "comp": true,
+        "health": 80,
+        "abilities": [
+            {
+                "id": "slash",
+                "name": "Slash",
+                "type": "damage",
+                "power": 12,
+                "cooldown": 5,
+                "description": "A basic slashing attack."
+            },
+            {
+                "id": "thrust",
+                "name": "Thrust",
+                "type": "damage",
+                "power": 18,
+                "cooldown": 8,
+                "description": "A sharp thrust that deals extra damage." 
+            }
+        ],
+        "description": "A blunt training sword used for sparring."
+    },
+    "Healing Herb": {
+        "name": "Healing Herb",
+        "rarity": 60,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "hhrb",
+        "worth": 12,
+        "comp": true,
+        "health": 0,
+        "abilities": [
+            {
+                "id": "mend",
+                "name": "Mend",
+                "type": "heal",
+                "value": 20,
+                "cooldown": 10,
+                "description": "A simple healing salve that restores HP."
+            }
+        ],
+        "description": "A common herb with restorative properties."
     }
 }
