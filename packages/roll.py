@@ -450,6 +450,44 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
             if self.page == "Overview":
                 embed.description = f"Completion: `{len(user_inven)}/{number_of_comp}` (`{completion_pct}%`)\nXP: `{await get_xp(uid)}`"
                 embed.add_field(name="Coins", value=f"`{await get_coins(uid)}`", inline=False)
+                # compute best item by worth (fallbacks handled)
+                best_item_name = None
+                best_worth = -1
+                for iname, cnt in user_inven.items():
+                    meta = things.get(iname) or craft.get(iname)
+                    if not meta:
+                        continue
+                    worth = int(meta.get("worth") or 0)
+                    if worth > best_worth:
+                        best_worth = worth
+                        best_item_name = iname
+
+                def fmt_rarity(nm):
+                    if not nm:
+                        return "(None)"
+                    meta = things.get(nm) or craft.get(nm)
+                    if not meta:
+                        return "Unknown"
+                    try:
+                        r = meta.get("rarity")
+                        if r is None:
+                            return "Unknown"
+                        if isinstance(r, (int, float)) and r > 0:
+                            if totalsum and totalsum > 0:
+                                approx = round((totalsum / r))
+                                return f"1 in {approx:,}"
+                            return f"rarity:{r}"
+                        if r == 0:
+                            return "Evolution"
+                        return "Craftable"
+                    except Exception:
+                        return "Unknown"
+
+                best_field = "(None)"
+                if best_item_name:
+                    cnt = user_inven.get(best_item_name, "1")
+                    best_field = f"**({cnt}) {best_item_name}**\nRarity: `{fmt_rarity(best_item_name)}`"
+                embed.add_field(name="Best Item", value=best_field, inline=False)
                 embed.add_field(name="Counts", value=f"Items: `{len(user_inven)}` | Craftables: `{len(craftables)}` | Potions: `{len(potion_inven)}` | Mutations: `{len(mutated)}`", inline=False)
             elif self.page == "Inventory":
                 total = len(inventory_pages)
@@ -652,6 +690,44 @@ async def inventory(interaction: discord.Interaction, user: discord.User=None):
     init_embed.set_author(name=viewer.name, icon_url=viewer.display_avatar.url)
     init_embed.description = f"Completion: `{len(user_inven)}/{number_of_comp}` (`{completion_pct}%`)\nXP: `{await get_xp(uid)}`"
     init_embed.add_field(name="Coins", value=f"`{await get_coins(uid)}`", inline=False)
+    # compute best item for initial embed
+    best_item_name = None
+    best_worth = -1
+    for iname, cnt in user_inven.items():
+        meta = things.get(iname) or craft.get(iname)
+        if not meta:
+            continue
+        worth = int(meta.get("worth") or 0)
+        if worth > best_worth:
+            best_worth = worth
+            best_item_name = iname
+
+    def fmt_rarity_init(nm):
+        if not nm:
+            return "(None)"
+        meta = things.get(nm) or craft.get(nm)
+        if not meta:
+            return "Unknown"
+        try:
+            r = meta.get("rarity")
+            if r is None:
+                return "Unknown"
+            if isinstance(r, (int, float)) and r > 0:
+                if totalsum and totalsum > 0:
+                    approx = round((totalsum / r))
+                    return f"1 in {approx:,}"
+                return f"rarity:{r}"
+            if r == 0:
+                return "Evolution"
+            return "Craftable"
+        except Exception:
+            return "Unknown"
+
+    if best_item_name:
+        init_best = f"**({user_inven.get(best_item_name, '1')}) {best_item_name}**\nRarity: `{fmt_rarity_init(best_item_name)}`"
+    else:
+        init_best = "(None)"
+    init_embed.add_field(name="Best Item", value=init_best, inline=False)
     init_embed.add_field(name="Counts", value=f"Items: `{len(user_inven)}` | Craftables: `{len(craftables)}` | Potions: `{len(potion_inven)}` | Mutations: `{len(mutated)}`", inline=False)
     await interaction.followup.send(embed=init_embed, view=view)
 

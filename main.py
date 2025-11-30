@@ -184,7 +184,7 @@ async def on_ready():
     except Exception as e:
         print("Failed to start weather scheduler:", e)
 
-dev_mode = True
+dev_mode = False
 
 if not dev_mode:
     bot.run(TOKEN)
