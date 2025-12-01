@@ -1,11 +1,11 @@
-import discord, json, random, asyncio, math
+import discord, json, random, asyncio, math, time
 from discord import app_commands
 from discord.ui import Button, View
 from discord.ext import commands
 
 from database import *
 import packages.roll as roll
-import packages.shop as shop  # for special admin-shop activation
+import packages.shop as shop
 
 with open("configuration/items.json", "r") as items:
     things = json.load(items)
@@ -136,7 +136,6 @@ async def admin_give(interaction: discord.Interaction, target: str, user: discor
             await add_craftable(item_name, user.id)
         await interaction.response.send_message(f"Gave **{amount}** **{item_name}** to {user.mention}!")
     elif t in ("mutated", "mutation", "mutations"):
-        # Allow giving any name; validate against things or known mutated names (use items for now)
         if item_name not in things and ":" not in item_name:
             await interaction.response.send_message("That mutated item is not recognized!", ephemeral=True)
             return
@@ -181,10 +180,6 @@ async def admin_clear(interaction: discord.Interaction, target: str, user: disco
     else:
         await interaction.response.send_message("Invalid target. Use inventory, potions, or mutated.", ephemeral=True)
 
-## removed dedicated give_potion in favor of /admin give
-
-## removed dedicated clear_potions in favor of /admin clear
-
 @admin_group.command(name="xp", description="Add or remove XP from a user (action: add/remove)")
 async def admin_xp(interaction: discord.Interaction, action: str, user: discord.User, amount: int):
     if interaction.user.id not in settings["admins"]:
@@ -200,7 +195,6 @@ async def admin_xp(interaction: discord.Interaction, action: str, user: discord.
     else:
         await interaction.response.send_message("Invalid action. Use 'add' or 'remove'.", ephemeral=True)
 
-## Consolidated column management command replacing separate add/remove to reduce child command count
 @admin_group.command(name="column", description="Add or remove a database column (action: add/remove)")
 async def manage_column(interaction: discord.Interaction, action: str, column_name: str, data_type: str=""):
     if interaction.user.id not in settings["admins"]:
@@ -215,8 +209,6 @@ async def manage_column(interaction: discord.Interaction, action: str, column_na
         await interaction.response.send_message(f"Removed column **{column_name}** from the database!")
     else:
         await interaction.response.send_message("Invalid action. Use 'add' or 'remove'.", ephemeral=True)
-
-## removed dedicated add_craftable in favor of /admin give
 
 @admin_group.command(name="drop", description="Create a drop giveaway")
 async def drop_cmd(interaction: discord.Interaction, item: str, amount: int=1):
@@ -350,9 +342,7 @@ async def activate_lucky(interaction: discord.Interaction, boost: str, duration:
         return
 
     key = boost.strip().lower()
-    # Ensure mutual exclusivity
     if key in ("lucky 2x", "2x", "double", "lucky2x"):
-        # turn off triple if on
         roll.lucky3 = False
         roll.lucky2x = True
         await interaction.response.send_message(f"Lucky 2x event has started for {duration} seconds! Rolls have double luck. This stacks with potions.")
@@ -397,6 +387,158 @@ async def deactivate_event(interaction: discord.Interaction):
     old = roll.active_event
     roll.active_event = None
     await interaction.response.send_message(f"{old} event has been deactivated.")
+
+class GiveawayView(discord.ui.View):
+    def __init__(self, prize: str, duration: int, winner_count: int):
+        super().__init__(timeout=None)
+        self.prize = prize
+        self.duration = duration
+        self.winner_count = max(1, int(winner_count))
+        self.entries = set()
+        self.message = None
+        self.started_at = int(time.time())
+        self.ends_at = self.started_at + max(1, int(duration))
+
+    def _rarity_text(self) -> str:
+        name = (self.prize or "").title()
+        if name in things:
+            try:
+                rarity = things[name].get("rarity", 0)
+                if rarity and rarity > 0:
+                    total = sum([things[i].get("rarity", 0) for i in things if things[i].get("rarity", 0) > 0]) or 1
+                    return f"1 in {'{:,}'.format(round(total / rarity))}"
+                else:
+                    return "Evolution"
+            except Exception:
+                return "N/A"
+        return "N/A"
+
+    def _participants_text(self) -> str:
+        return str(len(self.entries))
+
+    def _ends_text(self) -> str:
+        return f"<t:{self.ends_at}:R>"
+
+    def _build_embed(self) -> discord.Embed:
+        embed = discord.Embed(title="Giveaway Started!", color=discord.Color.gold())
+        embed.add_field(name="Prize", value=self.prize, inline=True)
+        embed.add_field(name="Ends", value=self._ends_text(), inline=True)
+        embed.add_field(name="Winners", value=str(self.winner_count), inline=True)
+        embed.add_field(name="Participants", value=self._participants_text(), inline=True)
+        embed.add_field(name="Rarity", value=self._rarity_text(), inline=True)
+        return embed
+
+    async def _refresh_message(self):
+        if not self.message:
+            return
+        try:
+            await self.message.edit(embed=self._build_embed(), view=self)
+        except Exception:
+            pass
+
+    @discord.ui.button(label="Enter Giveaway", style=discord.ButtonStyle.primary)
+    async def enter(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.id in self.entries:
+            await interaction.response.send_message("You have already entered the giveaway.", ephemeral=True)
+            return
+        self.entries.add(interaction.user.id)
+        await interaction.response.send_message("You have entered the giveaway! Good luck.", ephemeral=True)
+        # Update embed to reflect new participant count
+        await self._refresh_message()
+
+    @discord.ui.button(label="View Entrants", style=discord.ButtonStyle.secondary)
+    async def view_entrants(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if not self.entries:
+            await interaction.response.send_message("No one has entered yet.", ephemeral=True)
+            return
+        mentions = [f"<@{uid}>" for uid in self.entries]
+        text = ", ".join(mentions)
+        # Send as ephemeral to avoid spam; change to non-ephemeral if desired
+        await interaction.response.send_message(f"Current entrants ({len(mentions)}):\n{text}", ephemeral=True)
+
+    async def finish(self):
+        entries = list(self.entries)
+        winners = []
+        if not entries:
+            return winners
+        if len(entries) <= self.winner_count:
+            winners = entries
+        else:
+            winners = random.sample(entries, self.winner_count)
+        return winners
+
+
+@admin_group.command(name="giveaway", description="Start a giveaway (admin only)")
+async def admin_giveaway(interaction: discord.Interaction, prize: str, duration: int, channel: discord.TextChannel=None, winners: int=1):
+    if interaction.user.id not in settings["admins"]:
+        await interaction.response.send_message("You are not allowed to use this command!", ephemeral=True)
+        return
+    target_channel = channel if channel is not None else interaction.channel
+
+    view = GiveawayView(prize, duration, winners)
+    embed = view._build_embed()
+    embed.set_footer(text=f"Started by {interaction.user.display_name}")
+    await interaction.response.send_message(f"Starting giveaway in {target_channel.mention}...", ephemeral=True)
+    sent = await target_channel.send(embed=embed, view=view)
+    view.message = sent
+
+    await asyncio.sleep(max(1, duration))
+    winners_ids = await view.finish()
+    if not winners_ids:
+        await target_channel.send("Giveaway ended: no entries received.")
+        return
+
+    winner_mentions = [f"<@{uid}>" for uid in winners_ids]
+    result_msg = f"🎉 Giveaway ended! Winners: {', '.join(winner_mentions)} — Prize: {prize}"
+    await target_channel.send(result_msg)
+
+    def prize_is_mutation(prize_name: str) -> bool:
+        """Return True if prize_name matches a mutation declared under any base item."""
+        pn = (prize_name or "").lower()
+        for base, spec in things.items():
+            muts = spec.get("mutations")
+            if not muts:
+                continue
+            if isinstance(muts, dict):
+                for k, v in muts.items():
+                    name = v.get('name') if isinstance(v, dict) and v.get('name') else k
+                    if (name or "").lower() == pn:
+                        return True
+            elif isinstance(muts, list):
+                for entry in muts:
+                    name = entry.get('name') if isinstance(entry, dict) and entry.get('name') else (entry if isinstance(entry, str) else None)
+                    if name and name.lower() == pn:
+                        return True
+        return False
+
+    for uid in winners_ids:
+        try:
+            low = prize.lower()
+            if low.startswith("coins:"):
+                amt = int(low.split(":",1)[1].strip())
+                await add_coins(amt, uid)
+                await target_channel.send(f"<@{uid}> received **{amt}** coins!")
+            elif low.endswith(" coins") or low.endswith(" coin"):
+                parts = low.split()
+                try:
+                    amt = int(parts[0])
+                    await add_coins(amt, uid)
+                    await target_channel.send(f"<@{uid}> received **{amt}** coins!")
+                except Exception:
+                    await target_channel.send(f"<@{uid}> won **{prize}** — please contact an admin to claim your prize.")
+            elif prize.title() in things:
+                await add_to_inventory(prize.title(), uid)
+                await target_channel.send(f"<@{uid}> received **{prize.title()}**!")
+            elif prize_is_mutation(prize.title()):
+                await add_mutated(prize.title(), uid)
+                await target_channel.send(f"<@{uid}> received **{prize.title()}** (mutation)!")
+            elif prize.title() in crafting_data:
+                await add_craftable(prize.title(), uid)
+                await target_channel.send(f"<@{uid}> received **{prize.title()}** (craftable)!")
+            else:
+                await target_channel.send(f"<@{uid}> won **{prize}** — please contact an admin to claim your prize.")
+        except Exception:
+            await target_channel.send(f"Failed to award prize to <@{uid}> automatically; admins please intervene.")
 
 @admin_group.command(name="list_events", description="List all events detected from items.json (items with an 'event' field)")
 async def list_events(interaction: discord.Interaction):
@@ -748,3 +890,47 @@ async def admin_give_name_autocomplete(interaction: discord.Interaction, current
     return choices[:25]
 
 admin_give.autocomplete('name')(admin_give_name_autocomplete)
+
+
+async def giveaway_prize_autocomplete(interaction: discord.Interaction, current: str):
+    """Autocomplete prize names for giveaways: include base items and mutations."""
+    q = (current or "").lower()
+    choices = []
+    base_names = list(things.keys())
+    mut_names = []
+    for base in base_names:
+        muts = things.get(base, {}).get('mutations')
+        if not muts:
+            continue
+        if isinstance(muts, dict):
+            for k, v in muts.items():
+                if isinstance(v, dict) and v.get('name'):
+                    mut_names.append(v.get('name'))
+                else:
+                    mut_names.append(k)
+        elif isinstance(muts, list):
+            for entry in muts:
+                if isinstance(entry, dict) and entry.get('name'):
+                    mut_names.append(entry.get('name'))
+                elif isinstance(entry, str):
+                    mut_names.append(entry)
+
+    pool = base_names + mut_names
+    seen = set()
+    for name in pool:
+        if not name:
+            continue
+        if q and q not in name.lower():
+            continue
+        if name in seen:
+            continue
+        seen.add(name)
+        choices.append(app_commands.Choice(name=name, value=name))
+        if len(choices) >= 25:
+            break
+    if not choices:
+        for name in (base_names + mut_names)[:25]:
+            choices.append(app_commands.Choice(name=name, value=name))
+    return choices[:25]
+
+admin_giveaway.autocomplete('prize')(giveaway_prize_autocomplete)

@@ -2288,6 +2288,18 @@
             }
         }
     },
+    "Demogorgon": {
+        "name": "Demogorgon",
+        "rarity": 0.0001,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "demo",
+        "worth": 30000,
+        "comp": true,
+        "event": "Halloween",
+        "description": "A terrifying creature from another dimension, known for its monstrous appearance and deadly nature. A prized Halloween collectible."
+    },
     "Starsteel Ingot": {
         "name": "Starsteel Ingot",
         "rarity": 8,

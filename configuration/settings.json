@@ -8,5 +8,10 @@
     "weather_event_min_interval_minutes": 30,
     "weather_event_max_interval_minutes": 60,
     "weather_event_duration_minutes": 15,
-    "announcement_channel": [1443664433632116912]
+    "announcement_channel": [1443664433632116912],
+    "weather_event_weights": {
+        "Galaxy": 1,
+        "Halloween": 2,
+        "Winter Wonderland": 4
+    }
 }

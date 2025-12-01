@@ -52,34 +52,66 @@ async def weather_scheduler(bot: commands.Bot):
         ann_channels = [ann_channels]
 
     def build_event_pool():
-        if configured:
-            return list(configured)
+        """Return (events, weights).
+
+        We first consult configured events in settings; if provided as a list, use those
+        event names and look up weights from `weather_event_weights` mapping in settings.
+        If settings do not define weights for an event, fall back to computing a weight
+        from the sum of item rarities for items that declare that event in
+        `configuration/items.json`. Events named "Shop" are ignored.
+        """
+        cfg_events = list(configured) if configured else None
+        items = {}
         try:
             with open("configuration/items.json", "r", encoding="utf-8") as f:
                 items = json.load(f)
         except Exception:
-            return []
-        events = sorted({v.get("event") for v in items.values() if v.get("event")})
-        for i in events:
-            if i == "Shop":
-                events.remove(i)
-        return events
-
-    pool = build_event_pool()
+            items = {}
+        discovered = sorted({v.get("event") for v in items.values() if v.get("event")})
+        discovered = [e for e in discovered if e and e != "Shop"]
+        events = cfg_events or discovered
+        if not events:
+            return ([], [])
+        weights_cfg = cfg.get("weather_event_weights", {}) or {}
+        weights = []
+        for ev in events:
+            if ev == "Shop":
+                continue
+            w = None
+            try:
+                w = int(weights_cfg.get(ev, None)) if weights_cfg.get(ev, None) is not None else None
+            except Exception:
+                w = None
+            if w is None:
+                try:
+                    total_rarity = 0
+                    for v in items.values():
+                        if v.get("event") == ev:
+                            r = int(v.get("rarity", 0) or 0)
+                            total_rarity += max(1, r)
+                    w = total_rarity if total_rarity > 0 else 1
+                except Exception:
+                    w = 1
+            weights.append(max(1, int(w)))
+        events = [e for e in events if e != "Shop"]
+        if not events:
+            return ([], [])
+        return (events, weights)
+    pool, pool_weights = build_event_pool()
     if not pool:
         print("weather_scheduler: no weather events configured or discovered; scheduler will not run.")
         return
-
-    print("weather_scheduler: started, events pool:", pool)
-
+    print("weather_scheduler: started, events pool:", list(zip(pool, pool_weights)))
     while True:
         wait_minutes = random.randint(min_i, max_i)
-
+        pool, pool_weights = build_event_pool()
         if pool:
-            event_name = random.choice(pool)
+            try:
+                event_name = random.choices(pool, weights=pool_weights, k=1)[0]
+            except Exception:
+                event_name = random.choice(pool)
         else:
             event_name = None
-
         try:
             if event_name:
                 next_time = datetime.now(timezone.utc) + timedelta(minutes=wait_minutes)
@@ -184,7 +216,7 @@ async def on_ready():
     except Exception as e:
         print("Failed to start weather scheduler:", e)
 
-dev_mode = False
+dev_mode = True
 
 if not dev_mode:
     bot.run(TOKEN)
