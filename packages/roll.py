@@ -20,9 +20,10 @@ lucky3 = False
 lucky2x = False
 active_event = None
 event_messages = {
-    "Galaxy": "\n✨ This item is from the Galaxy event! ✨",
-    "Winter Wonderland": "\n❄️ You rolled a Winter Wonderland exclusive! ❄️",
-    "Halloween": "\n🎃 Spooky! You found a Halloween event item! 🎃",
+    "Galaxy": "\n✨ You found a Galaxy item! ✨",
+    "Winter Wonderland": "\n❄️ You found a Winter Wonderland item! ❄️",
+    "Halloween": "\n🎃 You found a Halloween event item! 🎃",
+    "Pixel Storm": "\n👾 You found a Pixel Storm item! 👾"
 }
 
 totalsum = 0
@@ -85,7 +86,7 @@ async def evolve(interaction: discord.Interaction, item: str, amount: int=1):
     for _ in range(required_total):
         await remove_from_inventory(item_name, interaction.user.id)
 
-async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_strength: float=0.0, mutation_chance: int=1, catch_multiplier=catch_multiplier):
+async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_strength: float=0.0, mutation_chance: int=1, catch_multiplier=catch_multiplier, rare_prob_max: float=None):
     spun = ""
     spun_name = ""
     temp = ""
@@ -111,11 +112,30 @@ async def spin(user_id, item: str=None, transmutate_amount: int=0, potion_streng
         exponent_final = 0.1
     population = []
     weights = []
+    # Build base pool (event-aware)
+    base_pool = []
+    base_weights = []
     for k, v in things.items():
         item_event = v.get("event")
-        if v.get("rarity", 0) > 0 and (item_event is None or item_event == active_event):
-            population.append(v["name"])
-            weights.append(v["rarity"])
+        r = v.get("rarity", 0)
+        if r and r > 0 and (item_event is None or item_event == active_event):
+            base_pool.append(v["name"])
+            base_weights.append(r)
+    # If rare_prob_max is set, filter pool to items with base probability below threshold
+    if rare_prob_max is not None and base_pool:
+        base_total = sum(base_weights) or 1
+        for nm, r in zip(base_pool, base_weights):
+            p = r / base_total
+            if p < rare_prob_max:
+                population.append(nm)
+                weights.append(r)
+        # Fallback: if filter produced empty set, use original base pool
+        if not population:
+            population = base_pool[:]
+            weights = base_weights[:]
+    else:
+        population = base_pool
+        weights = base_weights
     transformed_weights = [w ** exponent_final for w in weights]
 
     RARE_CUTOFF = 1
@@ -323,11 +343,16 @@ async def next_weather(interaction: discord.Interaction):
 async def potions_autocomplete(interaction: discord.Interaction, current: str):
     choices = []
     q = current.lower()
-    for name in potions_list.keys():
+    # Hide items marked hidden (e.g., Admin Spin) from general autocomplete
+    for name, meta in potions_list.items():
+        if meta.get("hidden"):
+            continue
         if q in name.lower():
             choices.append(app_commands.Choice(name=name, value=name))
     if not choices and q == "":
-        for name in list(potions_list.keys())[:25]:
+        for name, meta in list(potions_list.items())[:25]:
+            if meta.get("hidden"):
+                continue
             choices.append(app_commands.Choice(name=name, value=name))
     return choices[:25]
 
@@ -358,6 +383,7 @@ async def use_potion(interaction: discord.Interaction, potion: str, amount: int=
         "Multi-Spin 3": lambda user_id: potioneffects.msiii(spin, user_id),
         "Xp Bottle": lambda user_id: potioneffects.xpbottle(add_xp, user_id),
         "Godly": lambda user_id: potioneffects.godly(spin, user_id),
+        "Admin Spin": lambda user_id: potioneffects.admin_spin(spin, user_id),
     }
     potion = potion.title()
     potion_inven = await decrypt_inventory(await get_potions(interaction.user.id))
@@ -850,17 +876,73 @@ async def achievements_cmd(interaction: discord.Interaction, user: discord.User=
     embed.set_footer(text="Progress preview; evolve/mutation tracking coming soon.")
     await interaction.response.send_message(embed=embed, ephemeral=True)
 
-
-
 @roll_group.command(name="rarity_list", description="Show the rarity list")
 async def rarity_list(interaction: discord.Interaction):
     await interaction.response.defer()
-    temp = ""
-    sorted_things = dict(sorted(things.items(), key=lambda item: item[1]["rarity"], reverse=True))
-    for i in sorted_things:
-        if sorted_things[i]["rarity"] > 0 and sorted_things[i]["rarity"] != None:
-            temp += f"**{i}** - 1 in {'{:,}'.format(round((totalsum / sorted_things[i]['rarity'])))}\n"
-    await interaction.followup.send(f"**Naturally Spawning Items Rarity List:**\n{temp}")
+    items = [(name, data) for name, data in things.items() if data.get("rarity") not in (None, 0)]
+    items.sort(key=lambda t: t[1].get("rarity", 0), reverse=True)
+
+    lines = []
+    for name, data in items:
+        r = data.get("rarity", 0)
+        try:
+            approx = round((totalsum / r)) if totalsum and r else None
+        except Exception:
+            approx = None
+        if approx:
+            lines.append(f"{name} — 1 in {'{:,}'.format(approx)}")
+        else:
+            lines.append(f"{name} — N/A")
+
+    PAGE_SIZE = 20
+    pages = []
+    for i in range(0, len(lines), PAGE_SIZE):
+        chunk = lines[i:i+PAGE_SIZE]
+        pages.append("\n".join(chunk) if chunk else "(no items)")
+
+    class RarityListView(discord.ui.View):
+        def __init__(self):
+            super().__init__(timeout=180)
+            self.index = 0
+
+        async def render(self, itx: discord.Interaction, initial: bool=False):
+            title = "Naturally Spawning Items — Rarity"
+            embed = discord.Embed(title=title, color=discord.Color.purple())
+            if pages:
+                embed.description = f"Page {self.index+1}/{len(pages)}\n\n" + pages[self.index]
+            else:
+                embed.description = "No items available."
+            if initial:
+                await interaction.followup.send(embed=embed, view=self)
+            else:
+                try:
+                    await itx.response.edit_message(embed=embed, view=self)
+                except Exception:
+                    try:
+                        await itx.edit_original_response(embed=embed, view=self)
+                    except Exception:
+                        pass
+
+        @discord.ui.button(emoji="⬅️", style=discord.ButtonStyle.secondary)
+        async def prev(self, itx: discord.Interaction, button: discord.ui.Button):
+            if itx.user.id != interaction.user.id:
+                await itx.response.send_message("Only the command invoker can use these controls.", ephemeral=True)
+                return
+            if pages:
+                self.index = (self.index - 1) % len(pages)
+            await self.render(itx)
+
+        @discord.ui.button(emoji="➡️", style=discord.ButtonStyle.secondary)
+        async def next(self, itx: discord.Interaction, button: discord.ui.Button):
+            if itx.user.id != interaction.user.id:
+                await itx.response.send_message("Only the command invoker can use these controls.", ephemeral=True)
+                return
+            if pages:
+                self.index = (self.index + 1) % len(pages)
+            await self.render(itx)
+
+    view = RarityListView()
+    await view.render(interaction, initial=True)
 
 @roll_group.command(name="mutation_codex", description="Show discovered vs undiscovered mutations")
 async def mutation_codex(interaction: discord.Interaction, user: discord.User=None):

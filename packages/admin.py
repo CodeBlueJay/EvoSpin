@@ -97,6 +97,15 @@ async def roll_amount(interaction: discord.Interaction, amount: int=1, item: str
         return
     for i in range(amount):
         spun = await roll.spin(interaction.user.id, item, potion_strength=potion_strength, transmutate_amount=transmutate_amount, mutation_chance=mutation_chance)
+        try:
+            base = (item or "").title()
+            ev = things.get(base, {}).get("event")
+            if ev:
+                msg = getattr(roll, 'event_messages', {}).get(ev)
+                if msg and msg not in spun:
+                    spun = f"{spun}{msg}"
+        except Exception:
+            pass
         temp += spun + "\n"
         if seperate:
             await interaction.followup.send(spun)

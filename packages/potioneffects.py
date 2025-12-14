@@ -49,3 +49,9 @@ async def xpbottle(xpfn, user_id: int):
 
 async def godly(spinfn, user_id: int):
     return [await spinfn(user_id, potion_strength=50)]
+
+async def admin_spin(spinfn, user_id: int):
+    # Perform a single spin limited to items with base probability < 0.005
+    # Weights are still used when choosing among this filtered pool.
+    result = await spinfn(user_id, rare_prob_max=0.005)
+    return [result]

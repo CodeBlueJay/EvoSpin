@@ -978,6 +978,14 @@
                 "weight": 1,
                 "event": "Halloween",
                 "description": "A fearsome dragon that haunts the night."
+            },
+            "Elemental Dragon: Pixelated": {
+                "name": "Elemental Dragon: Pixelated",
+                "abbev": "edp",
+                "worth": 6000,
+                "weight": 1,
+                "event": "Pixel Storm",
+                "description": "A digital dragon that exists within the pixelated realms."
             }
         }
     },
@@ -2299,6 +2307,126 @@
         "comp": true,
         "event": "Halloween",
         "description": "A terrifying creature from another dimension, known for its monstrous appearance and deadly nature. A prized Halloween collectible."
+    },
+    "Pixelation": {
+        "name": "Pixelation",
+        "rarity": 0.00005,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "pix",
+        "worth": 10000,
+        "comp": true,
+        "event": "Pixel Storm",
+        "description": "A rare digital artifact that distorts reality into pixelated fragments. Highly sought after by collectors."
+    },
+    "Digital Footprint": {
+        "name": "Digital Footprint",
+        "rarity": 0.0001,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "dfp",
+        "worth": 15000,
+        "comp": true,
+        "event": "Pixel Storm",
+        "description": "A mysterious imprint left behind in the digital realm. Its origins are unknown, making it a coveted item."
+    },
+    "Pixel Shard": {
+        "name": "Pixel Shard",
+        "rarity": 18,
+        "prev_evo": null,
+        "next_evo": "Pixel Core",
+        "required": 5,
+        "abbev": "pxs",
+        "worth": 40,
+        "comp": true,
+        "event": "Pixel Storm",
+        "description": "A jagged fragment from the Pixel Storm—glows with 8‑bit energy."
+    },
+    "Pixel Core": {
+        "name": "Pixel Core",
+        "rarity": 0,
+        "prev_evo": "Pixel Shard",
+        "next_evo": null,
+        "required": 6,
+        "abbev": "pxc",
+        "worth": 160,
+        "comp": true,
+        "event": "Pixel Storm",
+        "description": "Condensed pixel energy. Hums softly and stabilizes storm artifacts."
+    },
+    "Glitch": {
+        "name": "Glitch",
+        "rarity": 9,
+        "prev_evo": null,
+        "next_evo": null,
+        "required": 0,
+        "abbev": "gfr",
+        "worth": 120,
+        "comp": true,
+        "event": "Pixel Storm",
+        "description": "A corrupted packet from the storm. Rare and unpredictable."
+    },
+    "Byte": {
+        "name": "Byte",
+        "rarity": 6,
+        "prev_evo": null,
+        "next_evo": "Kilobyte",
+        "required": 3,
+        "abbev": "bbl",
+        "worth": 450,
+        "comp": true,
+        "event": "Pixel Storm",
+        "description": "Forged from stabilized pixels—slashes reality with crisp lines."
+    },
+    "Kilobyte": {
+        "name": "Kilobyte",
+        "rarity": 0,
+        "prev_evo": "Byte",
+        "next_evo": "Megabyte",
+        "required": 3,
+        "abbev": "kb",
+        "worth": 900,
+        "comp": true,
+        "event": "Pixel Storm",
+        "description": "A compact data cluster—its edges shimmer with digital energy."
+    },
+    "Megabyte": {
+        "name": "Megabyte",
+        "rarity": 0,
+        "prev_evo": "Kilobyte",
+        "next_evo": "Gigabyte",
+        "required": 3,
+        "abbev": "mb",
+        "worth": 1800,
+        "comp": true,
+        "event": "Pixel Storm",
+        "description": "A dense block of pixel energy—radiates a powerful digital aura."
+    },
+    "Gigabyte": {
+        "name": "Gigabyte",
+        "rarity": 0,
+        "prev_evo": "Megabyte",
+        "next_evo": "Terabyte",
+        "required": 3,
+        "abbev": "gb",
+        "worth": 3600,
+        "comp": true,
+        "event": "Pixel Storm",
+        "description": "A massive data construct—pulses with intense pixelated power."
+    },
+    "Terabyte": {
+        "name": "Terabyte",
+        "rarity": 0,
+        "prev_evo": "Gigabyte",
+        "next_evo": null,
+        "required": 3,
+        "abbev": "tby",
+        "worth": 7200,
+        "comp": true,
+        "event": "Pixel Storm",
+        "description": "The pinnacle of pixel energy—radiates a blinding digital light."
     },
     "Starsteel Ingot": {
         "name": "Starsteel Ingot",

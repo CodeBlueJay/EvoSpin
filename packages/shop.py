@@ -26,6 +26,8 @@ async def view_items(interaction: discord.Interaction):
         color=discord.Color.green()
     )
     for key, value in shop_items.items():
+        if value.get("hidden"):
+            continue
         main.add_field(name=f"**`{key}`** - `{value['price']}` coins", value=value["description"], inline=False)
     await interaction.response.send_message(embed=main)
 
@@ -54,6 +56,9 @@ async def buy_item(interaction: discord.Interaction, item: str, amount: int=1):
     item = item.title()
     # Normal shop.json purchase (potions)
     if item in shop_items:
+        if shop_items[item].get("hidden"):
+            await interaction.response.send_message("Item is not available for purchase.")
+            return
         user_coins = await get_coins(interaction.user.id)
         item_price = shop_items[item]["price"] * amount
         if user_coins < item_price:

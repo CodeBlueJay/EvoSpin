@@ -10,8 +10,9 @@
     "weather_event_duration_minutes": 15,
     "announcement_channel": [1443664433632116912],
     "weather_event_weights": {
-        "Galaxy": 1,
-        "Halloween": 2,
-        "Winter Wonderland": 4
+        "Galaxy": 2,
+        "Halloween": 3,
+        "Winter Wonderland": 3,
+        "Pixel Storm": 1
     }
 }

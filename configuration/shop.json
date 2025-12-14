@@ -1,57 +1,74 @@
 {
   "Multi-Spin 1": {
     "price": 750,
+    "hidden": false,
     "description": "Rolls 3 items at once for 1 roll.",
     "abbev": "ms1"
   },
   "Multi-Spin 2": {
     "price": 1000,
+    "hidden": false,
     "description": "Rolls 6 items at once for 1 roll.",
     "abbev": "ms2"
   },
   "Multi-Spin 3": {
     "price": 1500,
+    "hidden": false,
     "description": "Rolls 10 items at once for 1 roll.",
     "abbev": "ms3"
   },
   "Luck 1": {
     "price": 500,
+    "hidden": false,
     "description": "Increases your chance of getting rare items slightly for 1 roll.",
     "abbev": "l1"
   },
   "Luck 2": {
     "price": 750,
+    "hidden": false,
     "description": "Increases your chance of getting rare items moderately for 1 roll.",
     "abbev": "l2"
   },
   "Luck 3": {
     "price": 1000,
+    "hidden": false,
     "description": "Increases your chance of getting rare items strongly for 1 roll.",
     "abbev": "l3"
   },
   "Transmutate 1": {
     "price": 7500,
+    "hidden": false,
     "description": "Evolves the next item you roll into its evolution.",
     "abbev": "t1"
   },
   "Transmutate 2": {
     "price": 10000,
+    "hidden": false,
     "description": "Evolves the next item you roll into its 2nd evolution.",
     "abbev": "t2"
   },
   "Transmutate 3": {
     "price": 15000,
+    "hidden": false,
     "description": "Evolves the next item you roll into its 3rd evolution.",
     "abbev": "t3"
   },
   "Xp Bottle": {
     "price": 500,
+    "hidden": false,
     "description": "Gives you 500 XP.",
     "abbev": "xp"
   },
   "Godly": {
     "price": 100000,
+    "hidden": false,
     "description": "Gives you a big luck boost for 1 roll.",
     "abbev": "g"
+  },
+  "Admin Spin": {
+    "price": 0,
+    "hidden": true,
+    "description": "Gives you an admin spin.",
+    "abbev": "as"
   }
 }
